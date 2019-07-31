@@ -32,10 +32,10 @@ user="vagrant"
 # libhdf5.so.8()(64bit)
 # Download latest puias-computational rpm from
 # http://springdale.math.ias.edu/data/puias/computational/6/x86_64/
-wget -P "/home/$user" http://springdale.math.ias.edu/data/puias/computational/6/x86_64/puias-computational-GPFS-6-1.puias6.8.noarch.rpm
+#wget -P "/home/$user" http://springdale.math.ias.edu/data/puias/computational/6/x86_64/puias-computational-GPFS-6-1.puias6.8.noarch.rpm
 # Install puias-computational rpm:
-rpm -Uvh puias-computational*rpm
+#rpm -Uvh puias-computational*rpm
 # Install hdf5-1811-gcc rpm package:
-yum install hdf5-1811-gcc
+#yum install hdf5-1811-gcc
 
-libhdf5.so.8()(64bit)
+#libhdf5.so.8()(64bit)
