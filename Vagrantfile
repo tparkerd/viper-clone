@@ -69,5 +69,5 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   config.vm.provision "shell", path: "provision.sh"
-  config.vm.synced_folder "/home/tparker/Projects/danforth/topp/viper-clone/shared", "/home/vagrant/shared"
+  config.vm.synced_folder "/home/tparker/Projects/danforth/topp/viper-clone/shared/", "/home/vagrant/shared"
 end
