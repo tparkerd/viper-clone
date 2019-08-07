@@ -1,0 +1,29 @@
+# remi.repo
+# "remi" repository from  famillecollet.com.
+# This repo provides the latest version of  FireFox.
+#
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   remi                    1           51
+#   remi-test               0           52
+
+
+[remi]
+name=Les RPM de remi pour Enterprise Linux $releasever - $basearch
+mirrorlist=http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror
+#baseurl=http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/
+failovermethod=priority
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
+enabled=1
+priority=51
+
+[remi-test]
+name=Les RPM de remi en test pour Enterprise Linux $releasever - $basearch
+mirrorlist=http://rpms.famillecollet.com/enterprise/$releasever/test/mirror
+#baseurl=http://rpms.famillecollet.com/enterprise/$releasever/test/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remi
+enabled=0
+priority=52
+

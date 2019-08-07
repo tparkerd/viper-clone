@@ -1,0 +1,1311 @@
+*****************************************************************************
+**
+*** The rsa-pipeline system dependencies installation 
+***
+***
+*** Fri May 31 2013 Vladimir Popov <vladimir.popov@duke.edu>
+***
+*****************************************************************************
+
+
+These instructions can be used only root: so, first of all, login as root user.
+
+Plan:
+ -- Install (or check) Centos
+ -- Configure Yum programm for installation rsa-pipeline system dependencies
+ -- Install rsa-pipeline system dependencies
+
+NOTE: bear in mind: sometimes, the yum command with the *matlab* doesn't work.
+      So, if * doesn't work (expansion issue in Linux) as you would expect, then try searching using more info about a package name like:
+      yum list matlabR2010b
+      or
+      yum list matlabR2010b.x86_64
+
+All rsa-pipeline related sources are downloaded from;
+http://mk42ws.biology.duke.edu:8000/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation
+
+
+*****************************************************************************
+* Operating system
+*****************************************************************************
+
+Install: this version (or higher) of Linux (Centos)
+
+Linux version 2.6.32-358.6.1.el6.x86_64 (mockbuild@c6b9.bsys.dev.centos.org) (gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC) ) #1 SMP Tue Apr 23 19:29:00 UTC 2013
+
+
+1. clean Linux installation
+
+If you install from scratch, choose defaults.
+When asked, at some point, to choose from the following options:
+
+-Desktop
+-Minimal Desktop
+-Minimal
+-Base Server 
+......,
+
+choose the Desktop option.
+
+2. if you already have Linux installed, then check whether you have the needed linux version:
+
+Type in the terminal window:
+
+cat /proc/version
+
+*****************************************************************************
+* Yum (short for Yellowdog Updater, Modified )
+*****************************************************************************
+
+Yum is a special utility program for updating and managing Linux systems.
+
+Yum manages special repositories with programs and install them on your computer.
+
+Yum is automatically installed along with almost every basic Linux installations.
+
+To check whether it is installed, type in the terminal window:
+
+yum --version
+
+You will get, if installed, something like:
+
+======OUTPUT========================================================================
+
+[root@mk42ws2 ~]# yum --version
+3.2.29
+  Installed: rpm-4.8.0-32.el6.x86_64 at 2013-05-10 17:03
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2013-02-22 02:13
+  Committed: Florian Festi <ffesti@redhat.com> at 2012-11-15
+
+  Installed: yum-3.2.29-40.el6.centos.noarch at 2013-05-10 17:08
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2013-02-22 11:26
+  Committed: Johnny Hughes <johnny@centos.org> at 2013-02-21
+
+  Installed: yum-plugin-fastestmirror-1.1.30-14.el6.noarch at 2012-08-13 22:32
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2012-06-22 12:23
+  Committed: Zdenek Pavlas <zpavlas@redhat.com> at 2012-04-26
+
+======END OUTPUT===================================================================
+
+Before being used, Yum needs to be properly configured - this is what we are going to do now.
+
+
+*****************************************************************************
+* Configure Yum
+*****************************************************************************
+
+1. First, make back up of the files that we are about to change. 
+
+Back up two folders:
+/etc/yum.repos.d
+/etc/pki
+
+Type in the terminal window:
+
+cd ~
+mkdir bk_up
+mkdir bk_up/yum-config-ORIGINAL
+cp -r /etc/yum.repos.d bk_up/yum-config-ORIGINAL
+cp -r /etc/pki bk_up/yum-config-ORIGINAL
+
+2.Remove all files in the following folders:
+
+rm -rf /etc/yum.repos.d
+rm -rf /etc/pki
+
+3. Download Rsa Pipeline Yum Configuration. 
+
+Unzip rsa-pipeline-yum-config.tar.gz to a folder of your choice, say, [your_folder_yum_config]. 
+
+After unzipping, there are two folders in the rsa-pipeline-yum-config folder:
+
+- pki
+- yum.repos.d
+
+4. Copy these folders to the system locations
+
+cp -r [your_folder_yum_config]/rsa-pipeline-yum-config/yum.repos.d /etc
+cp -r [your_folder_yum_config]/rsa-pipeline-yum-config/pki /etc
+
+5. Change permissions
+
+chmod 700 /etc/pki/rsyslog
+chmod 700 /etc/pki/CA/private
+chmod 640 /etc/pki/rpm-gpg/RPM-GPG-KEY-linux-at-duke
+
+
+The rsa-pipeline Yum Configuration is done.
+
+---------------------------------------------
+
+NOTE: for Vladimir
+
+When zipping for deploying, I changed permissions for some folders adn files on my computer (otherwise there are not compressed)
+
+from 700 to 755:
+
+sudo chmod 755 /localhome/vp23/Desktop/rsapipeline_rpm_doc/rsa-pipeline-doc/pki/rsyslog/
+sudo chmod 755 /localhome/vp23/Desktop/rsapipeline_rpm_doc/rsa-pipeline-doc/pki/CA/private/
+
+from 640 to 644:
+
+sudo chmod 644 /localhome/vp23/Desktop/rsapipeline_rpm_doc/rsa-pipeline-doc/pki/rpm-gpg/RPM-GPG-KEY-linux-at-duke
+
+Change it back, when installing on other computer.
+
+NOTE 1: 
+
+ cat /etc/yum.repos.d/Local.repo
+
+# Local.repo
+# Local yum repository containing manually created rpms.
+#
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   Local                   1           0
+#   mk42ws                  1           0
+
+
+[Local]
+name=EL6 local repository
+baseurl=file:///root/YumLocalRepo
+gpgcheck=0
+enabled=1
+priority=0
+
+
+[mk42ws]
+name=EL6 repository on mk42ws
+baseurl=http://mk42ws.biology.duke.edu:8020/yum-repos/el6/x86_64
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=1
+priority=0
+
+
+
+remove  everything mk42ws
+
+disable Local
+
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   Local                   0          0
+
+
+
+
+NOTE 2: for Vladimir
+
+!!! Don't copy RPM-GPG-KEY-linux-at-duke when making FINAL deployment to the public
+
+
+NOTE 3: for Vladimir
+
+Yes, this change is needed.
+
+When preparing the yum.repos.d folder (taken from the mk42ws2 machine), change enabled=1 to enabled=0
+in the [Duke-EPEL] section in the Duke-EL6.repo file. 
+
+
+
+Otherwise during installation, you would get:
+
+--------------------------------------------------------------------------------------------------------------------
+Total
+             102 MB/s |  49 MB     00:00
+warning: rpmts_HdrFromFdno: Header V3 RSA/SHA256 Signature, key ID
+0608b895: NOKEY
+Retrieving key from http://download.fedora.redhat.com/pub/epel/RPM-GPG-KEY-EPEL
+
+
+GPG key retrieval failed: [Errno 14] PYCURL ERROR 6 - "Couldn't
+resolve host 'download.fedora.redhat.com'"
+
+
+*****************************************************************************
+* Check whether Yum is properly configured and working
+*****************************************************************************
+
+yum list rpm*
+
+It will give some information based on the rpm* searching pattern , including a list of Installed Packages anda list of Installed Packages.
+
+In order to see more info on how to use yum, type in the terminal window:
+
+yum --help
+
+We will introduce a few more yum commands down the road.
+
+*****************************************************************************
+* Install createrepo program
+*****************************************************************************
+
+The createrepo program allows to create Yum repositories.
+
+We will need to create a local Yum repository to keep our rsa-pipeline packages in there.
+
+To check whether the createrepo program is installed, type in the terminal window:
+
+yum list *createrepo*
+
+If it is installed, you will get something like:
+
+======OUTPUT========================================================================
+
+[root@mk42ws2 ~]# yum install createrepo
+Loaded plugins: changelog, downloadonly, fastestmirror, presto, priorities, security, tmprepo, verify, versionlock, xlist
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirror.umd.edu
+ * CentOS-contrib: mirror.symnds.com
+ * CentOS-extras: mirror.atlanticmetro.net
+ * CentOS-plus: centos.mirror.nac.net
+ * CentOS-updates: mirror.cs.vt.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+33132 packages excluded due to repository priority protections
+Setting up Install Process
+Package createrepo-0.9.9-17.el6.noarch already installed and latest version
+Nothing to do
+
+======END OUTPUT========================================================================
+
+If not installed, then choose createrepo.noarch and type in the terminal window:
+
+yum install createrepo
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# yum install createrepo
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirror.steadfast.net
+ * CentOS-contrib: mirror.beyondhosting.net
+ * CentOS-extras: mirror.atlanticmetro.net
+ * CentOS-plus: centos.mirror.nac.net
+ * CentOS-updates: mirror.cs.vt.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package createrepo.noarch 0:0.9.9-17.el6 will be installed
+--> Processing Dependency: python-deltarpm for package:
+createrepo-0.9.9-17.el6.noarch
+--> Running transaction check
+---> Package python-deltarpm.x86_64 0:3.5-0.5.20090913git.el6 will be installed
+--> Processing Dependency: deltarpm = 3.5-0.5.20090913git.el6 for
+package: python-deltarpm-3.5-0.5.20090913git.el6.x86_64
+--> Running transaction check
+---> Package deltarpm.x86_64 0:3.5-0.5.20090913git.el6 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+======================================================================================================================
+ Package                      Arch                Version
+                Repository                Size
+======================================================================================================================
+Installing:
+ createrepo                   noarch              0.9.9-17.el6
+                CentOS-base               94 k
+Installing for dependencies:
+ deltarpm                     x86_64
+3.5-0.5.20090913git.el6              CentOS-base               71 k
+ python-deltarpm              x86_64
+3.5-0.5.20090913git.el6              CentOS-base               27 k
+
+Transaction Summary
+======================================================================================================================
+Install       3 Package(s)
+
+Total download size: 192 k
+Installed size: 518 k
+Is this ok [y/N]:
+
+======END OUTPUT========================================================================
+
+Type y - you will get something like:
+(You might recieve a warning about importing GPG key - just type y and continue)
+
+======OUTPUT========================================================================
+Downloading Packages:
+(1/3): createrepo-0.9.9-17.el6.noarch.rpm
+                        |  94 kB     00:00
+(2/3): deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm
+                        |  71 kB     00:00
+(3/3): python-deltarpm-3.5-0.5.20090913git.el6.x86_64.rpm
+                        |  27 kB     00:00
+----------------------------------------------------------------------------------------------------------------------
+Total
+               305 kB/s | 192 kB     00:00
+warning: rpmts_HdrFromFdno: Header V3 RSA/SHA256 Signature, key ID
+c105b9de: NOKEY
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+Importing GPG key 0xC105B9DE:
+ Userid : CentOS-6 Key (CentOS 6 Official Signing Key) <centos-6-key@centos.org>
+ Package: centos-release-6-4.el6.centos.10.x86_64
+(@anaconda-CentOS-201303020151.x86_64/6.4)
+ From   : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+Is this ok [y/N]: y
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : deltarpm-3.5-0.5.20090913git.el6.x86_64
+                                           1/3
+  Installing : python-deltarpm-3.5-0.5.20090913git.el6.x86_64
+                                           2/3
+  Installing : createrepo-0.9.9-17.el6.noarch
+                                           3/3
+  Verifying  : python-deltarpm-3.5-0.5.20090913git.el6.x86_64
+                                           1/3
+  Verifying  : createrepo-0.9.9-17.el6.noarch
+                                           2/3
+  Verifying  : deltarpm-3.5-0.5.20090913git.el6.x86_64
+                                           3/3
+
+Installed:
+  createrepo.noarch 0:0.9.9-17.el6
+
+Dependency Installed:
+  deltarpm.x86_64 0:3.5-0.5.20090913git.el6
+python-deltarpm.x86_64 0:3.5-0.5.20090913git.el6
+
+Complete!
+
+======END OUTPUT========================================================================
+
+Check whether the createrepo is installed:
+
+====== OUTPUT========================================================================
+
+[root@vp23 ~]# yum list createrepo
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirror.umd.edu
+ * CentOS-contrib: mirror.beyondhosting.net
+ * CentOS-extras: mirror.atlanticmetro.net
+ * CentOS-plus: centos.mirror.nac.net
+ * CentOS-updates: mirror.cs.vt.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Installed Packages
+createrepo.noarch           0.9.9-17.el6        @CentOS-base
+======END OUTPUT========================================================================
+
+The createrepo installation is successful.
+
+*****************************************************************************
+* Create local yum repository
+*****************************************************************************
+
+1. First, create the /root/YumLocalRepo folder.
+
+In the folder [your_folder_yum_config], find the sa-create-yumlocalrepo.txt script.
+
+Type in the terminal window:
+
+[your_folder_yum_config]/rsa-pipeline-yum-config/rsa-create-yumlocalrepo.txt
+
+You will get the following (it will notify you, if the folder /root/YumLocalRepo exists or not):
+
+======OUTPUT========================================================================
+
+=== Starting the
+tmp/rsa-pipeline-yum-config/rsa-create-yumlocalrepo.txt script ==
+
+
+=== Creating and setting default permissions for directory
+/root/YumLocalRepo ===
+
+Directory /root/YumLocalRepo does not exist. Creating ... Continue ...
+
+=== Script finished ===
+
+======END OUTPUT========================================================================
+
+2. Second, create a repository using the createrepo programm.
+
+Type in the terminal window:
+
+createrepo /root/YumLocalRepo
+
+You will get the following:
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# createrepo /root/YumLocalRepo
+
+Saving Primary metadata
+Saving file lists metadata
+Saving other metadata
+Generating sqlite DBs
+Sqlite DBs complete
+
+======END OUTPUT========================================================================
+
+The local repository, located in the /root/YumLocalRepo, is successfully created.
+
+*****************************************************************************
+* Configure local yum repository
+*****************************************************************************
+
+Type in the terminal window:
+
+cp [your_folder_yum_config]/rsa-pipeline-yum-config/Local.repo /etc/yum.repos.d
+
+*****************************************************************************
+* Install Python Imaging Library
+*****************************************************************************
+
+Search for Python Imaging Library packages.
+
+Type in the terminal window:
+
+yum list *pil*
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# yum list *pil*
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.lga7.us.voxel.net
+ * CentOS-contrib: centos.mirror.nac.net
+ * CentOS-extras: mirrors.lga7.us.voxel.net
+ * CentOS-plus: mirrors.advancedhosters.com
+ * CentOS-updates: mirrors.seas.harvard.edu
+ * EPEL: mirror.itc.virginia.edu
+ * epel: mirror.itc.virginia.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Installed Packages
+gnome-pilot.x86_64                   2.0.17-9.el6
+@anaconda-CentOS-201303020151.x86_64/6.4
+pilot-link.x86_64                    2:0.12.4-6.el6
+@anaconda-CentOS-201303020151.x86_64/6.4
+Available Packages
+PIL.i686                             1.1.7-10.1.el6            atrpms
+PIL.x86_64                           1.1.7-10.1.el6            atrpms
+PIL-devel.i686                       1.1.7-10.1.el6            atrpms
+PIL-devel.x86_64                     1.1.7-10.1.el6            atrpms
+erlang-compiler.x86_64               R14B-04.2.el6             EPEL
+ghc-compiler.x86_64                  7.0.4-46.el6              EPEL
+gnome-pilot.i686                     2.0.17-9.el6
+CentOS-base
+gnome-pilot-conduits.x86_64          2.0.17-4.el6
+CentOS-base
+gnome-pilot-devel.i686               2.0.17-9.el6
+CentOS-base
+gnome-pilot-devel.x86_64             2.0.17-9.el6
+CentOS-base
+libfwcompiler7.x86_64                2.1.19-17.el6             atrpms
+orc-compiler.x86_64                  0.4.16-6.el6              EPEL
+perl-B-Compiling.x86_64              0.02-9.el6                EPEL
+perl-CGI-Compile.noarch              0.15-1.el6                EPEL
+perl-Module-Compile.noarch           0.20-1.el6.rf
+rpmforge
+perl-Pugs-Compiler-Rule.noarch       0.37-1.el6.rf
+rpmforge
+perl-Test-Compile.noarch             0.13-1.el6.rf
+rpmforge
+perl-XML-Compile.noarch              1.07-1.el6.rf
+rpmforge
+pilot-link.i686                      2:0.12.4-6.el6
+CentOS-base
+pilot-link-devel.i686                2:0.12.4-6.el6
+CentOS-base
+pilot-link-devel.x86_64              2:0.12.4-6.el6
+CentOS-base
+pilot-link-perl.x86_64               2:0.12.4-6.el6
+CentOS-base
+poco-pagecompiler.x86_64             1.4.2p1-2.el6             EPEL
+protobuf-compiler.i686               2.3.0-7.el6               EPEL
+protobuf-compiler.x86_64             2.3.0-7.el6               EPEL
+python-dogpile-cache.noarch          0.4.2-1.el6               EPEL
+python-dogpile-core.noarch           0.4.1-1.el6               EPEL
+python-hpilo.noarch                  1.4-1.el6.rf
+rpmforge
+rubygem-rake-compiler.noarch         0.7.6-1.el6.rf
+rpmforge
+rubygem-rake-compiler-doc.noarch     0.7.0-1.el6               EPEL
+un-core-pilgi-fonts.noarch           1.0.2-0.15.080608.el6
+CentOS-base
+You have new mail in /var/spool/mail/root
+[root@vp23 ~]# yum install PIL.x86_64
+
+======END OUTPUT========================================================================
+
+Choose the PIL.x86_64 package.
+
+Type in the terminal window:
+(When asked Is this ok [y/N]: - then type y)
+(You might recieve a warning about importing GPG key - just type y and continue)
+
+yum install PIL.x86_64
+
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# yum install PIL.x86_64
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.lga7.us.voxel.net
+ * CentOS-contrib: mirror.es.its.nyu.edu
+ * CentOS-extras: centos.aol.com
+ * CentOS-plus: mirrors.advancedhosters.com
+ * CentOS-updates: mirrors.seas.harvard.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.rit.edu
+ * rpmforge-extras: mirror.rit.edu
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package PIL.x86_64 0:1.1.7-10.1.el6 will be installed
+Local/filelists_db
+         | 6.7 kB     00:00 ...
+http://mirrors.mediatemple.net/remi/enterprise/6/remi/x86_64/repodata/7511c2472c6d54024dabfc8ac58fbb7db7a6993f5346e5db695f690addf85f28-filelists.sqlite.bz2:
+[Errno 14] PYCURL ERROR 22 - "The requested URL returned error: 404
+Not Found"
+Trying other mirror.
+remi/filelists_db
+         | 864 kB     00:01
+--> Processing Dependency: libtcl8.5.so()(64bit) for package:
+PIL-1.1.7-10.1.el6.x86_64
+--> Processing Dependency: libtk8.5.so()(64bit) for package:
+PIL-1.1.7-10.1.el6.x86_64
+--> Running transaction check
+---> Package tcl.x86_64 1:8.5.7-6.el6 will be installed
+---> Package tk.x86_64 1:8.5.7-5.el6 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================
+ Package           Arch                 Version
+Repository                 Size
+=======================================================================================================
+Installing:
+ PIL               x86_64               1.1.7-10.1.el6
+atrpms                    407 k
+Installing for dependencies:
+ tcl               x86_64               1:8.5.7-6.el6
+CentOS-base               1.9 M
+ tk                x86_64               1:8.5.7-5.el6
+CentOS-base               1.4 M
+
+Transaction Summary
+=======================================================================================================
+Install       3 Package(s)
+
+Total download size: 3.7 M
+Installed size: 9.0 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/3): PIL-1.1.7-10.1.el6.x86_64.rpm
+         | 407 kB     00:00
+(2/3): tcl-8.5.7-6.el6.x86_64.rpm
+         | 1.9 MB     00:00
+(3/3): tk-8.5.7-5.el6.x86_64.rpm
+         | 1.4 MB     00:00
+-------------------------------------------------------------------------------------------------------
+Total
+1.3 MB/s | 3.7 MB     00:02
+warning: rpmts_HdrFromFdno: Header V4 DSA/SHA1 Signature, key ID 66534c2b: NOKEY
+Retrieving key from http://ATrpms.net/RPM-GPG-KEY.atrpms
+Importing GPG key 0x66534C2B:
+ Userid: "ATrpms.net (rpm signing key) <Axel.Thimm@ATrpms.net>"
+ From  : http://ATrpms.net/RPM-GPG-KEY.atrpms
+Is this ok [y/N]: y
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : 1:tcl-8.5.7-6.el6.x86_64
+                            1/3
+  Installing : 1:tk-8.5.7-5.el6.x86_64
+                            2/3
+  Installing : PIL-1.1.7-10.1.el6.x86_64
+                            3/3
+  Verifying  : PIL-1.1.7-10.1.el6.x86_64
+                            1/3
+  Verifying  : 1:tcl-8.5.7-6.el6.x86_64
+                            2/3
+  Verifying  : 1:tk-8.5.7-5.el6.x86_64
+                            3/3
+
+Installed:
+  PIL.x86_64 0:1.1.7-10.1.el6
+
+Dependency Installed:
+  tcl.x86_64 1:8.5.7-6.el6                           tk.x86_64
+1:8.5.7-5.el6
+
+Complete!
+[root@vp23 ~]#
+
+======END OUTPUT========================================================================
+
+The Python Imaging Library has been successfully installed.
+
+
+*****************************************************************************
+* Install Numeric Python Library
+*****************************************************************************
+
+Search for Numeric Python Library packages.
+
+Type in the terminal window:
+
+yum list *numpy*
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# yum list *numpy*
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.lga7.us.voxel.net
+ * CentOS-contrib: mirror.es.its.nyu.edu
+ * CentOS-extras: mirror.es.its.nyu.edu
+ * CentOS-plus: mirrors.advancedhosters.com
+ * CentOS-updates: mirrors.seas.harvard.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Available Packages
+numpy.x86_64                                     1.4.1-9.el6
+                     CentOS-base
+numpy-f2py.x86_64                                1.4.1-9.el6
+                     CentOS-base
+[root@vp23 ~]# 
+
+======END OUTPUT========================================================================
+
+Choose the numpy.x86_64 package.
+
+Type in the terminal window:
+(When asked Is this ok [y/N]: - then type y)
+(You might recieve a warning about importing GPG key - just type y and continue)
+
+yum install numpy.x86_64
+
+
+======OUTPUT========================================================================
+
+[root@vp23 ~]# yum install numpy.x86_64
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.lga7.us.voxel.net
+ * CentOS-contrib: mirror.es.its.nyu.edu
+ * CentOS-extras: mirror.es.its.nyu.edu
+ * CentOS-plus: mirrors.advancedhosters.com
+ * CentOS-updates: mirrors.seas.harvard.edu
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package numpy.x86_64 0:1.4.1-9.el6 will be installed
+--> Processing Dependency: python-nose for package: numpy-1.4.1-9.el6.x86_64
+--> Processing Dependency: libptf77blas.so.3()(64bit) for package:
+numpy-1.4.1-9.el6.x86_64
+--> Processing Dependency: libptcblas.so.3()(64bit) for package:
+numpy-1.4.1-9.el6.x86_64
+--> Processing Dependency: liblapack.so.3()(64bit) for package:
+numpy-1.4.1-9.el6.x86_64
+--> Processing Dependency: libgfortran.so.3()(64bit) for package:
+numpy-1.4.1-9.el6.x86_64
+--> Processing Dependency: libatlas.so.3()(64bit) for package:
+numpy-1.4.1-9.el6.x86_64
+--> Running transaction check
+---> Package atlas.x86_64 0:3.8.4-2.el6 will be installed
+---> Package libgfortran.x86_64 0:4.4.7-3.el6 will be installed
+---> Package python-nose.noarch 0:0.10.4-3.1.el6 will be installed
+--> Processing Dependency: python-setuptools for package:
+python-nose-0.10.4-3.1.el6.noarch
+--> Running transaction check
+---> Package setuptools.noarch 0:0.7.2-7.el6 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================
+ Package                 Arch               Version
+  Repository               Size
+=======================================================================================================
+Installing:
+ numpy                   x86_64             1.4.1-9.el6
+  CentOS-base             2.3 M
+Installing for dependencies:
+ atlas                   x86_64             3.8.4-2.el6
+  CentOS-base             2.8 M
+ libgfortran             x86_64             4.4.7-3.el6
+  CentOS-base             265 k
+ python-nose             noarch             0.10.4-3.1.el6
+  CentOS-base             220 k
+ setuptools              noarch             0.7.2-7.el6
+  atrpms                  530 k
+
+Transaction Summary
+=======================================================================================================
+Install       5 Package(s)
+
+Total download size: 6.1 M
+Installed size: 24 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/5): atlas-3.8.4-2.el6.x86_64.rpm
+         | 2.8 MB     00:00
+(2/5): libgfortran-4.4.7-3.el6.x86_64.rpm
+         | 265 kB     00:00
+(3/5): numpy-1.4.1-9.el6.x86_64.rpm
+         | 2.3 MB     00:01
+(4/5): python-nose-0.10.4-3.1.el6.noarch.rpm
+         | 220 kB     00:00
+(5/5): setuptools-0.7.2-7.el6.noarch.rpm
+         | 530 kB     00:01
+-------------------------------------------------------------------------------------------------------
+Total
+1.6 MB/s | 6.1 MB     00:03
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : libgfortran-4.4.7-3.el6.x86_64
+                            1/5
+  Installing : atlas-3.8.4-2.el6.x86_64
+                            2/5
+  Installing : setuptools-0.7.2-7.el6.noarch
+                            3/5
+  Installing : python-nose-0.10.4-3.1.el6.noarch
+                            4/5
+  Installing : numpy-1.4.1-9.el6.x86_64
+                            5/5
+  Verifying  : python-nose-0.10.4-3.1.el6.noarch
+                            1/5
+  Verifying  : setuptools-0.7.2-7.el6.noarch
+                            2/5
+  Verifying  : numpy-1.4.1-9.el6.x86_64
+                            3/5
+  Verifying  : libgfortran-4.4.7-3.el6.x86_64
+                            4/5
+  Verifying  : atlas-3.8.4-2.el6.x86_64
+                            5/5
+
+Installed:
+  numpy.x86_64 0:1.4.1-9.el6
+
+Dependency Installed:
+  atlas.x86_64 0:3.8.4-2.el6      libgfortran.x86_64 0:4.4.7-3.el6
+python-nose.noarch 0:0.10.4-3.1.el6
+  setuptools.noarch 0:0.7.2-7.el6
+
+Complete!
+[root@vp23 ~]#
+
+
+======END OUTPUT========================================================================
+
+The Numeric Python Library has been successfully installed.
+
+
+
+*****************************************************************************
+* Install ImageMagick Library
+*****************************************************************************
+
+As it turns out, this library, in particular, is needed for 
+the CImg<bool>::load() method in C++ CImg.h (a huge piece of C++ code in a header file). 
+
+
+Search for ImageMagick Library packages.
+
+Type in the terminal window:
+
+yum list *ImageMagick*
+
+======OUTPUT========================================================================
+
+[root@v2-centos6 ~]# yum list *ImageMagick*
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirror.linux.duke.edu
+ * CentOS-contrib: mirror.wiredtree.com
+ * CentOS-extras: mirror.lug.udel.edu
+ * CentOS-plus: mirrors.greenmountainaccess.net
+ * CentOS-updates: centos.someimage.com
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: rpms.famillecollet.com
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Available Packages
+ImageMagick.i686                                         6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick.x86_64                                       6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-c++.i686                                     6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-c++.x86_64                                   6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-c++-devel.i686                               6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-c++-devel.x86_64                             6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-devel.i686                                   6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-devel.x86_64                                 6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-doc.x86_64                                   6.5.4.7-6.el6_2                            CentOS-base
+ImageMagick-last.x86_64                                  6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-c++.x86_64                              6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-c++-devel.x86_64                        6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-devel.x86_64                            6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-djvu.x86_64                             6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-doc.x86_64                              6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-libs.x86_64                             6.8.5.9-1.el6.remi                         remi      
+ImageMagick-last-perl.x86_64                             6.8.5.9-1.el6.remi                         remi      
+ImageMagick-perl.x86_64                                  6.5.4.7-6.el6_2                            CentOS-base
+
+======END OUTPUT========================================================================
+
+Choose the ImageMagick.x86_64 package.
+
+Type in the terminal window
+(When asked Is this ok [y/N]: - then type y):
+
+yum install ImageMagick.x86_64
+
+
+======OUTPUT========================================================================
+
+[root@v2-centos6 ~]# yum install ImageMagick.x86_64
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirror.linux.duke.edu
+ * CentOS-contrib: mirror.wiredtree.com
+ * CentOS-extras: mirror.lug.udel.edu
+ * CentOS-plus: mirrors.greenmountainaccess.net
+ * CentOS-updates: centos.someimage.com
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: rpms.famillecollet.com
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package ImageMagick.x86_64 0:6.5.4.7-6.el6_2 will be installed
+--> Processing Dependency: libwmflite-0.2.so.7()(64bit) for package: ImageMagick-6.5.4.7-6.el6_2.x86_64
+--> Running transaction check
+---> Package libwmf-lite.x86_64 0:0.2.8.4-22.el6.centos will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+===============================================================================================================
+ Package                 Arch               Version                              Repository               Size
+===============================================================================================================
+Installing:
+ ImageMagick             x86_64             6.5.4.7-6.el6_2                      CentOS-base             1.7 M
+Installing for dependencies:
+ libwmf-lite             x86_64             0.2.8.4-22.el6.centos                CentOS-base              51 k
+
+Transaction Summary
+===============================================================================================================
+Install       2 Package(s)
+
+Total download size: 1.7 M
+Installed size: 6.5 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/2): ImageMagick-6.5.4.7-6.el6_2.x86_64.rpm                                           | 1.7 MB     00:00    
+(2/2): libwmf-lite-0.2.8.4-22.el6.centos.x86_64.rpm                                     |  51 kB     00:00    
+---------------------------------------------------------------------------------------------------------------
+Total                                                                          1.7 MB/s | 1.7 MB     00:01    
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : libwmf-lite-0.2.8.4-22.el6.centos.x86_64                                                    1/2
+  Installing : ImageMagick-6.5.4.7-6.el6_2.x86_64                                                          2/2
+  Verifying  : libwmf-lite-0.2.8.4-22.el6.centos.x86_64                                                    1/2
+  Verifying  : ImageMagick-6.5.4.7-6.el6_2.x86_64                                                          2/2
+
+Installed:
+  ImageMagick.x86_64 0:6.5.4.7-6.el6_2                                                                        
+
+Dependency Installed:
+  libwmf-lite.x86_64 0:0.2.8.4-22.el6.centos                                                                  
+
+Complete!
+[root@v2-centos6 ~]#
+
+
+======END OUTPUT========================================================================
+
+The ImageMagick Library has been successfully installed.
+
+
+
+*****************************************************************************
+* Install matlab 
+*****************************************************************************
+*
+* By default rsa-pipeline does not use matlab - see the setting: 
+*     use_matlab=no
+* in the /usr/local/bin/gia-java/default.properties configuration file.      
+*    
+*
+* If you want matlab be used, set use_matlab=yes
+*
+*  
+* IMPORTANT: when changing the use_matlab, be sure to change 
+*            the gia3d_v2_descriptors_view and export_gia3d_v2_config properly.
+*            See more detail info in the /usr/local/bin/gia-java/default.properties
+*            configuration file.
+*****************************************************************************
+
+Fist of all, note:
+
+-- the rsa-pipeline /usr/bin/matlab script references the matlabR2010b version.
+   So, when Matlab version is changed, change the script appropriately.
+
+-- the rsa-fix-GLIBCXX_3.4.11-not_found-problem script has an hardcoded 
+   reference to the Matlab version currently installed. 
+   So, when Matlab version is changed, change the script appropriately. 
+
+
+Search for matlab packages.
+
+Type in the terminal window:
+
+yum list *matlab*
+
+======OUTPUT========================================================================
+[root@vp23 ~]# yum list *matlab*
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.rit.edu
+ * CentOS-contrib: mirrors.lga7.us.voxel.net
+ * CentOS-extras: mirror.metrocast.net
+ * CentOS-plus: mirrors.lga7.us.voxel.net
+ * CentOS-updates: ftpmirror.your.org
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Installed Packages
+rsa-pipeline-isosurface-matlab.x86_64            1.0.0-1.el6.vp        @Local
+rsa-pipeline-reconstruction3d-matlab.x86_64      10.0.0-1.el6.vp       @Local
+Available Packages
+R-R.matlab.noarch                                1.5.2-1.el6           R
+R-matlab.noarch                                  0.8.9-1.el6           R
+matlabR2010b.x86_64                              7.11-0.duke.3         Duke-only
+matlabR2010b-help.noarch                         7.11-0.duke.0         Duke-only
+matlabR2010b-remote.x86_64                       7.11-0.duke.3         Duke-only
+matlabR2010b-toolbox.x86_64                      7.11-0.duke.0         Duke-only
+matlabR2012a.x86_64                              7.14-0.duke.1         Duke-only
+matlabR2012a-remote.x86_64                       7.14-0.duke.1         Duke-only
+matlabR2012b.x86_64                              8.0-0.duke.1          Duke-only
+matlabR2012b-help.noarch                         8.0-0.duke.0          Duke-only
+matlabR2012b-remote.x86_64                       8.0-0.duke.1          Duke-only
+
+======END OUTPUT========================================================================
+
+Choose the matlabR2010b.x86_64 matlab package.
+
+Type in the terminal window:
+
+yum install matlabR2010b.x86_64
+
+======OUTPUT========================================================================
+[root@vp23 ~]# yum install matlabR2010b.x86_64
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * CentOS-base: mirrors.seas.harvard.edu
+ * CentOS-contrib: mirror.umd.edu
+ * CentOS-extras: mirror.metrocast.net
+ * CentOS-plus: mirrors.lga7.us.voxel.net
+ * CentOS-updates: ftpmirror.your.org
+ * EPEL: archive.linux.duke.edu
+ * epel: archive.linux.duke.edu
+ * remi: mirrors.mediatemple.net
+ * rpmforge: mirror.us.leaseweb.net
+ * rpmforge-extras: mirror.us.leaseweb.net
+Setting up Install Process
+Resolving Dependencies
+--> Running transaction check
+---> Package matlabR2010b.x86_64 0:7.11-0.duke.3 will be installed
+--> Processing Dependency: matlabR2010b-toolbox = 7.11 for package:
+matlabR2010b-7.11-0.duke.3.x86_64
+--> Processing Dependency: libXpm for package: matlabR2010b-7.11-0.duke.3.x86_64
+--> Processing Dependency: libXp for package: matlabR2010b-7.11-0.duke.3.x86_64
+--> Running transaction check
+---> Package libXp.x86_64 0:1.0.0-15.1.el6 will be installed
+---> Package libXpm.x86_64 0:3.5.10-2.el6 will be installed
+---> Package matlabR2010b-toolbox.x86_64 0:7.11-0.duke.0 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package                  Arch       Version              Repository       Size
+================================================================================
+Installing:
+ matlabR2010b             x86_64     7.11-0.duke.3        Duke-only       228 M
+Installing for dependencies:
+ libXp                    x86_64     1.0.0-15.1.el6       CentOS-base      23 k
+ libXpm                   x86_64     3.5.10-2.el6         CentOS-base      51 k
+ matlabR2010b-toolbox     x86_64     7.11-0.duke.0        Duke-only       974 M
+
+Transaction Summary
+================================================================================
+Install       4 Package(s)
+
+Total download size: 1.2 G
+Installed size: 2.5 G
+Is this ok [y/N]: y
+Downloading Packages:
+(1/4): libXp-1.0.0-15.1.el6.x86_64.rpm                   |  23 kB     00:00
+(2/4): libXpm-3.5.10-2.el6.x86_64.rpm                    |  51 kB     00:00
+(3/4): matlabR2010b-7.11-0.duke.3.x86_64.rpm             | 228 MB     00:22
+(4/4): matlabR2010b-toolbox-7.11-0.duke.0.x86_64.rpm     | 974 MB     01:46
+--------------------------------------------------------------------------------
+Total                                           9.3 MB/s | 1.2 GB     02:09
+warning: rpmts_HdrFromFdno: Header V3 DSA/SHA1 Signature, key ID 72de25fe: NOKEY
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-linux-at-duke
+Importing GPG key 0x72DE25FE:
+ Userid: "Linux@DUKE Admin (Package Signing Key) <packages@linux.duke.edu>"
+ From  : /etc/pki/rpm-gpg/RPM-GPG-KEY-linux-at-duke
+Is this ok [y/N]: y
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Installing : libXpm-3.5.10-2.el6.x86_64                                   1/4
+  Installing : libXp-1.0.0-15.1.el6.x86_64                                  2/4
+  Installing : matlabR2010b-toolbox-7.11-0.duke.0.x86_64
+                            3/4
+  Installing : matlabR2010b-7.11-0.duke.3.x86_64
+                            4/4
+***************************
+ NOTICE
+***************************
+This is only for Duke faculty and staff.  This package should only be
+installed on faculty/staff computers
+  Verifying  : libXp-1.0.0-15.1.el6.x86_64
+                            1/4
+  Verifying  : matlabR2010b-toolbox-7.11-0.duke.0.x86_64
+                            2/4
+  Verifying  : libXpm-3.5.10-2.el6.x86_64
+                            3/4
+  Verifying  : matlabR2010b-7.11-0.duke.3.x86_64
+                            4/4
+
+Installed:
+  matlabR2010b.x86_64 0:7.11-0.duke.3
+
+Dependency Installed:
+  libXp.x86_64 0:1.0.0-15.1.el6
+libXpm.x86_64 0:3.5.10-2.el6
+  matlabR2010b-toolbox.x86_64 0:7.11-0.duke.0
+
+Complete!
+[root@vp23 ~]#
+
+======END OUTPUT========================================================================
+
+The matlab has been successfully installed.
+
+
+
+*****************************************************************************
+* Post install notes
+*****************************************************************************
+
+
+
+*****************************************************************************
+* Post install notes
+*****************************************************************************
+
+You may go back to your original Yum configuration, if you had one before.
+
+First, make back up of the files that we are about to change. 
+
+mkdir cp -r bk_up/yum-config-RSAPIPELINE
+cp -r /etc/yum.repos.d bk_up/yum-config-RSAPIPELINE
+cp -r /etc/pki bk_up/yum-config-RSAPIPELINE
+
+Now, you can copy your original Yum configuration to the /etc
+
+Bear in mind that now you have Yum Local Repsitory created.
+
+So, after copying and reviewing your repositories back, add the Local.repo file into the  /etc/yum.repos.d folder.
+
+*****************************************************************************
+* Java installation notes
+*****************************************************************************
+
+Java 1.7 (openjdk is installed by default)
+
+NOTE:
+No need to install java-1.7.0-sun***, because open JDK 1.7 (earlier versions are bad) is fixed as far as fonts are concerned.
+
+*****************************************************************************
+* End
+*****************************************************************************
+
+All three mains steps, declared at the beginning of this document, are DONE:
+ 
+ -- Install (or check) Centos
+ -- Configure Yum programm for installation rsa-pipeline system dependencies
+ -- Install rsa-pipeline system dependencies
+
+Continue with the Step 2 in the rsa-pipeline-install-startfromhere.txt document.
+
+
+*****************************************************************************
+*****************************************************************************
+* APPENDIX - it is just info about mk42ws2 machine
+*****************************************************************************
+*****************************************************************************
+
+Here are some basic dependencies found on our mk42ws2 machine, that I used for creating installation packages.
+
+The list below is far from being completely full.
+
+
+*****************************************************************************
+* Main dependencies 
+*****************************************************************************
+
+*****************************************************************************
+* Operating system
+*****************************************************************************
+
+Linux version 2.6.32-358.6.1.el6.x86_64 (mockbuild@c6b9.bsys.dev.centos.org) (gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC) ) #1 SMP Tue Apr 23 19:29:00 UTC 2013
+
+*****************************************************************************
+yum:
+
+3.2.29
+  Installed: rpm-4.8.0-32.el6.x86_64 at 2013-05-10 17:03
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2013-02-22 02:13
+  Committed: Florian Festi <ffesti@redhat.com> at 2012-11-15
+
+  Installed: yum-3.2.29-40.el6.centos.noarch at 2013-05-10 17:08
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2013-02-22 11:26
+  Committed: Johnny Hughes <johnny@centos.org> at 2013-02-21
+
+  Installed: yum-plugin-fastestmirror-1.1.30-14.el6.noarch at 2012-08-13 22:32
+  Built    : CentOS BuildSystem <http://bugs.centos.org> at 2012-06-22 12:23
+  Committed: Zdenek Pavlas <zpavlas@redhat.com> at 2012-04-26
+
+
+*****************************************************************************
+createrepo:
+
+0.9.9
+
+  Installed:
+
+  createrepo.noarch                     0.9.9-17.el6                       @CentOS-base
+
+
+*****************************************************************************
+gcc:
+
+gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC) 
+
+
+*****************************************************************************
+Sun JDK:
+
+java-1.7.0-sun.x86_64                                                              1.7.0.11-1jpp.duke.0                                                    @Duke-only
+java-1.7.0-sun-alsa.x86_64                                                         1.7.0.11-1jpp.duke.0                                                    @Duke-only
+java-1.7.0-sun-devel.x86_64                                                        1.7.0.11-1jpp.duke.0                                                    @Duke-only
+java-1.7.0-sun-fonts.x86_64                                                        1.7.0.11-1jpp.duke.0                                                    @Duke-only
+java-1.7.0-sun-jdbc.x86_64                                                         1.7.0.11-1jpp.duke.0                                                    @Duke-only
+java-1.7.0-sun-src.x86_64                                                          1.7.0.11-1jpp.duke.0                                                    @Duke-only
+
+!!! Do not istall the following !!!
+java-1.7.0-sun-plugin.x86_64                                                       1.7.0.11-1jpp.duke.0                                                    @Duke-only
+
+
+*****************************************************************************
+Matlab:
+
+Copyright 1984-2010 The MathWorks, Inc.
+Version 7.11.0.584 (R2010b) 64-bit (glnxa64)
+August 16, 2010
+
+matlabR2010b.x86_64                                                                           7.11-0.duke.3                                                                    @Duke-only
+matlabR2010b-help.noarch                                                                      7.11-0.duke.0                                                                    @Duke-only
+matlabR2010b-remote.x86_64                                                                    7.11-0.duke.3                                                                    @Duke-only
+matlabR2010b-toolbox.x86_64                                                                   7.11-0.duke.0                                                                    @Duke-only
+
+
+*****************************************************************************
+Python:
+
+python.x86_64                                                                             2.6.6-36.el6                                                                       @CentOS-base
+python-devel.x86_64                                                                       2.6.6-36.el6                                                                       @CentOS-base
+python-libs.x86_64                                                                        2.6.6-36.el6                                                                       @CentOS-base
+
+
+*****************************************************************************
+Numeric Python:
+
+numpy.x86_64                                                                             1.4.1-9.el6                                                                         @CentOS-base
+numpy-f2py.x86_64                                                                        1.4.1-9.el6                                                                         @CentOS-base
+
+*****************************************************************************
+qt:
+
+Installed Packages
+qt.x86_64                                                1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-devel.x86_64                                          1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-mysql.x86_64                                          1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-odbc.x86_64                                           1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-postgresql.x86_64                                     1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-sqlite.x86_64                                         1:4.6.2-26.el6_4                                 @CentOS-updates
+qt-x11.x86_64                                            1:4.6.2-26.el6_4                                 @CentOS-updates
+
+Available Packages
+qt.i686                                                  1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-demos.x86_64                                          1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-devel.i686                                            1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-doc.noarch                                            1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-examples.x86_64                                       1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-mobility.i686                                         1.1.3-2.el6                                      EPEL           
+qt-mobility.x86_64                                       1.1.3-2.el6                                      EPEL           
+qt-mobility-devel.i686                                   1.1.3-2.el6                                      EPEL           
+qt-mobility-devel.x86_64                                 1.1.3-2.el6                                      EPEL           
+qt-mobility-doc.noarch                                   1.1.3-2.el6                                      EPEL           
+qt-mysql.i686                                            1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-odbc.i686                                             1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-postgresql.i686                                       1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-qsa.i686                                              1.1.5-7.el6                                      EPEL           
+qt-qsa.x86_64                                            1.1.5-7.el6                                      EPEL           
+qt-qsa-devel.i686                                        1.1.5-7.el6                                      EPEL           
+qt-qsa-devel.x86_64                                      1.1.5-7.el6                                      EPEL           
+qt-recordmydesktop.noarch                                0.3.8-5.el6                                      EPEL           
+qt-sqlite.i686                                           1:4.6.2-26.el6_4                                 CentOS-updates 
+qt-x11.i686                                              1:4.6.2-26.el6_4                                 CentOS-updates 
+
+
+
+
+

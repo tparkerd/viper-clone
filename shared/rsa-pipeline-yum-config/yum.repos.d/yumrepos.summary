@@ -1,0 +1,73 @@
+################################################################################
+# Summary of  *.repo  files in this directory
+#
+# Note:
+# Updating yum packages may create new  *.repo  files.
+# Such files should be renamed to  *.repo.rpmnew  after update
+################################################################################
+
+#...Repo-id.................Enabled?....Priority
+
+file=Local.repo
+#   Local                   1           0
+#   mk42ws                  1           0
+
+file=CentOS.repo
+#   CentOS-base             1           1
+#   CentOS-updates          1           1
+#   CentOS-extras           1           1
+#   CentOS-plus             1           2
+#   CentOS-contrib          1           3
+#   CentOS-debuginfo        0           1
+
+file=EPEL.repo
+#   EPEL                    1           5
+#   EPEL-debuginfo          0           5
+#   EPEL-source             0           5
+#   EPEL-test               0           15
+#   EPEL-test-debuginfo     0           15
+#   EPEL-test-source        0           15
+
+file=Duke-EL6.repo
+#   Duke-EPEL               1           11
+#   Duke-test-EPEL          0           31
+#   Duke-distrib            1           11
+#   Duke-test-distrib       0           31
+#   Duke-only               1           11
+#   Duke-test-only          0           31
+#   Duke-SL-base            0           12
+#   Duke-test-SL-base       0           32
+#   Duke-SL-updates         0           12
+#   Duke-test-SL-updates    0           32
+#   Duke-shibboleth2        0           13
+#   Duke-test-shibboleth2   0           33
+#   Duke-vmwaretools        0           13
+#   Duke-test-vmwaretools   0           33
+
+file=R.repo
+#   R-repo                  1           22
+
+file=rpmforge.repo
+#   rpmforge                1           21
+#   rpmforge-extras         1           21
+#   rpmforge-testing        0           41
+
+#   *Repo-id*               *Enabled?*  *Priority*
+#   atrpms                  1           21
+#   atrpms-testing          0           41
+
+file=remi.repo
+#   remi                    1           51
+#   remi-test               0           52
+
+file=Chrome.repo
+#   GoogleChrome            1           51
+
+file=Adobe.repo
+#   Adobe-x86_64            1           51          Provides flash-plugin
+#   Adobe-i386              1           51          Provides AdobeReader_enu
+
+file=VirtualBox.repo
+#   VirtualBox              1           55
+
+

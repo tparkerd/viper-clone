@@ -1,0 +1,14 @@
+# Local.repo
+# Local yum repository containing manually created rpms.
+#
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   Local                   1           0
+
+
+[Local]
+name=EL6 local repository
+baseurl=file:///root/YumLocalRepo
+gpgcheck=0
+enabled=1
+priority=0

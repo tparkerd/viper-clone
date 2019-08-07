@@ -1,0 +1,99 @@
+******************************************************************
+**
+** Run Reconstruction3D C++ application
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+
+Command:
+
+Reconstruction [option] [Width] [Height] [NumberNodesOnOctree] [SilhouettePrefix] [NumImgUsed] [ParaFilePathName] [Resolution] [DistortionRadius] [NumComponents] [OutputVoxels] [ExtraInfo] [RotationDigits] [RefImg] [RefRatio]
+
+*************************************************************************************
+* Test Reconstruction3D C++ application
+*************************************************************************************
+
+The Reconstruction executable locates at the /usr/local/bin/reconstruction3D folder
+
+Unzip rsa-pipeline-reconstruction3d-test-data.tar.gz to some folder [my_folder] on your computer.
+
+You will get the [my_folder]/silhouette3 with images and para.txt file.
+(The para.txt file is, in fact, a rotations matrix, used in the reconstruction3D application, for rotations angles 0,1x9,2x9,3x9, ... , where 360/40=9 ):
+
+option = 1
+Width = 453
+Height = 472
+NumberNodesOnOctree = 10000000
+SilhouettePrefix = [my_folder]/rsa-pipeline-reconstruction3d-test-data/silhouette3/OsRILp00001d12_
+NumImgUsed = 20
+ParaFilePathName =  [my_folder]/rsa-pipeline-reconstruction3d-test-data/para.txt
+Resolution = 4
+DistortionRadius = -1
+NumComponents = 1
+ExtraInfo = "Extra Information" 
+OutputVoxels = [my_folder]/rsa-pipeline-reconstruction3d-test-data/OsRILp00001d12_rootwork.out
+RotationDigits = 2
+RefImg = 1
+RefRatio = 1
+
+Type in the terminal window:
+
+/usr/local/bin/reconstruction3D/Reconstruction  1 453 472 10000000 [my_folder]/rsa-pipeline-reconstruction3d-test-data/silhouette3/OsRILp00001d12_ 20 [my_folder]/rsa-pipeline-reconstruction3d-test-data/para.txt 4 -1 1  [my_folder]/rsa-pipeline-reconstruction3d-test-data/OsRILp00001d12_rootwork.out  "Extra Information"   2 1 1
+
+On my computer, I chose for test:
+
+[my_folder] = ~/tmp
+
+So, 
+
+/usr/local/bin/reconstruction3D/Reconstruction  1 453 472 10000000 ~/tmp/rsa-pipeline-reconstruction3d-test-data/silhouette3/OsRILp00001d12_ 20 ~/tmp/rsa-pipeline-reconstruction3d-test-data/para.txt 4 -1 1  ~/tmp/rsa-pipeline-reconstruction3d-test-data/OsRILp00001d12_rootwork.out  "Extra Information"   2 1 1
+
+
+You will see in the terminal window something like:
+
+===== START OUTPUT =================================================================================================
+
+[vp23@mk42ws2 silhouette3]$ /usr/local/bin/reconstruction3D/Reconstruction  1 453 472 10000000 ~/tmp/rsa-pipeline-reconstruction3d-test-data/silhouette3/OsRILp00001d12_ 20 ~/tmp/rsa-pipeline-reconstruction3d-test-data/para.txt 4 -1 1  ~/tmp/rsa-pipeline-reconstruction3d-test-data/OsRILp00001d12_rootwork.out  "Extra Information"  2 1 1
+try: REF_RATIO = 1
+Loaded all the images.
+try: distortion_radius = 1
+construct octree...
+28745 nodes, 8511 leaves, 9016voxels.
+Total time: 0.22 seconds.
+generate candidate voxels...
+check consistency...
+try: distortion_radius = 2
+construct octree...
+34673 nodes, 11469 leaves, 11974voxels.
+Total time: 0.24 seconds.
+generate candidate voxels...
+check consistency...
+try: distortion_radius = 3
+construct octree...
+42121 nodes, 14885 leaves, 15390voxels.
+Total time: 0.25 seconds.
+generate candidate voxels...
+check consistency...
+6418 
+6418 voxels.
+output voxels...
+
+====== END OUTPUT ================================================================================================
+
+
+The output voxels file OsRILp00001d12_rootwork.out will locate at ~/tmp/rsa-pipeline-reconstruction3d-test-data folder.
+
+
+
+NOTE:
+
+
+
+
+##### tar #####
+
+cd ~/tmp
+tar -pczf rsa-pipeline-reconstruction3d-test-data.tar.gz rsa-pipeline-reconstruction3d-test-data/silhouette3/* rsa-pipeline-reconstruction3d-test-data/para.txt
+

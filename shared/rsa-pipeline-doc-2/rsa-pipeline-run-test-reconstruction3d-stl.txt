@@ -1,0 +1,69 @@
+******************************************************************
+**
+** Run Reconstruction3D-stl C++ application
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+
+Command:
+recon_file_v4_STL ' 5 ' recon_filename ' ' ...
+              output_file ' '  num2str(extraInfo)]
+
+recon-v4-stl [option] [Voxels] [OutputStl] [ExtraInfo]
+
+*************************************************************************************
+* Test Reconstruction3D-stl C++ application
+*************************************************************************************
+
+The Reconstruction3D-stl executable recon-v4-stl locates at the /usr/local/bin/reconstruction3D-stl folder
+
+Unzip rsa-pipeline-reconstruction3d-stl-test-data.tar.gz to some folder [my_folder] on your computer.
+
+
+option = 5
+Voxels = [my_folder]/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out
+OutputStl= [my_folder]/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out.stl
+"ExtraInfo" = "Extra Information"
+
+Type in the terminal window:
+
+/usr/local/bin/reconstruction3D-stl/recon-v4-stl  5 [my_folder]/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out [my_folder]/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out.stl "Extra Information"
+
+On my computer, I chose for test:
+
+[my_folder] = ~/tmp
+
+So, 
+
+/usr/local/bin/reconstruction3D-stl/recon-v4-stl  5 ~/tmp/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out ~/tmp/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out.stl "Extra Information"
+
+You will see in the terminal window something like:
+
+===== START OUTPUT =================================================================================================
+
+[vp23@mk42ws2 ~]$ /usr/local/bin/reconstruction3D-stl/recon-v4-stl  5 ~/tmp/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out ~/tmp/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out.stl "Extra Information"
+5 5
+~/tmp/rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out
+6418 voxels loaded, imgwidth = 70, imgheight = 118.
+8741 cubes on the surface.
+Triangulated the surface. Total triangles: 17722
+
+======= END OUTPUT ===============================================================================================
+
+
+The output voxels file OsRILp00001d12_rootwork.out.stl will locate at ~/tmp/rsa-pipeline-reconstruction3d-stl-test-data folder.
+
+
+
+NOTE:
+
+
+
+
+##### tar #####
+
+cd ~/tmp
+tar -pczf rsa-pipeline-reconstruction3d-stl-test-data.tar.gz rsa-pipeline-reconstruction3d-stl-test-data/OsRILp00001d12_rootwork.out
+

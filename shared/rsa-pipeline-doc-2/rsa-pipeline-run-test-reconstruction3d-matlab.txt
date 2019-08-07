@@ -1,0 +1,188 @@
+******************************************************************
+**
+** Run Reconstruction3D Matlab application
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+
+Command:
+
+start [Dir] [ConfigFile] 
+
+*************************************************************************************
+* Test Reconstruction3D Matlab application
+*************************************************************************************
+
+The start executable locates at the /usr/local/bin/matlab-programs/Reconstruction3D folder
+
+Unzip rsa-pipeline-reconstruction3d-matlab-test-data.tar.gz to some folder [my_folder] on your computer.
+
+You will get the following:
+
+[my_folder]/rsa-pipeline-reconstruction3d-matlab-test-data/ 
+                                        silhouette/
+                                                  thresholding/ 
+                                                              [forty images]
+                                        config.xml
+
+
+Open the config.xml file and substitute the [my_folder] place holder with the real path on your computer.
+
+
+Type in the terminal window (ignore the second parameter):
+
+/usr/local/bin/matlab-programs/Reconstruction3D/start [my_folder]/rsa-pipeline-reconstruction3d-matlab-test-data
+
+On my computer, I chose for test:
+
+[my_folder] = ~/tmp
+ 
+So,
+
+/usr/local/bin/matlab-programs/Reconstruction3D/start ~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data
+
+
+You will see in the terminal window something like:
+
+===== START OUTPUT =================================================================================================
+
+[vp23@mk42ws2 rsa-pipeline-reconstruction3d-matlab-test-data]$ /usr/local/bin/matlab-programs/Reconstruction3D/start ~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data
+MATLABPATH=:/usr/local/bin/matlab-programs/Reconstruction3D
+Warning: No window system found.  Java option 'MWT' ignored
+
+                                                                                < M A T L A B (R) >
+                                                                      Copyright 1984-2010 The MathWorks, Inc.
+                                                                   Version 7.11.0.584 (R2010b) 64-bit (glnxa64)
+                                                                                  August 16, 2010
+
+ 
+  To get started, type one of these: helpwin, helpdesk, or demo.
+  For product information, visit www.mathworks.com.
+ 
+rootwork starts ...
+rootworkDir=/usr/local/bin/matlab-programs/Reconstruction3D
+configFileName=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/config.xml
+crop=
+---------------------------------------------------
+Parameters taken from the configuration file:
+doCrop=0
+useGiaroots_crop=0
+doLikelihoodImg=0
+doSilhouette_hysteresis=0
+useGiaroots_thresholding=1
+doSilhouette_harmonic=0
+doAxis=1
+doReconstruct_hysteresis=1
+file_ext=jpg
+file_ext_giaroots_crop=tiff
+file_ext_giaroots_thresh=tiff
+filePrefix=OsRILp00001d12_
+silhouetteForDoAxis=1
+numImgs=40
+numImgUsed=20
+resolution=4
+numNodesOnOctree=10000000
+sil_upper_threshold=9.900000e-01
+sil_lower_threshold=9.000000e-01
+harmonic_threshold=3.000000e-01
+recon_upper_threshold=20
+recon_lower_threshold=19
+distortion_radius=-1
+num_components=1
+recon_opt=1
+recon_filename=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/OsRILp00001d12_rootwork.out
+output_file=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/OsRILp00001d12_rootwork.out.stl
+extraInfo=0.15
+ref_image=1
+ref_ratio=1
+End of parameters taken from the configuration file
+---------------------------------------------------
+recon_opt setting is Ok
+reconDir=/usr/local/bin/reconstruction3D
+paraFileName=/usr/local/bin/matlab-programs/Reconstruction3D/para.txt
+inputDir=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/img
+cropDir=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/crop
+rootImgDir=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/root
+silDir=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/silhouette
+silDir2=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/silhouette2
+silDir3=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/silhouette3
+doAxisInputDir=~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/silhouette
+infile_2=OsRILp00001d12_01.tiff
+infile_3=OsRILp00001d12_001.tiff
+Image rotation digits format found ...
+ROTATION_DIGITS=2
+converting gia-roots threshoding files to 0 and 1 files ...
+ #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13 #14 #15 #16 #17 #18 #19 #20
+ #21 #22 #23 #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37 #38 #39 #40
+calculate rotation axis
+imheight=472
+imwidth=468
+reading image:
+ #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13 #14 #15 #16 #17 #18 #19 #20
+ #21 #22 #23 #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37 #38 #39 #40
+
+rotation parameters:
+imwidth 468
+best_choice 242
+writing image:
+ #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12 #13 #14 #15 #16 #17 #18 #19 #20
+ #21 #22 #23 #24 #25 #26 #27 #28 #29 #30 #31 #32 #33 #34 #35 #36 #37 #38 #39 #40
+
+generate parameter file...
+start 3D reconstruction...
+/usr/local/bin/reconstruction3D/Reconstruction 1 453 472 10000000 ~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/silhouette3/OsRILp00001d12_ 20 /usr/local/bin/matlab-programs/Reconstruction3D/para.txt 4 -1 1 ~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/OsRILp00001d12_rootwork.out 0.15 2 1 1
+try: REF_RATIO = 1
+Loaded all the images.
+try: distortion_radius = 1
+construct octree...
+28745 nodes, 8511 leaves, 9016voxels.
+Total time: 0.24 seconds.
+generate candidate voxels...
+check consistency...
+try: distortion_radius = 2
+construct octree...
+34673 nodes, 11469 leaves, 11974voxels.
+Total time: 0.54 seconds.
+generate candidate voxels...
+check consistency...
+try: distortion_radius = 3
+construct octree...
+42121 nodes, 14885 leaves, 15390voxels.
+Total time: 0.33 seconds.
+generate candidate voxels...
+check consistency...
+6418 
+6418 voxels.
+output voxels...
+5 5
+~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data/OsRILp00001d12_rootwork.out
+6418 voxels loaded, imgwidth = 70, imgheight = 118.
+8741 cubes on the surface.
+Triangulated the surface. Total triangles: 17722
+finished.
+====== END OUTPUT ================================================================================================
+
+
+The output voxels file OsRILp00001d12_rootwork.out and the STL mesh file  OsRILp00001d12_rootwork.out.stl will locate at ~/tmp/rsa-pipeline-reconstruction3d-matlab-test-data folder.
+
+
+NOTE:
+
+
+##### tar ########
+
+In the pipeline, there are symlinks in the /silhouette/thresholding folder 
+
+For packaging a test data sample, we need targets of these links (otherwise, the links would be obviously broken, when deploying)
+
+Here is how to get targets instead of links:
+
+cd silhouette/thresholding
+for i in *; do link=$(readlink $i) && rm $i && mv $link $i; done
+
+cd ~/tmp
+tar -pczf rsa-pipeline-reconstruction3d-matlab-test-data.tar.gz rsa-pipeline-reconstruction3d-matlab-test-data/silhouette/thresholding/* rsa-pipeline-reconstruction3d-matlab-test-data/config.xml
+
+

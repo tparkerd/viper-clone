@@ -1,0 +1,815 @@
+******************************************************************
+**
+**  Run Gia2d C++ application
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+
+Command:
+
+interpreter [job-config]
+
+*************************************************************************************
+* Test Gia2d C++ application
+*************************************************************************************
+
+The interpreter executable locates at the /usr/local/bin/gia folder
+
+Unzip rsa-pipeline-gia2d-test-data.tar.gz to some folder [my_folder] on your computer.
+
+You will get the following:
+
+[my_folder]/rsa-pipeline-gia2d-test-data/ 
+                                        job-config.xml
+                                        giaroot_2d.xml
+                                        images/
+                                              [40 crop images]
+                                        
+The voxels file named is voxel_final.rootwork (the name should be exactly this)                                         
+
+Open the job-config.xml file and substitute the [my_folder] place holder with the real path on your computer.
+
+Type in the terminal window:
+
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+cd /usr/local/bin/gia/
+./interpreter [my_folder]/rsa-pipeline-gia2d-test-data/job-config.xml
+
+On my computer, I chose for test:
+
+[my_folder] = ~/tmp
+
+So, 
+
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+cd /usr/local/bin/gia/
+./interpreter ~/tmp/rsa-pipeline-gia2d-test-data/job-config.xml
+
+You will see in the terminal window something like:
+
+===== START OUTPUT =================================================================================================
+
+[vp23@mk42ws2 gia]$ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+[vp23@mk42ws2 gia]$ cd /usr/local/bin/gia/
+[vp23@mk42ws2 gia]$ ./interpreter ~/tmp/rsa-pipeline-gia2d-test-data/job-config.xml
+0+000000#REP@core::Startup time (Thu Jun  6 13:33:20 2013 ), using {LINUX} OS
+got response (0) from server; 	waiting for (342881788)
+0+000000#DBG@loader::23 libraries to check
+0+000000#DBG@loader::Loading [./algorithms//libcropping_manual.so]
+0+000000#WRN@core::[cropping_manual] <--> {croppedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_perimeter.so]
+0+000000#WRN@core::[feature_perimeter] <--> {perimeterfeature}
+0+000000#DBG@loader::Loading [./algorithms//libpreparation_color2gray.so]
+0+000000#WRN@core::[preparation_color_2_gray] <--> {grayimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_setscale.so]
+0+000000#WRN@core::Transform [transform_setscale]
+0+000000#DBG@loader::Loading [./algorithms//libfeature_numberofroots.so]
+0+000000#WRN@core::[feature_roots_number] <--> {bushinessfeature}; {maximumnumberofrootsfeature}; {mediannumberofrootsfeature}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_aggregate2.so]
+0+000000#WRN@core::Transform [transform_aggregate2]
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_doubleadaptive.so]
+0+000000#WRN@core::[thresholding_double_adaptive] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [./algorithms//libthinning_binary.so]
+0+000000#WRN@core::[thinning_binary] <--> {thinnedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_ellipseaxes.so]
+0+000000#WRN@core::[feature_ellipse_axes] <--> {ellipseaxesaspectratiofeature}; {majorellipseaxesfeature}; {minorellipseaxesfeature}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_scaling.so]
+0+000000#WRN@core::Transform [transform_scaling]
+0+000000#DBG@loader::Loading [./algorithms//libfeatures_skeleton.so]
+0+000000#WRN@core::[features_skeleton_v2] <--> {averagerootwidthx2feature}; {depthfeature}; {lengthdistrfeature}; {maxwidthfeature}; {specificrootlengthfeature}; {surfaceareafeature}; {totallengthfeature}; {volumefeature}; {widthdepthratiofeature}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_components.so]
+0+000000#WRN@core::[feature_components] <--> {ccomponentscountfeature}
+0+000000#DBG@loader::Loading [./algorithms//libolga-medial-axis.so]
+0+000000#WRN@core::[olga_medial_axis] <--> {o3rf_av_edge_length}; {o3rf_av_size_bif_cl}; {o3rf_depth}; {o3rf_edge_num}; {o3rf_horeqdiameter}; {o3rf_length_distr}; {o3rf_number_bif_cl}; {o3rf_srl}; {o3rf_surfarea}; {o3rf_totallength}; {o3rf_volume}; {o3rf_w_d_ratio}
+0+000000#DBG@loader::Loading [./algorithms//libcleaning_skip.so]
+0+000000#WRN@core::[cleaning_skip] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_networkareas.so]
+0+000000#WRN@core::[feature_network_areas] <--> {networkareafeature}; {networkconvexareafeature}; {solidityfeature}
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_global.so]
+0+000000#WRN@core::[thresholding_global] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [./algorithms//libcropping_skip.so]
+0+000000#WRN@core::[cropping_skip] <--> {croppedimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_rotation.so]
+0+000000#WRN@core::Transform [transform_rotation]
+0+000000#DBG@loader::Loading [./algorithms//libcleaning_agg.so]
+0+000000#WRN@core::[experimental_cleaning_agg] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_aggregate.so]
+0+000000#WRN@core::Transform [transform_aggregate]
+0+000000#DBG@loader::Loading [./algorithms//libtransform_manual.so]
+0+000000#WRN@core::Transform [transform_manual_cropping]
+0+000000#DBG@loader::Loading [./algorithms//libfeatures_vertical_sweep.so]
+0+000000#WRN@core::[vertical_sweep_3d] <--> {t3rf_bushiness}; {t3rf_convex_volume}; {t3rf_maxr}; {t3rf_medr}; {t3rf_solidity}; {t3rf_surfarea}; {t3rf_volume}
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_adaptive.so]
+0+000000#WRN@core::[thresholding_adaptive] <--> {thresholdedimage}
+0+000000#REP@loader::(17)total; known types: averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;cleanedimage;croppedimage;depthfeature;ellipseaxesaspectratiofeature;grayimage;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_depth;o3rf_edge_num;o3rf_horeqdiameter;o3rf_length_distr;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;o3rf_w_d_ratio;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_solidity;t3rf_surfarea;t3rf_volume;thinnedimage;thresholdedimage;totallengthfeature;volumefeature;widthdepthratiofeature
+0+000000#DBG@loader::23 libraries to check
+0+000000#DBG@loader::Loading [algorithms//libcropping_manual.so]
+0+000000#WRN@core::[cropping_manual] <--> {croppedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_perimeter.so]
+0+000000#WRN@core::[feature_perimeter] <--> {perimeterfeature}
+0+000000#DBG@loader::Loading [algorithms//libpreparation_color2gray.so]
+0+000000#WRN@core::[preparation_color_2_gray] <--> {grayimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_setscale.so]
+0+000000#WRN@core::Transform [transform_setscale]
+0+000000#DBG@loader::Loading [algorithms//libfeature_numberofroots.so]
+0+000000#WRN@core::[feature_roots_number] <--> {bushinessfeature}; {maximumnumberofrootsfeature}; {mediannumberofrootsfeature}
+0+000000#DBG@loader::Loading [algorithms//libtransform_aggregate2.so]
+0+000000#WRN@core::Transform [transform_aggregate2]
+0+000000#DBG@loader::Loading [algorithms//libthresholding_doubleadaptive.so]
+0+000000#WRN@core::[thresholding_double_adaptive] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [algorithms//libthinning_binary.so]
+0+000000#WRN@core::[thinning_binary] <--> {thinnedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_ellipseaxes.so]
+0+000000#WRN@core::[feature_ellipse_axes] <--> {ellipseaxesaspectratiofeature}; {majorellipseaxesfeature}; {minorellipseaxesfeature}
+0+000000#DBG@loader::Loading [algorithms//libtransform_scaling.so]
+0+000000#WRN@core::Transform [transform_scaling]
+0+000000#DBG@loader::Loading [algorithms//libfeatures_skeleton.so]
+0+000000#WRN@core::[features_skeleton_v2] <--> {averagerootwidthx2feature}; {depthfeature}; {lengthdistrfeature}; {maxwidthfeature}; {specificrootlengthfeature}; {surfaceareafeature}; {totallengthfeature}; {volumefeature}; {widthdepthratiofeature}
+0+000000#DBG@loader::Loading [algorithms//libfeature_components.so]
+0+000000#WRN@core::[feature_components] <--> {ccomponentscountfeature}
+0+000000#DBG@loader::Loading [algorithms//libolga-medial-axis.so]
+0+000000#WRN@core::[olga_medial_axis] <--> {o3rf_av_edge_length}; {o3rf_av_size_bif_cl}; {o3rf_depth}; {o3rf_edge_num}; {o3rf_horeqdiameter}; {o3rf_length_distr}; {o3rf_number_bif_cl}; {o3rf_srl}; {o3rf_surfarea}; {o3rf_totallength}; {o3rf_volume}; {o3rf_w_d_ratio}
+0+000000#DBG@loader::Loading [algorithms//libcleaning_skip.so]
+0+000000#WRN@core::[cleaning_skip] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_networkareas.so]
+0+000000#WRN@core::[feature_network_areas] <--> {networkareafeature}; {networkconvexareafeature}; {solidityfeature}
+0+000000#DBG@loader::Loading [algorithms//libthresholding_global.so]
+0+000000#WRN@core::[thresholding_global] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [algorithms//libcropping_skip.so]
+0+000000#WRN@core::[cropping_skip] <--> {croppedimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_rotation.so]
+0+000000#WRN@core::Transform [transform_rotation]
+0+000000#DBG@loader::Loading [algorithms//libcleaning_agg.so]
+0+000000#WRN@core::[experimental_cleaning_agg] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_aggregate.so]
+0+000000#WRN@core::Transform [transform_aggregate]
+0+000000#DBG@loader::Loading [algorithms//libtransform_manual.so]
+0+000000#WRN@core::Transform [transform_manual_cropping]
+0+000000#DBG@loader::Loading [algorithms//libfeatures_vertical_sweep.so]
+0+000000#WRN@core::[vertical_sweep_3d] <--> {t3rf_bushiness}; {t3rf_convex_volume}; {t3rf_maxr}; {t3rf_medr}; {t3rf_solidity}; {t3rf_surfarea}; {t3rf_volume}
+0+000000#DBG@loader::Loading [algorithms//libthresholding_adaptive.so]
+0+000000#WRN@core::[thresholding_adaptive] <--> {thresholdedimage}
+0+000000#REP@loader::(17)total; known types: averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;cleanedimage;croppedimage;depthfeature;ellipseaxesaspectratiofeature;grayimage;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_depth;o3rf_edge_num;o3rf_horeqdiameter;o3rf_length_distr;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;o3rf_w_d_ratio;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_solidity;t3rf_surfarea;t3rf_volume;thinnedimage;thresholdedimage;totallengthfeature;volumefeature;widthdepthratiofeature
+0+000000#DBG@xml_storage::Connecting to (~/tmp/rsa-pipeline-gia2d-test-data/project.xml)...
+0+000000#WRN@xml_storage::(~/tmp/rsa-pipeline-gia2d-test-data/project.xml) can't be loaded or does not exist. Creating new
+0+000000#REP@::Begin of {%metadata%}
+0+000000#REP@::[%height%] = {1692}
+0+000000#REP@::[%width%] = {1064}
+0+000000#REP@::End of {%metadata%}
+0+000000#REP@::Begin of {algorithm_manager_defaults}
+0+000000#REP@::[averagerootwidthx2feature] = {features_skeleton_v2}
+0+000000#REP@::[bushinessfeature] = {feature_roots_number}
+0+000000#REP@::[ccomponentscountfeature] = {feature_components}
+0+000000#REP@::[cleanedimage] = {cleaning_skip}
+0+000000#REP@::[croppedimage] = {cropping_manual}
+0+000000#REP@::[depthfeature] = {features_skeleton_v2}
+0+000000#REP@::[ellipseaxesaspectratiofeature] = {feature_ellipse_axes}
+0+000000#REP@::[grayimage] = {preparation_color_2_gray}
+0+000000#REP@::[lengthdistrfeature] = {features_skeleton_v2}
+0+000000#REP@::[majorellipseaxesfeature] = {feature_ellipse_axes}
+0+000000#REP@::[maximumnumberofrootsfeature] = {feature_roots_number}
+0+000000#REP@::[maxwidthfeature] = {features_skeleton_v2}
+0+000000#REP@::[mediannumberofrootsfeature] = {feature_roots_number}
+0+000000#REP@::[minorellipseaxesfeature] = {feature_ellipse_axes}
+0+000000#REP@::[networkareafeature] = {feature_network_areas}
+0+000000#REP@::[networkconvexareafeature] = {feature_network_areas}
+0+000000#REP@::[o3rf_av_edge_length] = {olga_medial_axis}
+0+000000#REP@::[o3rf_av_size_bif_cl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_depth] = {olga_medial_axis}
+0+000000#REP@::[o3rf_edge_num] = {olga_medial_axis}
+0+000000#REP@::[o3rf_horeqdiameter] = {olga_medial_axis}
+0+000000#REP@::[o3rf_length_distr] = {olga_medial_axis}
+0+000000#REP@::[o3rf_number_bif_cl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_srl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_surfarea] = {olga_medial_axis}
+0+000000#REP@::[o3rf_totallength] = {olga_medial_axis}
+0+000000#REP@::[o3rf_volume] = {olga_medial_axis}
+0+000000#REP@::[o3rf_w_d_ratio] = {olga_medial_axis}
+0+000000#REP@::[perimeterfeature] = {feature_perimeter}
+0+000000#REP@::[solidityfeature] = {feature_network_areas}
+0+000000#REP@::[specificrootlengthfeature] = {features_skeleton_v2}
+0+000000#REP@::[surfaceareafeature] = {features_skeleton_v2}
+0+000000#REP@::[t3rf_bushiness] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_convex_volume] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_maxr] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_medr] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_solidity] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_surfarea] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_volume] = {vertical_sweep_3d}
+0+000000#REP@::[thinnedimage] = {thinning_binary}
+0+000000#REP@::[thresholdedimage] = {thresholding_global}
+0+000000#REP@::[totallengthfeature] = {features_skeleton_v2}
+0+000000#REP@::[volumefeature] = {features_skeleton_v2}
+0+000000#REP@::[widthdepthratiofeature] = {features_skeleton_v2}
+0+000000#REP@::End of {algorithm_manager_defaults}
+0+000000#REP@::Begin of {core}
+0+000000#REP@::[serialize_image_format] = {tiff}
+0+000000#REP@::[serialize_to] = {~/tmp/rsa-pipeline-gia2d-test-data}
+0+000000#REP@::[thread_pool_size] = {2}
+0+000000#REP@::End of {core}
+0+000000#REP@::Begin of {experimental_cleaning_agg}
+0+000000#REP@::[add_scalar] = {0}
+0+000000#REP@::[dark_root] = {true}
+0+000000#REP@::End of {experimental_cleaning_agg}
+0+000000#REP@::Begin of {gui}
+0+000000#REP@::[targets] = {averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;cleanedimage;croppedimage;depthfeature;ellipseaxesaspectratiofeature;grayimage;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;thinnedimage;thresholdedimage;totallengthfeature;volumefeature;widthdepthratiofeature}
+0+000000#REP@::End of {gui}
+0+000000#REP@::Begin of {preparation_color_2_gray}
+0+000000#REP@::[reverse] = {false}
+0+000000#REP@::[simple] = {true}
+0+000000#REP@::End of {preparation_color_2_gray}
+0+000000#REP@::Begin of {thresholding_adaptive}
+0+000000#REP@::[adaptive_method] = {CV_ADAPTIVE_THRESH_MEAN_C}
+0+000000#REP@::[block_size] = {19}
+0+000000#REP@::[max_component_size_to_ignore] = {4000}
+0+000000#REP@::[subtract_constant] = {-1.25}
+0+000000#REP@::[threshold_type] = {CV_THRESH_BINARY}
+0+000000#REP@::End of {thresholding_adaptive}
+0+000000#REP@::Begin of {thresholding_double_adaptive}
+0+000000#REP@::[block_size] = {15}
+0+000000#REP@::[drop_value] = {5}
+0+000000#REP@::[max_component_size_to_ignore] = {4000}
+0+000000#REP@::End of {thresholding_double_adaptive}
+0+000000#REP@::Begin of {thresholding_global}
+0+000000#REP@::[max_component_size_to_ignore] = {4000}
+0+000000#REP@::[threshold] = {50}
+0+000000#REP@::[threshold_type] = {CV_THRESH_BINARY}
+0+000000#REP@::End of {thresholding_global}
+0+000000#REP@::Begin of {transform_manual_cropping}
+0+000000#REP@::[cropping_height] = {0}
+0+000000#REP@::[cropping_left] = {0}
+0+000000#REP@::[cropping_top] = {0}
+0+000000#REP@::[cropping_width] = {0}
+0+000000#REP@::End of {transform_manual_cropping}
+0+000000#REP@::Begin of {transform_rotation}
+0+000000#REP@::[flip] = {none}
+0+000000#REP@::[rotate] = {0}
+0+000000#REP@::End of {transform_rotation}
+0+000000#REP@::Begin of {transform_setscale}
+0+000000#REP@::[metric_scale] = {1}
+0+000000#REP@::End of {transform_setscale}
+0+000000#DBG@csv_exporter::Writing (~/tmp/rsa-pipeline-gia2d-test-data/giaroot_2d.csv)
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_11_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_26_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_09_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_19_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_39_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_15_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_08_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_34_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_32_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_05_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_12_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_31_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_22_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_10_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_16_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_06_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_36_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_29_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_37_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_18_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_03_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_23_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_20_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_14_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_04_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_24_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_13_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_01_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_02_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_27_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_40_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_21_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_28_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_07_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_38_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_17_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_35_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_30_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_33_crop.tiff] @ {rawimage}
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_25_crop.tiff] @ {rawimage}
+0+000000#REP@interpreter::Not supported directive [reinterpret]
+0+000000#DBG@algorithm_manager::Algorithm manager received inputs: {croppingrect;rawimage}; goals: [averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;depthfeature;ellipseaxesaspectratiofeature;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;totallengthfeature;volumefeature;widthdepthratiofeature];
+0+000000#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_02_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000000#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000000#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_01_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000000#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000000#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000000#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000000#REP@preparation_color_2_gray::[0.00] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000000#REP@preparation_color_2_gray::[0.00] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000000#REP@thresholding_global::[0.01] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000000#REP@thresholding_global::[0.01] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000006#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000006#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000015#REP@features_skeleton_v2::[0.89] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000015#REP@features_skeleton_v2::[0.89] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000015#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000015#REP@feature_components::[0.00] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000015#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000015#REP@feature_components::[0.00] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000015#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000015#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000018#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000018#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_01_crop.tiff)
+0+000018#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_03_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000018#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000018#REP@cropping_manual::[0.01] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000019#REP@feature_network_areas::[0.33] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000019#REP@preparation_color_2_gray::[0.00] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000019#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_02_crop.tiff)
+0+000019#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000019#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_04_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000019#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000019#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000019#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000019#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000025#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000025#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000034#REP@features_skeleton_v2::[0.91] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000034#REP@feature_roots_number::[0.01] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000034#REP@feature_components::[0.00] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000034#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000037#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000037#REP@features_skeleton_v2::[1.23] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000037#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000037#REP@feature_components::[0.00] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000037#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_03_crop.tiff)
+0+000038#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000038#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_05_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000038#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000038#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000038#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000038#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000041#REP@feature_network_areas::[0.32] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000041#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_04_crop.tiff)
+0+000041#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_06_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000041#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000041#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000041#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000041#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000044#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000047#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000054#REP@features_skeleton_v2::[1.03] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000054#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000054#REP@feature_components::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000054#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000058#REP@features_skeleton_v2::[1.02] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000058#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000058#REP@feature_components::[0.00] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000058#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000058#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000058#REP@feature_perimeter::[0.00] sec @ (OsRILp00001d12_05_crop.tiff)
+0+000058#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_07_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000058#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000058#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000058#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000058#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000061#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000061#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_06_crop.tiff)
+0+000061#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_08_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000061#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000061#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000061#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000061#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000064#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000067#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000072#REP@features_skeleton_v2::[0.76] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000072#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000072#REP@feature_components::[0.00] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000072#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000075#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000075#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_07_crop.tiff)
+0+000075#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_09_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000075#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000075#REP@cropping_manual::[0.01] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000075#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000075#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000082#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000082#REP@features_skeleton_v2::[1.46] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000082#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000082#REP@feature_components::[0.00] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000082#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000085#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000085#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_08_crop.tiff)
+0+000085#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_10_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000085#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000085#REP@cropping_manual::[0.01] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000086#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000086#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000092#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000095#REP@features_skeleton_v2::[1.31] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000095#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000095#REP@feature_components::[0.00] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000095#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000097#REP@features_skeleton_v2::[0.51] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000097#REP@feature_roots_number::[0.01] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000097#REP@feature_components::[0.00] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000097#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000098#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000098#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_09_crop.tiff)
+0+000098#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_11_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000098#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000098#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000098#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000098#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000098#INF@xml_storage::Writing (~/tmp/rsa-pipeline-gia2d-test-data/project.xml)
+0+000099#WRN@runtime::[22%]; cache [28] mb...
+0+000101#REP@feature_network_areas::[0.36] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000101#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_10_crop.tiff)
+0+000101#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_12_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000101#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000101#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000101#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000101#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000105#REP@thinning_binary::[0.65] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000107#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000118#REP@features_skeleton_v2::[1.32] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000118#REP@feature_roots_number::[0.01] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000118#REP@feature_components::[0.00] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000118#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000118#REP@features_skeleton_v2::[1.09] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000118#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000118#REP@feature_components::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000118#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000121#REP@feature_network_areas::[0.33] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000121#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_11_crop.tiff)
+0+000121#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_13_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000121#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000122#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000122#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000122#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000122#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000122#REP@feature_perimeter::[0.02] sec @ (OsRILp00001d12_12_crop.tiff)
+0+000122#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_14_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000122#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000122#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000122#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000122#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000128#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000128#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000142#REP@features_skeleton_v2::[1.38] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000142#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000142#REP@feature_components::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000142#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000143#REP@features_skeleton_v2::[1.46] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000143#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000143#REP@feature_components::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000143#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000146#REP@feature_network_areas::[0.32] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000146#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000146#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_14_crop.tiff)
+0+000146#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_15_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000146#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000146#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000146#REP@feature_perimeter::[0.00] sec @ (OsRILp00001d12_13_crop.tiff)
+0+000146#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_16_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000146#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000146#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000146#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000146#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000146#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000146#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000152#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000152#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000159#REP@features_skeleton_v2::[0.63] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000159#REP@feature_roots_number::[0.01] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000159#REP@feature_components::[0.00] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000159#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000160#REP@features_skeleton_v2::[0.72] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000160#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000160#REP@feature_components::[0.00] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000160#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000162#REP@feature_network_areas::[0.35] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000162#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_15_crop.tiff)
+0+000163#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_17_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000163#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000163#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000163#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000163#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000163#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000163#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_16_crop.tiff)
+0+000163#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_18_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000163#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000163#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000163#REP@preparation_color_2_gray::[0.00] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000163#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000169#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000170#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000176#REP@features_skeleton_v2::[0.68] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000176#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000176#REP@feature_components::[0.00] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000176#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000177#REP@features_skeleton_v2::[0.70] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000177#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000177#REP@feature_components::[0.00] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000177#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000179#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000179#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_17_crop.tiff)
+0+000179#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_19_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000179#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000179#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000179#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000179#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000180#REP@feature_network_areas::[0.32] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000180#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_18_crop.tiff)
+0+000180#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_20_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000180#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000180#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000180#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000180#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000186#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000187#REP@thinning_binary::[0.65] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000190#REP@features_skeleton_v2::[0.35] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000190#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000190#REP@feature_components::[0.00] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000190#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000192#REP@features_skeleton_v2::[0.63] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000192#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000192#REP@feature_components::[0.00] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000192#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000194#REP@feature_network_areas::[0.33] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000194#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_20_crop.tiff)
+0+000194#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_21_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000194#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000194#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000194#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000194#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000195#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000195#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_19_crop.tiff)
+0+000195#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_22_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000195#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000195#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000195#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000195#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000199#INF@xml_storage::Writing (~/tmp/rsa-pipeline-gia2d-test-data/project.xml)
+0+000200#WRN@runtime::[50%]; cache [57] mb...
+0+000201#REP@thinning_binary::[0.68] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000202#REP@thinning_binary::[0.68] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000207#REP@features_skeleton_v2::[0.44] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000207#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000207#REP@feature_components::[0.01] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000207#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000208#REP@features_skeleton_v2::[0.71] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000208#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000208#REP@feature_components::[0.00] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000208#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000210#REP@feature_network_areas::[0.32] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000210#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_22_crop.tiff)
+0+000210#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_23_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000210#REP@cleaning_skip::[0.02] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000210#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000210#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000210#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000211#REP@feature_network_areas::[0.31] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000211#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_21_crop.tiff)
+0+000211#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_24_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000211#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000211#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000211#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000212#REP@thresholding_global::[0.01] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000217#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000218#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000221#REP@features_skeleton_v2::[0.41] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000221#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000221#REP@feature_components::[0.00] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000221#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000221#REP@features_skeleton_v2::[0.35] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000221#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000221#REP@feature_components::[0.00] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000222#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000224#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000224#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_23_crop.tiff)
+0+000224#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_25_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000224#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000224#REP@cropping_manual::[0.01] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000224#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000224#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000225#REP@feature_network_areas::[0.34] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000225#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_24_crop.tiff)
+0+000225#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_26_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000225#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000225#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000225#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000225#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000231#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000232#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000237#REP@features_skeleton_v2::[0.68] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000237#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000238#REP@feature_components::[0.00] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000238#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000239#REP@features_skeleton_v2::[0.70] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000239#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000239#REP@feature_components::[0.00] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000239#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000241#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000241#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_25_crop.tiff)
+0+000241#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_27_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000241#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000241#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000241#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000241#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000242#REP@feature_network_areas::[0.34] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000242#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_26_crop.tiff)
+0+000242#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_28_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000242#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000242#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000243#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000243#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000247#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000249#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000261#REP@features_skeleton_v2::[1.39] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000261#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000261#REP@feature_components::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000261#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000264#REP@features_skeleton_v2::[1.46] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000264#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000264#REP@feature_components::[0.01] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000264#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000264#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000264#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_27_crop.tiff)
+0+000264#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_29_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000264#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000264#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000265#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000265#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000267#REP@feature_network_areas::[0.32] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000267#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_28_crop.tiff)
+0+000267#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_30_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000267#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000267#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000267#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000267#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000271#REP@thinning_binary::[0.62] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000274#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000285#REP@features_skeleton_v2::[1.38] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000285#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000285#REP@feature_components::[0.01] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000285#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000287#REP@features_skeleton_v2::[1.31] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000287#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000287#REP@feature_components::[0.00] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000287#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000288#REP@feature_network_areas::[0.33] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000288#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_29_crop.tiff)
+0+000288#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_31_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000288#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000288#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000288#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000288#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000290#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000290#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_30_crop.tiff)
+0+000290#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_32_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000290#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000290#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000290#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000290#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000295#REP@thinning_binary::[0.66] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000297#REP@thinning_binary::[0.62] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000300#INF@xml_storage::Writing (~/tmp/rsa-pipeline-gia2d-test-data/project.xml)
+0+000302#WRN@runtime::[75%]; cache [84] mb...
+0+000318#REP@features_skeleton_v2::[2.36] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000319#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000319#REP@feature_components::[0.00] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000319#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000322#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000322#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_31_crop.tiff)
+0+000322#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_33_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000322#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000322#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000322#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000322#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000324#REP@features_skeleton_v2::[2.73] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000324#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000324#REP@feature_components::[0.01] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000324#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000327#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000327#REP@feature_perimeter::[0.02] sec @ (OsRILp00001d12_32_crop.tiff)
+0+000327#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_34_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000327#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000327#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000328#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000328#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000328#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000334#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000339#REP@features_skeleton_v2::[0.53] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000339#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000339#REP@feature_components::[0.00] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000340#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000342#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000343#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_34_crop.tiff)
+0+000343#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_35_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000343#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000343#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000343#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000343#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000349#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000350#REP@features_skeleton_v2::[2.19] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000350#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000350#REP@feature_components::[0.00] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000350#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000353#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000353#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_33_crop.tiff)
+0+000353#REP@features_skeleton_v2::[0.44] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000353#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_36_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000354#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000354#REP@cropping_manual::[0.01] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000354#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000354#REP@feature_components::[0.00] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000354#REP@preparation_color_2_gray::[0.00] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000354#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000354#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000357#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000357#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_35_crop.tiff)
+0+000357#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_37_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000357#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000357#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000357#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000357#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000360#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000363#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000364#REP@features_skeleton_v2::[0.42] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000365#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000365#REP@feature_components::[0.00] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000365#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000368#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000368#REP@features_skeleton_v2::[0.42] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000368#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000368#REP@feature_components::[0.00] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000368#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_36_crop.tiff)
+0+000368#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000368#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_38_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000368#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000368#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000368#REP@preparation_color_2_gray::[0.02] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000368#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000371#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000371#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_37_crop.tiff)
+0+000371#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_39_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000371#REP@cleaning_skip::[0.01] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000371#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000371#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000371#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000374#REP@thinning_binary::[0.63] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000377#REP@thinning_binary::[0.64] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000379#REP@features_skeleton_v2::[0.47] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000379#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000379#REP@feature_components::[0.01] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000379#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000382#REP@feature_network_areas::[0.29] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000382#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_38_crop.tiff)
+0+000382#DBG@rawimage::(~/tmp/rsa-pipeline-gia2d-test-data/images//OsRILp00001d12_40_crop.tiff) loaded;dim=[472x468];ch=[3];depth=[8]
+0+000382#REP@cleaning_skip::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000382#REP@cropping_manual::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000382#REP@preparation_color_2_gray::[0.01] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000382#REP@thresholding_global::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000382#REP@features_skeleton_v2::[0.50] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000383#REP@feature_roots_number::[0.01] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000383#REP@feature_components::[0.00] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000383#REP@feature_ellipse_axes::[0.01] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000386#REP@feature_network_areas::[0.30] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000386#REP@feature_perimeter::[0.01] sec @ (OsRILp00001d12_39_crop.tiff)
+0+000387#REP@thinning_binary::[0.48] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000389#REP@features_skeleton_v2::[0.16] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000389#REP@feature_roots_number::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000389#REP@feature_components::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000389#REP@feature_ellipse_axes::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000390#REP@feature_network_areas::[0.14] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000390#REP@feature_perimeter::[0.00] sec @ (OsRILp00001d12_40_crop.tiff)
+0+000393#DBG@csv_exporter::Writing (~/tmp/rsa-pipeline-gia2d-test-data/giaroot_2d.csv)
+0+000393#INF@xml_storage::Writing (~/tmp/rsa-pipeline-gia2d-test-data/project.xml)
+0+000394#REP@unloader::Algorithm libraries unloaded successfully.
+0+000394#INF@core::Core freed successfully
+0+000394#INF@interpreter::Thanks for using the Gia Roots Framework®! If you can read this run was successful.  Use 'www.giaroots.org' for information and questions.
+0+000394#REP@core::C'est fini ---Startup time (Thu Jun  6 13:33:20 2013 ), using {LINUX} OS
+
+======= END OUTPUT ===============================================================================================
+
+The result of the program (2d traits) would be in the giaroot_2d.csv file at the [my_folder]/rsa-pipeline-gia2d-test-data folder.
+
+Also, for every crop image in the  [my_folder]/images folder, there will be 6 files generated (included the _thresholdedimage_ type, used during 3d reconstruction).
+
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_cleanedimage_mnzffl09k.tiff
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_croppedimage_mnzffl09u.tiff
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_grayimage_mnzffl0a0.tiff
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_rawimage_mnzffk083.tiff
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_thinnedimage_mnzffl0ag.tiff
+[my_folder]/rsa-pipeline-gia2d-test-data/OsRILp00001d12_01_crop.tiff_thresholdedimage_mnzffl0a6.tiff
+
+The program also creates project.xml.
+
+
+NOTE:
+
+It is important to note that if you want to run the program once again in the same [my_folder]/rsa-pipeline-gia3d-test-data folder, then remove all files except for the initial ones: job-config.xml, old_threshold_newGiA_103111-gia-config.xml and files in the images folder (otherwise the number of files would grow and would be difficult to find the last result images). 
+
+
+
+##### tar #####
+
+cd ~/tmp
+tar -pczf rsa-pipeline-gia2d-test-data.tar.gz rsa-pipeline-gia2d-test-data/job-config.xml rsa-pipeline-gia2d-test-data/giaroot_2d.xml rsa-pipeline-gia2d-test-data/images/*
+
