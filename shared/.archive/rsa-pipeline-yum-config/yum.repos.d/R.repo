@@ -1,0 +1,15 @@
+# R.repo
+# R RPM for Enterprise Linux.
+#
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   R-repo                  1           22
+
+[R]
+name=R RPM for Enterprise Linux $releasever - $basearch
+baseurl=http://repo.r-repo.org/RPMS/entreprise/$releasever/r-repo/$basearch
+gpgcheck=1
+gpgkey=http://r-repo.org/public/RPM-GPG-KEY-R-repo
+enabled=1
+priority = 22
+

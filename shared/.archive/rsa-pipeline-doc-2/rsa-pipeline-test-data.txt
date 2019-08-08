@@ -1,0 +1,172 @@
+******************************************************************
+**
+** Install test data into the rsa pipeline
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+This script is run only by rsa-data user - logging as rsa-data user.
+
+Note that the steps presented here are the same ones as in the case of importing data to the rsa-pipeline.
+
+NOTE: bear in mind: sometimes, the yum command with teh rsa-pipeline-* does not work, but, at the time, the yum command with rsa-* works.
+      So, if * doesn work (expansion issue in Linux) as you would expect, then try searching using more info about a package name like:
+      yum list rsa-pipeline-admin
+      or
+      yum list rsa-pipeline-admin-1.0.0
+
+
+
+*************************************************************************************
+* Download and unpack
+*************************************************************************************
+
+Download rsa-pipeline-test-data.tar.gz
+
+Find the rsa-pipeline-to_sort-test-data.tar.gz after unzipping.
+
+Unzip rsa-pipeline-to_sort-test-data.tar.gz to some folder [my_folder] on your computer.
+
+You will get the following:
+
+[my_folder]/rsa-pipeline-test-data/rsa-pipeline-to_sort-test-data/
+                                                                 [120 jpg (3 sets) and 160 PNG images (4 sets)] 
+
+*************************************************************************************
+* Copy data into /data/rsa/to_sort folder
+*************************************************************************************
+
+Type in the terminal window:
+
+cp [my_folder]/rsa-pipeline-test-data/* /data/rsa/to_sort
+
+*************************************************************************************
+* Check and set the right ownership and permissions
+*************************************************************************************
+
+Check whether images in the /data/rsa/to_sort have the right ownership and permissions.
+
+Type in the terminal window:
+
+rsa-chkrights-orig /data/rsa/to_sort
+
+If everything Okay, then you will get:
+
+====== START OUTPUT =================================================================================
+
+[rsa-data@mk42ws2 tmp]$ rsa-chkrights-orig /data/rsa/to_sort
+
+=== Just in case, check ownership and permissions for /data/rsa/to_sort/ ===
+Everything is OK.
+
+Or it might give you something like:
+
+=== Checking ownership and permissions for /data/rsa/to_sort/ ===
+    280 files/directories are owned by group other than 'rootarch'
+--- To correct these problems, run 'rsa-setrights-orig' under 'rsa-data' account
+
+====== END OUTPUT =================================================================================
+
+In this or similar cases, follow the instructions to correct these problems and type in the terminal window:
+
+rsa-setrights-orig /data/rsa/to_sort/
+
+====== START OUTPUT =================================================================================
+
+[rsa-data@mk42ws2 tmp]$ rsa-setrights-orig /data/rsa/to_sort
+
+You will get:
+
+=== Setting access rights for /data/rsa/to_sort/ ===
+
+1) Owner for all files and subdirectories will be set to 'rsa-data'.
+2) Group for all files and subdirectories will be set to 'rootarch'.
+3) Permissions for all subdirectories will be set to 2750.
+4) Permissions for all files will be set to 640.
+
+Continue? (yes/no):
+
+====== END OUTPUT =================================================================================
+
+Type:
+
+yes
+
+.....
+
+The script will finalize setting the ownership and permissions.
+
+
+Now, the test data is unpacked, properly installed in the /data/rsa/to_sort folder and ready for testing in the rsa pipeline.
+
+
+*************************************************************************************
+* Move data from the /data/rsa/to_sort folder to the /data/rsa/original_images
+*************************************************************************************
+
+Type in the terminal window:
+
+rsa-mv2orig
+
+You will get:
+
+====== START OUTPUT =================================================================================
+
+[rsa-data@mk42ws2 tmp]$ rsa-mv2orig
+
+=== Moving original images to /data/rsa/original_images ===
+
+Source directory:      /data/rsa/to_sort
+Destination directory: /data/rsa/original_images
+
+Parsing directories...
+Checking imaging sets...
+INFO: the sizes of the valid images sets are as follows:
+possible sizes :  [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360]
+
+7 image groups (280 files) will be moved.
+
+Continue (yes/no)? 
+
+====== END OUTPUT =================================================================================
+
+Type:
+
+yes
+
+
+====== START OUTPUT =================================================================================
+
+[rsa-data@mk42ws2 tmp]$ rsa-mv2orig
+
+=== Moving original images to /data/rsa/original_images ===
+
+Source directory:      /data/rsa/to_sort
+Destination directory: /data/rsa/original_images
+
+Parsing directories...
+Checking imaging sets...
+INFO: the sizes of the valid images sets are as follows:
+possible sizes :  [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360]
+
+7 image groups (280 files) will be moved.
+
+Continue (yes/no)? yes
+  Moving image group rice/RIL/p00001/d12/jpg
+  Moving image group corn/NAM/p00251/d03/PNG
+  Moving image group corn/NAM/p00252/d03/PNG
+  Moving image group corn/NAM/p00246/d03/PNG
+  Moving image group rice/RIL/p00001/d14/jpg
+  Moving image group corn/NAM/p00254/d03/PNG
+  Moving image group rice/RIL/p00001/d16/jpg
+Moving completed.
+7 image groups (280 files) were moved.
+====== END OUTPUT =================================================================================
+
+
+*************************************************************************************
+* The installation of the test data into the rsa pipeline is done
+*************************************************************************************
+
+Now, the test data is unpacked, properly installed in the /data/rsa/to_sort folder and ready for testing the rsa pipeline.

@@ -1,0 +1,42 @@
+# rpmforge.repo
+# Name: RPMforge RPM Repository for RHEL 6 - dag
+# URL: http://rpmforge.net/
+#
+# Summary:
+#   *Repo-id*               *Enabled?*  *Priority*
+#   rpmforge                1           21
+#   rpmforge-extras         1           21
+#   rpmforge-testing        0           41
+
+
+[rpmforge]
+name = RHEL $releasever - RPMforge.net - dag
+mirrorlist = http://apt.sw.be/redhat/el6/en/mirrors-rpmforge
+#mirrorlist = file:///etc/yum.repos.d/mirrors-rpmforge
+#baseurl = http://apt.sw.be/redhat/el6/en/$basearch/rpmforge
+gpgcheck = 1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
+enabled = 1
+priority=21
+
+[rpmforge-extras]
+name = RHEL $releasever - RPMforge.net - extras
+mirrorlist = http://apt.sw.be/redhat/el6/en/mirrors-rpmforge-extras
+#mirrorlist = file:///etc/yum.repos.d/mirrors-rpmforge-extras
+#baseurl = http://apt.sw.be/redhat/el6/en/$basearch/extras
+gpgcheck = 1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
+enabled = 1
+priority=21
+exclude = perl-IO-Compress.noarch
+
+[rpmforge-testing]
+name = RHEL $releasever - RPMforge.net - testing
+mirrorlist = http://apt.sw.be/redhat/el6/en/mirrors-rpmforge-testing
+#mirrorlist = file:///etc/yum.repos.d/mirrors-rpmforge-testing
+#baseurl = http://apt.sw.be/redhat/el6/en/$basearch/testing
+gpgcheck = 1
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
+enabled = 0
+priority=41
+

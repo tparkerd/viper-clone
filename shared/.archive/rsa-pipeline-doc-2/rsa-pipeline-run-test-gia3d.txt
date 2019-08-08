@@ -1,0 +1,304 @@
+******************************************************************
+**
+** Run Gia3d C++ application
+**
+** Fri June 6 2013 Vladimir Popov <vladimir.popov@duke.edu>
+**
+******************************************************************
+
+Command:
+
+interpreter [gia-job]
+
+*************************************************************************************
+* Test Gia3d C++ application
+*************************************************************************************
+
+The interpreter executable locates at the /usr/local/bin/gia folder
+
+Unzip rsa-pipeline-gia3d-test-data.tar.gz to some folder [my_folder] on your computer.
+
+You will get the following:
+
+[my_folder]/rsa-pipeline-gia3d-test-data/                                              
+                                        benchmark/ 
+                                                  bm-giaroot_3d.csv
+                                        gia-job.xml
+                                        giaroot_3d.xml
+                                        voxel_final.rootwork
+                                        
+The voxels file named is voxel_final.rootwork (the name should be exactly this)                                         
+
+Open the gia-job.xml file and substitute the [my_folder] place holder with the real path on your computer.
+
+Type in the terminal window:
+
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+cd /usr/local/bin/gia/
+./interpreter [my_folder]/rsa-pipeline-gia3d-test-data/gia-job.xml
+
+On my computer, I chose for test:
+
+[my_folder] = ~/tmp
+
+So, 
+
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+cd /usr/local/bin/gia/
+./interpreter ~/tmp/rsa-pipeline-gia3d-test-data/gia-job.xml
+
+You will see in the terminal window something like:
+
+===== START OUTPUT =================================================================================================
+
+[vp23@mk42ws2 tmp]$ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/bin/gia/lib/
+[vp23@mk42ws2 tmp]$ cd /usr/local/bin/gia/
+[vp23@mk42ws2 gia]$ ./interpreter ~/tmp/rsa-pipeline-gia3d-test-data/gia-job.xml
+0+000000#REP@core::Startup time (Thu Jun  6 12:49:55 2013 ), using {LINUX} OS
+got response (0) from server; 	waiting for (342881788)
+0+000000#DBG@loader::23 libraries to check
+0+000000#DBG@loader::Loading [./algorithms//libcropping_manual.so]
+0+000000#WRN@core::[cropping_manual] <--> {croppedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_perimeter.so]
+0+000000#WRN@core::[feature_perimeter] <--> {perimeterfeature}
+0+000000#DBG@loader::Loading [./algorithms//libpreparation_color2gray.so]
+0+000000#WRN@core::[preparation_color_2_gray] <--> {grayimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_setscale.so]
+0+000000#WRN@core::Transform [transform_setscale]
+0+000000#DBG@loader::Loading [./algorithms//libfeature_numberofroots.so]
+0+000000#WRN@core::[feature_roots_number] <--> {bushinessfeature}; {maximumnumberofrootsfeature}; {mediannumberofrootsfeature}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_aggregate2.so]
+0+000000#WRN@core::Transform [transform_aggregate2]
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_doubleadaptive.so]
+0+000000#WRN@core::[thresholding_double_adaptive] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [./algorithms//libthinning_binary.so]
+0+000000#WRN@core::[thinning_binary] <--> {thinnedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_ellipseaxes.so]
+0+000000#WRN@core::[feature_ellipse_axes] <--> {ellipseaxesaspectratiofeature}; {majorellipseaxesfeature}; {minorellipseaxesfeature}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_scaling.so]
+0+000000#WRN@core::Transform [transform_scaling]
+0+000000#DBG@loader::Loading [./algorithms//libfeatures_skeleton.so]
+0+000000#WRN@core::[features_skeleton_v2] <--> {averagerootwidthx2feature}; {depthfeature}; {lengthdistrfeature}; {maxwidthfeature}; {specificrootlengthfeature}; {surfaceareafeature}; {totallengthfeature}; {volumefeature}; {widthdepthratiofeature}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_components.so]
+0+000000#WRN@core::[feature_components] <--> {ccomponentscountfeature}
+0+000000#DBG@loader::Loading [./algorithms//libolga-medial-axis.so]
+0+000000#WRN@core::[olga_medial_axis] <--> {o3rf_av_edge_length}; {o3rf_av_size_bif_cl}; {o3rf_depth}; {o3rf_edge_num}; {o3rf_horeqdiameter}; {o3rf_length_distr}; {o3rf_number_bif_cl}; {o3rf_srl}; {o3rf_surfarea}; {o3rf_totallength}; {o3rf_volume}; {o3rf_w_d_ratio}
+0+000000#DBG@loader::Loading [./algorithms//libcleaning_skip.so]
+0+000000#WRN@core::[cleaning_skip] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [./algorithms//libfeature_networkareas.so]
+0+000000#WRN@core::[feature_network_areas] <--> {networkareafeature}; {networkconvexareafeature}; {solidityfeature}
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_global.so]
+0+000000#WRN@core::[thresholding_global] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [./algorithms//libcropping_skip.so]
+0+000000#WRN@core::[cropping_skip] <--> {croppedimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_rotation.so]
+0+000000#WRN@core::Transform [transform_rotation]
+0+000000#DBG@loader::Loading [./algorithms//libcleaning_agg.so]
+0+000000#WRN@core::[experimental_cleaning_agg] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [./algorithms//libtransform_aggregate.so]
+0+000000#WRN@core::Transform [transform_aggregate]
+0+000000#DBG@loader::Loading [./algorithms//libtransform_manual.so]
+0+000000#WRN@core::Transform [transform_manual_cropping]
+0+000000#DBG@loader::Loading [./algorithms//libfeatures_vertical_sweep.so]
+0+000000#WRN@core::[vertical_sweep_3d] <--> {t3rf_bushiness}; {t3rf_convex_volume}; {t3rf_maxr}; {t3rf_medr}; {t3rf_solidity}; {t3rf_surfarea}; {t3rf_volume}
+0+000000#DBG@loader::Loading [./algorithms//libthresholding_adaptive.so]
+0+000000#WRN@core::[thresholding_adaptive] <--> {thresholdedimage}
+0+000000#REP@loader::(17)total; known types: averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;cleanedimage;croppedimage;depthfeature;ellipseaxesaspectratiofeature;grayimage;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_depth;o3rf_edge_num;o3rf_horeqdiameter;o3rf_length_distr;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;o3rf_w_d_ratio;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_solidity;t3rf_surfarea;t3rf_volume;thinnedimage;thresholdedimage;totallengthfeature;volumefeature;widthdepthratiofeature
+0+000000#DBG@loader::23 libraries to check
+0+000000#DBG@loader::Loading [algorithms//libcropping_manual.so]
+0+000000#WRN@core::[cropping_manual] <--> {croppedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_perimeter.so]
+0+000000#WRN@core::[feature_perimeter] <--> {perimeterfeature}
+0+000000#DBG@loader::Loading [algorithms//libpreparation_color2gray.so]
+0+000000#WRN@core::[preparation_color_2_gray] <--> {grayimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_setscale.so]
+0+000000#WRN@core::Transform [transform_setscale]
+0+000000#DBG@loader::Loading [algorithms//libfeature_numberofroots.so]
+0+000000#WRN@core::[feature_roots_number] <--> {bushinessfeature}; {maximumnumberofrootsfeature}; {mediannumberofrootsfeature}
+0+000000#DBG@loader::Loading [algorithms//libtransform_aggregate2.so]
+0+000000#WRN@core::Transform [transform_aggregate2]
+0+000000#DBG@loader::Loading [algorithms//libthresholding_doubleadaptive.so]
+0+000000#WRN@core::[thresholding_double_adaptive] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [algorithms//libthinning_binary.so]
+0+000000#WRN@core::[thinning_binary] <--> {thinnedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_ellipseaxes.so]
+0+000000#WRN@core::[feature_ellipse_axes] <--> {ellipseaxesaspectratiofeature}; {majorellipseaxesfeature}; {minorellipseaxesfeature}
+0+000000#DBG@loader::Loading [algorithms//libtransform_scaling.so]
+0+000000#WRN@core::Transform [transform_scaling]
+0+000000#DBG@loader::Loading [algorithms//libfeatures_skeleton.so]
+0+000000#WRN@core::[features_skeleton_v2] <--> {averagerootwidthx2feature}; {depthfeature}; {lengthdistrfeature}; {maxwidthfeature}; {specificrootlengthfeature}; {surfaceareafeature}; {totallengthfeature}; {volumefeature}; {widthdepthratiofeature}
+0+000000#DBG@loader::Loading [algorithms//libfeature_components.so]
+0+000000#WRN@core::[feature_components] <--> {ccomponentscountfeature}
+0+000000#DBG@loader::Loading [algorithms//libolga-medial-axis.so]
+0+000000#WRN@core::[olga_medial_axis] <--> {o3rf_av_edge_length}; {o3rf_av_size_bif_cl}; {o3rf_depth}; {o3rf_edge_num}; {o3rf_horeqdiameter}; {o3rf_length_distr}; {o3rf_number_bif_cl}; {o3rf_srl}; {o3rf_surfarea}; {o3rf_totallength}; {o3rf_volume}; {o3rf_w_d_ratio}
+0+000000#DBG@loader::Loading [algorithms//libcleaning_skip.so]
+0+000000#WRN@core::[cleaning_skip] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [algorithms//libfeature_networkareas.so]
+0+000000#WRN@core::[feature_network_areas] <--> {networkareafeature}; {networkconvexareafeature}; {solidityfeature}
+0+000000#DBG@loader::Loading [algorithms//libthresholding_global.so]
+0+000000#WRN@core::[thresholding_global] <--> {thresholdedimage}
+0+000000#DBG@loader::Loading [algorithms//libcropping_skip.so]
+0+000000#WRN@core::[cropping_skip] <--> {croppedimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_rotation.so]
+0+000000#WRN@core::Transform [transform_rotation]
+0+000000#DBG@loader::Loading [algorithms//libcleaning_agg.so]
+0+000000#WRN@core::[experimental_cleaning_agg] <--> {cleanedimage}
+0+000000#DBG@loader::Loading [algorithms//libtransform_aggregate.so]
+0+000000#WRN@core::Transform [transform_aggregate]
+0+000000#DBG@loader::Loading [algorithms//libtransform_manual.so]
+0+000000#WRN@core::Transform [transform_manual_cropping]
+0+000000#DBG@loader::Loading [algorithms//libfeatures_vertical_sweep.so]
+0+000000#WRN@core::[vertical_sweep_3d] <--> {t3rf_bushiness}; {t3rf_convex_volume}; {t3rf_maxr}; {t3rf_medr}; {t3rf_solidity}; {t3rf_surfarea}; {t3rf_volume}
+0+000000#DBG@loader::Loading [algorithms//libthresholding_adaptive.so]
+0+000000#WRN@core::[thresholding_adaptive] <--> {thresholdedimage}
+0+000000#REP@loader::(17)total; known types: averagerootwidthx2feature;bushinessfeature;ccomponentscountfeature;cleanedimage;croppedimage;depthfeature;ellipseaxesaspectratiofeature;grayimage;lengthdistrfeature;majorellipseaxesfeature;maximumnumberofrootsfeature;maxwidthfeature;mediannumberofrootsfeature;minorellipseaxesfeature;networkareafeature;networkconvexareafeature;o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_depth;o3rf_edge_num;o3rf_horeqdiameter;o3rf_length_distr;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;o3rf_w_d_ratio;perimeterfeature;solidityfeature;specificrootlengthfeature;surfaceareafeature;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_solidity;t3rf_surfarea;t3rf_volume;thinnedimage;thresholdedimage;totallengthfeature;volumefeature;widthdepthratiofeature
+0+000000#DBG@xml_storage::Connecting to (~/tmp/rsa-pipeline-gia3d-test-data/project.xml)...
+0+000000#REP@::Begin of {algorithm_manager_defaults}
+0+000000#REP@::[averagerootwidthx2feature] = {features_skeleton_v2}
+0+000000#REP@::[bushinessfeature] = {feature_roots_number}
+0+000000#REP@::[ccomponentscountfeature] = {feature_components}
+0+000000#REP@::[cleanedimage] = {cleaning_skip}
+0+000000#REP@::[croppedimage] = {cropping_manual}
+0+000000#REP@::[depthfeature] = {features_skeleton_v2}
+0+000000#REP@::[ellipseaxesaspectratiofeature] = {feature_ellipse_axes}
+0+000000#REP@::[grayimage] = {preparation_color_2_gray}
+0+000000#REP@::[lengthdistrfeature] = {features_skeleton_v2}
+0+000000#REP@::[majorellipseaxesfeature] = {feature_ellipse_axes}
+0+000000#REP@::[maximumnumberofrootsfeature] = {feature_roots_number}
+0+000000#REP@::[maxwidthfeature] = {features_skeleton_v2}
+0+000000#REP@::[mediannumberofrootsfeature] = {feature_roots_number}
+0+000000#REP@::[minorellipseaxesfeature] = {feature_ellipse_axes}
+0+000000#REP@::[networkareafeature] = {feature_network_areas}
+0+000000#REP@::[networkconvexareafeature] = {feature_network_areas}
+0+000000#REP@::[o3rf_av_edge_length] = {olga_medial_axis}
+0+000000#REP@::[o3rf_av_size_bif_cl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_edge_num] = {olga_medial_axis}
+0+000000#REP@::[o3rf_number_bif_cl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_srl] = {olga_medial_axis}
+0+000000#REP@::[o3rf_surfarea] = {olga_medial_axis}
+0+000000#REP@::[o3rf_totallength] = {olga_medial_axis}
+0+000000#REP@::[o3rf_volume] = {olga_medial_axis}
+0+000000#REP@::[perimeterfeature] = {feature_perimeter}
+0+000000#REP@::[solidityfeature] = {feature_network_areas}
+0+000000#REP@::[specificrootlengthfeature] = {features_skeleton_v2}
+0+000000#REP@::[surfaceareafeature] = {features_skeleton_v2}
+0+000000#REP@::[t3rf_bushiness] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_convex_volume] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_maxr] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_medr] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_solidity] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_surfarea] = {vertical_sweep_3d}
+0+000000#REP@::[t3rf_volume] = {vertical_sweep_3d}
+0+000000#REP@::[thinnedimage] = {thinning_binary}
+0+000000#REP@::[thresholdedimage] = {thresholding_double_adaptive}
+0+000000#REP@::[totallengthfeature] = {features_skeleton_v2}
+0+000000#REP@::[volumefeature] = {features_skeleton_v2}
+0+000000#REP@::[widthdepthratiofeature] = {features_skeleton_v2}
+0+000000#REP@::End of {algorithm_manager_defaults}
+0+000000#REP@::Begin of {core}
+0+000000#REP@::[image_format] = {TIFF}
+0+000000#REP@::[serialize_image_format] = {tiff}
+0+000000#REP@::[serialize_to] = {~/tmp/rsa-pipeline-gia3d-test-data}
+0+000000#REP@::[thread_pool_size] = {2}
+0+000000#REP@::End of {core}
+0+000000#REP@::Begin of {experimental_cleaning_agg}
+0+000000#REP@::[add_scalar] = {0}
+0+000000#REP@::[dark_root] = {true}
+0+000000#REP@::End of {experimental_cleaning_agg}
+0+000000#REP@::Begin of {gui}
+0+000000#REP@::[targets] = {o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_edge_num;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_solidity;t3rf_surfarea;t3rf_volume}
+0+000000#REP@::End of {gui}
+0+000000#REP@::Begin of {preparation_color_2_gray}
+0+000000#REP@::[reverse] = {true}
+0+000000#REP@::[simple] = {true}
+0+000000#REP@::End of {preparation_color_2_gray}
+0+000000#REP@::Begin of {thresholding_adaptive}
+0+000000#REP@::[adaptive_method] = {CV_ADAPTIVE_THRESH_MEAN_C}
+0+000000#REP@::[block_size] = {19}
+0+000000#REP@::[max_component_size_to_ignore] = {4000}
+0+000000#REP@::[subtract_constant] = {-1.25}
+0+000000#REP@::[threshold_type] = {CV_THRESH_BINARY}
+0+000000#REP@::End of {thresholding_adaptive}
+0+000000#REP@::Begin of {thresholding_double_adaptive}
+0+000000#REP@::[block_size] = {150}
+0+000000#REP@::[drop_value] = {5}
+0+000000#REP@::[max_component_size_to_ignore] = {50}
+0+000000#REP@::End of {thresholding_double_adaptive}
+0+000000#REP@::Begin of {thresholding_global}
+0+000000#REP@::[max_component_size_to_ignore] = {4000}
+0+000000#REP@::[threshold] = {150}
+0+000000#REP@::[threshold_type] = {CV_THRESH_BINARY}
+0+000000#REP@::End of {thresholding_global}
+0+000000#REP@::Begin of {transform_manual_cropping}
+0+000000#REP@::[cropping_height] = {0}
+0+000000#REP@::[cropping_left] = {0}
+0+000000#REP@::[cropping_top] = {0}
+0+000000#REP@::[cropping_width] = {0}
+0+000000#REP@::End of {transform_manual_cropping}
+0+000000#REP@::Begin of {transform_rotation}
+0+000000#REP@::[flip] = {none}
+0+000000#REP@::[rotate] = {0}
+0+000000#REP@::End of {transform_rotation}
+0+000000#REP@::Begin of {transform_setscale}
+0+000000#REP@::[metric_scale] = {1}
+0+000000#REP@::End of {transform_setscale}
+0+000000#DBG@csv_exporter::Writing (~/tmp/rsa-pipeline-gia3d-test-data/giaroot_3d.csv)
+0+000000#WRN@project::Uploaded [~/tmp/rsa-pipeline-gia3d-test-data//voxel_final.rootwork] @ {rootmodel3dwrapper}
+0+000000#DBG@algorithm_manager::Algorithm manager received inputs: {rootmodel3dwrapper}; goals: [o3rf_av_edge_length;o3rf_av_size_bif_cl;o3rf_edge_num;o3rf_number_bif_cl;o3rf_srl;o3rf_surfarea;o3rf_totallength;o3rf_volume;t3rf_bushiness;t3rf_convex_volume;t3rf_maxr;t3rf_medr;t3rf_surfarea;t3rf_volume];
+0+000000#INF@olga_medial_axis::Visual output of the original object...
+0+000000#INF@olga_medial_axis::Apply thinning with erosion distance computation...
+0+000001#INF@olga_medial_axis::Remove potential bifuraction clusters...
+0+000003#INF@olga_medial_axis::Filter the skeleton...
+0+000003#INF@olga_medial_axis::Additional erosion...
+0+000003#INF@olga_medial_axis::Visual output of the skeleton...
+Computing traits... Elapsed time: 0.00
+
+Bushiness: 	1.0000
+Convex_Volume: 	-1.0000
+Depth: 	-1.0000
+HorEqDiameter: 	-1.0000
+Length_Distr: 	0.0000
+MaxR: 	-1.0000
+MedR: 	-1.0000
+SRL: 	7.2823
+Solidity: 	-6423.0000
+SurfArea: 	8884.0000
+TotalLength: 	882.0000
+Volume: 	6423.0000
+W_D_ratio: 	1.0000
+Av_size_bif_cl: 	2.7400
+Number_bif_cl: 	100.0000
+Av_Edge_length: 	3.5994
+Edge_num: 	173.0000
+0+000003#REP@olga_medial_axis::[0.36] sec @ (voxel_final.rootwork)
+0+000003#REP@vertical_sweep_3d::[0.01] sec @ (voxel_final.rootwork)
+0+000003#DBG@csv_exporter::Writing (~/tmp/rsa-pipeline-gia3d-test-data/giaroot_3d.csv)
+0+000003#INF@xml_storage::Writing (~/tmp/rsa-pipeline-gia3d-test-data/project.xml)
+0+000003#REP@unloader::Algorithm libraries unloaded successfully.
+0+000003#INF@core::Core freed successfully
+0+000003#INF@interpreter::Thanks for using the Gia Roots Framework®! If you can read this run was successful.  Use 'www.giaroots.org' for information and questions.
+0+000003#REP@core::C'est fini ---Startup time (Thu Jun  6 12:49:55 2013 ), using {LINUX} OS
+
+====== END OUTPUT ================================================================================================
+
+The result of the program (3d traits) would be in the giaroot_3d.csv file at the ~/tmp/rsa-pipeline-gia3d-test-data folder.
+
+The program also creates project.xml and some auxiliary files like voxel_final.rootwork_rootmodel3dwrapper_mnzdf705u.rootwork.
+
+
+NOTE:
+
+It is important to note that if you want to run the program once again in the same ~/tmp/rsa-pipeline-gia3d-test-data folder, then remove all files except for the initial ones: voxel_final.rootwork, gia-job.xml and giaroot_3d.xml (otherwise the result is unpredictable). 
+
+
+NOTE 2:
+
+You can compare numbers in the bm-giaroot_3d.csv and giaroot_3d.csv files.
+
+
+
+##### tar #####
+
+cd ~/tmp
+tar -pczf rsa-pipeline-gia3d-test-data.tar.gz rsa-pipeline-gia3d-test-data/gia-job.xml rsa-pipeline-gia3d-test-data/giaroot_3d.xml rsa-pipeline-gia3d-test-data/voxel_final.rootwork
+
