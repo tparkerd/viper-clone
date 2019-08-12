@@ -30,7 +30,9 @@ yum install tigervnc-server -y
 rpm -ivh /vagrant/shared/jre-8u202-linux-x64.rpm 
 
 # Set new installation of Java as default
-alternatives --install /usr/bin/java java  /usr/java/jre1.8.0_202-amd64/bin/java 1000
+alternatives --set java /usr/java/jre1.8.0_202-amd64/bin/java
+
+#alternatives --install /usr/bin/java java  /usr/java/jre1.8.0_202-amd64/bin/java 99999
 
 # Install dependencies
 yum install -y PIL.x86_64 numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64 -y
@@ -52,11 +54,12 @@ cp -Rv /vagrant/shared/rsa-gia/minimal/* /opt/rsa-gia
 echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
 echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
 
-# Install MySQL
-wget -O /vagrant/shared/mysql80-community-release-el7-3.noarch.rpm https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
-rpm -ivh /vagrant/shared/mysql80-community-release-el7-3.noarch.rpm
-# yum install mysql-server -y
-# systemctl start mysqld
+## Install MySQL
+#wget -O /vagrant/shared/mysql80-community-release-el7-3.noarch.rpm https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+#rpm -ivh /vagrant/shared/mysql80-community-release-el7-3.noarch.rpm
+#yum install mysql-server -y
+#systemctl start mysqld
+#systemctl enable mysqld
 
 # temp_mysql_password="$(grep 'temporary password' /var/log/mysqld.log)"
 # mysql_secure_installation
