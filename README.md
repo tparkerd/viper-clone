@@ -136,7 +136,9 @@ sed -i 's/sampleplugins\/filter_geodesic/#\0/g' meshlab_full.pro
 qmake-qt5 meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 mkdir -p /opt/meshlab
 cp -Rv distrib/* /opt/meshlab
-export LD_LIBRARY_PATH="/opt/meshlab"
+
+echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> "/etc/profile.d/meshlab.sh"
+
 
 # Installation option #3: puias-computational (Success! - v1.3.2_64bit Oct 8 2016)
 yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead
