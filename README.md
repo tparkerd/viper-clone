@@ -2,34 +2,34 @@
 
 Below is a list of files that have not changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
 
-f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
-8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
-46b0f7ff00f52d906b519780f9e521df  ./gia/authors.txt
-0c960c799dc2198e0d7f180dd0b1ba68  ./gia/list_licenses.txt
-fa7568429c94a676bc6417bdf47a4271  ./gia/settings.xml
-d52c996c9fc43fd326c73637cd51e059  ./gia/copyright.txt
-9ce5a0a21fe6256073a9e2a1ed0d0db2  ./gia/gia.log
-84271c6175f6cfbd40e584482e0052bc  ./gia/interpreter
-c3ba9125d03dca852be495de03433de0  ./gia/giaroots
-261a52eac7cf229a435bcdfeeabc4508  ./rsa-fix-GLIBCXX_3.4.11-not_found-problem
-01755093c5305029fd29371d70f8d578  ./rsa-chkrights-proc
-8b6831c02a6faad854a3310e4acc27ed  ./rsa-chkrights-orig
-f2409716c87609bf9df61057ef9ea9f7  ./skeleton3D/Skeleton
-899b4676f7c440996cdd2693682f69f1  ./skeleton3D/rsa-pipeline-license.txt
-f5da9e913756e1679a97a64558fe432f  ./rsa-create-rsadata-rootarch
-4613660687de1a78a781fd214175adfc  ./rsa-pipeline-contributors.txt
-f6b69096d34b1072b6e5fca97d770c95  ./rsa-setrights-orig
-6de709f749b810b0c9f991f9f6a33a96  ./rsa-reconstruction3D
-9843428df23f3383f13cf686cff98fc1  ./reconstruction3D-stl/recon-v4-stl
-899b4676f7c440996cdd2693682f69f1  ./reconstruction3D-stl/rsa-pipeline-license.txt
-71fdca3474ed993e626276d2c64a63ad  ./rsa-install-rsagiatemplates
-899b4676f7c440996cdd2693682f69f1  ./rsa-pipeline-license.txt
-85e2a7eda4dbf8709b86b8bf5b394763  ./rsa-skeleton3D
-071f8524051589c9ab04eb07d87cc891  ./rsa-isosurface
-7833abad312dd6afe8b44e41ebfc33bd  ./rsa-setrights-proc
-899b4676f7c440996cdd2693682f69f1  ./reconstruction3D/rsa-pipeline-license.txt
-2c4ed390ddfd56a009b6539557b9dd2a  ./reconstruction3D/Reconstruction
-c469e97018e8665d00a0f6e02050784f  ./rsa-create-orig
+    f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
+    8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
+    46b0f7ff00f52d906b519780f9e521df  ./gia/authors.txt
+    0c960c799dc2198e0d7f180dd0b1ba68  ./gia/list_licenses.txt
+    fa7568429c94a676bc6417bdf47a4271  ./gia/settings.xml
+    d52c996c9fc43fd326c73637cd51e059  ./gia/copyright.txt
+    9ce5a0a21fe6256073a9e2a1ed0d0db2  ./gia/gia.log
+    84271c6175f6cfbd40e584482e0052bc  ./gia/interpreter
+    c3ba9125d03dca852be495de03433de0  ./gia/giaroots
+    261a52eac7cf229a435bcdfeeabc4508  ./rsa-fix-GLIBCXX_3.4.11-not_found-problem
+    01755093c5305029fd29371d70f8d578  ./rsa-chkrights-proc
+    8b6831c02a6faad854a3310e4acc27ed  ./rsa-chkrights-orig
+    f2409716c87609bf9df61057ef9ea9f7  ./skeleton3D/Skeleton
+    899b4676f7c440996cdd2693682f69f1  ./skeleton3D/rsa-pipeline-license.txt
+    f5da9e913756e1679a97a64558fe432f  ./rsa-create-rsadata-rootarch
+    4613660687de1a78a781fd214175adfc  ./rsa-pipeline-contributors.txt
+    f6b69096d34b1072b6e5fca97d770c95  ./rsa-setrights-orig
+    6de709f749b810b0c9f991f9f6a33a96  ./rsa-reconstruction3D
+    9843428df23f3383f13cf686cff98fc1  ./reconstruction3D-stl/recon-v4-stl
+    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D-stl/rsa-pipeline-license.txt
+    71fdca3474ed993e626276d2c64a63ad  ./rsa-install-rsagiatemplates
+    899b4676f7c440996cdd2693682f69f1  ./rsa-pipeline-license.txt
+    85e2a7eda4dbf8709b86b8bf5b394763  ./rsa-skeleton3D
+    071f8524051589c9ab04eb07d87cc891  ./rsa-isosurface
+    7833abad312dd6afe8b44e41ebfc33bd  ./rsa-setrights-proc
+    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D/rsa-pipeline-license.txt
+    2c4ed390ddfd56a009b6539557b9dd2a  ./reconstruction3D/Reconstruction
+    c469e97018e8665d00a0f6e02050784f  ./rsa-create-orig
 
 # Set-up Guide
 
@@ -48,8 +48,8 @@ yum update
 
 # Create supplementary users if needed
 groupadd rootarch
-usermod -a -G rootarch root
-usermod -a -G rootarch vagrant
+usermod -aG rootarch root
+usermod -aG rootarch vagrant
 
 # Install git to clone this repo
 # TODO(tparker): Update this for when the repo has been moved to operational scripts
@@ -100,23 +100,46 @@ yum install snapd && systemctl enable --now snapd.socket
 snap install meshlab
 
 # Installation option #2: Source
-git clone https://github.com/cnr-isti-vclab/meshlab.git
+# Base on this guide: https://gist.github.com/LogWell/bffd0a79ff13ec392f8fcf6749388c46
+
 ## Get dependencies to do the compilation
 ### Qt5, Glu, Glew, 
-yum install -y qt5-qtbase qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel
+yum install -y qt5-qtbasfe qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead eigen3-devel patch
 
-QMAKE_FLAGS="-spec linux-g++ CONFIG+=release CONFIG+=qml_release CONFIG+=c++11 QMAKE_CXXFLAGS+=-fPIC QMAKE_CXXFLAGS+=-std=c++11 QMAKE_CXXFLAGS+=-fpermissive INCLUDEPATH+=/usr/include/eigen3 LIBS+=-L`pwd`/lib/linux-g++"
+QMAKE_FLAGS=('-spec' 'linux-g++' 'CONFIG+=release' 'CONFIG+=qml_release' 'CONFIG+=c++11' 'QMAKE_CXXFLAGS+=-fPIC' 'QMAKE_CXXFLAGS+=-fopenmp' 'QMAKE_CXXFLAGS+=-std=c++11' 'QMAKE_CXXFLAGS+=-fpermissive' 'INCLUDEPATH+=/usr/include/eigen3' "LIBS+=-L`pwd`/lib/linux-g++")
+MAKE_FLAGS=('-j4')
 
+git clone --depth 1 https://github.com/cnr-isti-vclab/meshlab.git
+git clone --depth 1 https://github.com/cnr-isti-vclab/vcglib.git -b devel
+curl https://data.gpo.zugaina.org/gentoo/media-gfx/meshlab/files/2016.12/meshlab-2016.12-remove-header.patch | patch -p1
+
+cd meshlab && git fetch --tags && git checkout 25f3d17
+ln -s src/external external
 cd src/external
-qmake-qt5 external.pro $QMAKE_FLAGS && make
+qmake-qt5 external.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+cp -v lib/linux/* lib/linux-g++/ 
+
 cd ../common
-qmake-qt5 common.pro $QMAKE_FLAGS && make
+qmake-qt5 common.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+
 cd ..
-qmake-qt5 meshlab_mini.pro $QMAKE_FLAGS && make
-qmake-qt5 meshlab_full.pro $QMAKE_FLAGS && make
+# Comment out problematic plugins that use texture.h in vcglib
+# https://github.com/cnr-isti-vclab/meshlab/issues/428#issuecomment-474884632
+sed -i 's/meshlabplugins\/filter_clean/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_create/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_meshing/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_texture/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_trioptimize/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_unsharp/#\0/g' meshlab_full.pro
+sed -i 's/meshlabplugins\/filter_voronoi/#\0/g' meshlab_full.pro
+sed -i 's/sampleplugins\/filter_geodesic/#\0/g' meshlab_full.pro
+qmake-qt5 meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+mkdir -p /opt/meshlab
+cp -Rv distrib/* /opt/meshlab
+export LD_LIBRARY_PATH="/opt/meshlab"
 
 # Installation option #3: puias-computational (Success! - v1.3.2_64bit Oct 8 2016)
-yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel
+yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead
 
 wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/levmar-2.5-6.sdl7.x86_64.rpm
 rpm -Uvh levmar-2.5-6.sdl7.x86_64.rpm
