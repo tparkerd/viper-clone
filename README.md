@@ -53,18 +53,18 @@ usermod -aG rootarch vagrant
 
 # Install git to clone this repo
 # TODO(tparker): Update this for when the repo has been moved to operational scripts
-yum install git wget -y
+yum install -y git wget
 git clone https://github.com/tparkerd/viper-clone.git --branch rsagia --single-branch
 
 # Install Xfce
-yum install epel-release -y
-yum groupinstall "Server with GUI" -y
-yum groupinstall "Xfce" -y
+yum install -y epel-release
+yum groupinstall -y "Server with GUI"
+yum groupinstall -y "Xfce"
 systemctl set-default graphical.target
 systemctl isolate graphical.target
 
 # Install TigerVNC
-yum install tigervnc-server -y
+yum install -y tigervnc-server
 
 # Install Java(TM) SE Runtime Environment (build 1.8.0_202-b08)
 # Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
@@ -74,7 +74,7 @@ rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
 alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
 
 # Install dependencies for RSA-GiA
-yum install -y PIL.x86_64 numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64 -y
+yum install -y PIL.x86_64 numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64
 
 # Install rsa-gia
 mkdir -p /opt/rsa-gia
@@ -95,12 +95,8 @@ echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profil
 echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
 
 # Meshlab
-# Installation option #1: Snap (Some errors for plugins and does not have permission to create /run/user/xxxx directory upon start up)
-yum install snapd && systemctl enable --now snapd.socket
-snap install meshlab
-
 # Installation option #2: Source
-# Base on this guide: https://gist.github.com/LogWell/bffd0a79ff13ec392f8fcf6749388c46
+# Based on this guide: https://gist.github.com/LogWell/bffd0a79ff13ec392f8fcf6749388c46
 
 ## Get dependencies to do the compilation
 ### Qt5, Glu, Glew, 
@@ -122,9 +118,9 @@ cp -v lib/linux/* lib/linux-g++/
 cd ../common
 qmake-qt5 common.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 
-cd ..
 # Comment out problematic plugins that use texture.h in vcglib
 # https://github.com/cnr-isti-vclab/meshlab/issues/428#issuecomment-474884632
+cd ..
 sed -i 's/meshlabplugins\/filter_clean/#\0/g' meshlab_full.pro
 sed -i 's/meshlabplugins\/filter_create/#\0/g' meshlab_full.pro
 sed -i 's/meshlabplugins\/filter_meshing/#\0/g' meshlab_full.pro
@@ -137,18 +133,11 @@ qmake-qt5 meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 mkdir -p /opt/meshlab
 cp -Rv distrib/* /opt/meshlab
 
+echo 'export PATH="$PATH:/opt/meshlab"' >> "/etc/profile.d/meshlab.sh"
 echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> "/etc/profile.d/meshlab.sh"
 
-
-# Installation option #3: puias-computational (Success! - v1.3.2_64bit Oct 8 2016)
-yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead
-
-wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/levmar-2.5-6.sdl7.x86_64.rpm
-rpm -Uvh levmar-2.5-6.sdl7.x86_64.rpm
-yum install levmar
-
 # Install X virtual framebuffer for to allow meshlab to run in headless environment
-yum install xorg-x11-server-Xvfb -y
+yum install -y xorg-x11-server-Xvfb
 
 # Install miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh | bash
@@ -180,6 +169,51 @@ npm install -g n
 n latest
 
 ```
+
+# Troubleshooting
+
+## Installing MeshLab
+
+There are three options for installing MeshLab onto a CentOS 7 system: build from source, Snap, and puias-computational.
+
+In the main guide, I built from source and disabled several plugins that were missing a function and would not compile. The plugins removed where the following:
+
+    meshlabplugins/filter_create
+    meshlabplugins/filter_meshing
+    meshlabplugins/filter_texture
+    meshlabplugins/filter_trioptimize
+    meshlabplugins/filter_unsharp
+    meshlabplugins/filter_voronoi
+    sampleplugins/filter_geodesic
+
+However, if you wish to try the versions provided by Snap or puias-computational repo, below is a guide to do so.
+
+### Snap
+Note, despite its simple installation, I chose not to use this because permission errors were consistently produced on start up. Specifically, there is an error for permission to create /run/user/<current_user_ID> directory upon start up. 
+```bash
+# Install Snap
+yum install -y snapd && systemctl enable --now snapd.socket
+# Install MeshLab
+snap install meshlab
+```
+
+### PUIAS-Computational (v1.3.2_64bit Oct 8 2016)
+[Package Reference](https://centos.pkgs.org/7/puias-computational-x86_64/meshlab-1.3.2-10.sdl7.x86_64.rpm.html)
+
+```bash
+yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead
+
+wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/levmar-2.5-6.sdl7.x86_64.rpm
+rpm -Uvh levmar-2.5-6.sdl7.x86_64.rpm
+yum install -y levmar
+
+wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/meshlab-1.3.2-10.sdl7.x86_64.rpm
+
+rpm -Uvh meshlab-1.3.2-10.sdl7.x86_64.rpm
+yum install -y meshlab
+```
+
+
 
 # FAQ
 
