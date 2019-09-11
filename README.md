@@ -82,13 +82,19 @@ mkdir -p /opt/rsa-gia
 ## Install dependencies
 yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64
 wget http://mk42ws.biology.duke.edu:8000/raw-attachment/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation/rsa-pipeline-rpm-2.tar.gz
-tar -zxvf rsa-pipeline-rpm-2.tar.gz 
-rpm -ivh rsa-pipeline-rpm-2/* --force # TODO(tparker): learn why it conflicts with operating system libraries
-mv /usr/local/bin/gia* /opt/rsa-gia
-mv /usr/local/bin/matlab-programs /opt/rsa-gia
-mv /usr/local/bin/reconstruction* /opt/rsa-gia
-mv /usr/local/bin/rsa* /opt/rsa-gia
-mv /usr/local/bin/skeleton3D /opt/rsa-gia
+tar -zxvf rsa-pipeline-rpm-2.tar.gz
+
+# The RPM installation must be forced because some of the binaries and libraries are directly placed
+# into the /usr/lib and /usr/bin directories which are owned by another package: filesystem-3.2-25.el7
+# The only file that may be overwritten is matlab in /usr/bin/matlab. It is included in
+# rsa-pipeline-admin-2.0.0-1. If you have a version of matlab installed in this location, make sure to
+# back it up
+rpm -ivh rsa-pipeline-rpm-2/* --force
+mv -v /usr/local/bin/gia* /opt/rsa-gia
+mv -v /usr/local/bin/matlab-programs /opt/rsa-gia
+mv -v /usr/local/bin/reconstruction* /opt/rsa-gia
+mv -v /usr/local/bin/rsa* /opt/rsa-gia
+mv -v /usr/local/bin/skeleton3D /opt/rsa-gia
 
 # Add java to system path in /etc/profile.d
 echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
