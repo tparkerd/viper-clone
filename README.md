@@ -105,7 +105,7 @@ echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
 # Based on this guide: https://gist.github.com/LogWell/bffd0a79ff13ec392f8fcf6749388c46
 
 ## Get dependencies to do the compilation
-### Qt5, Glu, Glew, 
+### Qt5, Glu, Glew, Jhead, Patch
 yum install -y qt5-qtbasfe qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead eigen3-devel patch
 
 QMAKE_FLAGS=('-spec' 'linux-g++' 'CONFIG+=release' 'CONFIG+=qml_release' 'CONFIG+=c++11' 'QMAKE_CXXFLAGS+=-fPIC' 'QMAKE_CXXFLAGS+=-fopenmp' 'QMAKE_CXXFLAGS+=-std=c++11' 'QMAKE_CXXFLAGS+=-fpermissive' 'INCLUDEPATH+=/usr/include/eigen3' "LIBS+=-L`pwd`/lib/linux-g++")
