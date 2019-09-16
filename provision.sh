@@ -52,7 +52,11 @@ mkdir -p /opt/rsa-gia
 yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64
 wget http://mk42ws.biology.duke.edu:8000/raw-attachment/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation/rsa-pipeline-rpm-2.tar.gz
 tar -zxvf rsa-pipeline-rpm-2.tar.gz 
-rpm -ivh rsa-pipeline-rpm-2/* --force # TODO(tparker): learn why it conflicts with operating system libraries
+
+rpm -ivh rsa-pipeline-rpm-2/* --force
+
+# Initilize folders
+rsa-create-orig
 
 # Move files to /opt
 mkdir /opt/rsa-gia
