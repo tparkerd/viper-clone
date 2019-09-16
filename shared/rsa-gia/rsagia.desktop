@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=4.0.0
+Name=RSA-GiA
+GenericName=Root System Architecture, General Image Analysis
+Comment=Analyze root system architecture
+Type=Application
+Exec=/opt/rsa-gia/rsa-gia
+Icon=/usr/share/pixmaps/comps/java-platform.png
+Terminal=false
+Categories=Application;

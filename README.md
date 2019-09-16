@@ -1,6 +1,6 @@
 # viper-clone
 
-Below is a list of files that have not changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
+Below is a list of files that have **not** changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
 
     f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
     8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
@@ -50,6 +50,8 @@ yum update
 groupadd rootarch
 usermod -aG rootarch root
 usermod -aG rootarch vagrant
+adduser rsa-data
+usermod -aG rootarch rsa-data
 
 # Install git to clone this repo
 # TODO(tparker): Update this for when the repo has been moved to operational scripts
@@ -96,9 +98,53 @@ mv -v /usr/local/bin/reconstruction* /opt/rsa-gia
 mv -v /usr/local/bin/rsa* /opt/rsa-gia
 mv -v /usr/local/bin/skeleton3D /opt/rsa-gia
 
+# Install file manager tools
+git clone https://github.com/Topp-Roots-Lab/rsa-tools.git
+mkdir -p /opt/rsa-gia/importer
+cp -Rv rsa-tools/Importer/* /opt/rsa-gia/importer
+g++ /opt/rsa-gia/importer/rsa-mv2orig-launcher.cpp -o /opt/rsa-gia/importer/rsa-mv2orig-launcher
+chown -v rsa-data:rootarch /opt/rsa-gia/importer/rsa-mv2orig-launcher
+chmod -v 4750 /opt/rsa-gia/importer/rsa-mv2orig-launcher
+chmod -v +x /opt/rsa-gia/importer/rsa-mv2orig.py
+
+# Setup data folders and set ownership & permissions
+rsa-create-orig
+echo 'yes' | rsa-setrights-orig
+echo 'yes' | rsa-setrights-proc
+
+# Install templates into data folder
+src_tmplt='/opt/rsa-gia/rsa-gia-templates/*'
+dest_tmplt='/data/rsa/rsa-gia-templates'
+chown rsa-data:rootarch "$dest_tmplt"
+chmod 2750 "$dest_tmplt"
+cp -Rv $src_tmplt $dest_tmplt
+# directories
+find $dest_tmplt -mindepth 1 -type d -exec chown rsa-data:rootarch '{}' \;
+find $dest_tmplt -mindepth 1 -type d -exec chmod 2750 '{}' \;
+# files
+find $dest_tmplt -mindepth 1 -type f -exec chown rsa-data:rootarch '{}' \;
+find $dest_tmplt -mindepth 1 -type f -exec chmod 640 '{}' \;
+rm -rvf /opt/rsa-gia/rsa-gia-templates /opt/rsa-gia/rsa-install-rsagiatemplates rsa-create-rsadata-rootarch rsa-mv2orig
+
+
 # Add java to system path in /etc/profile.d
 echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
 echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
+
+# Create rsa-gia application shortcut
+
+"#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=4.0.0
+Name=RSA-GiA
+GenericName=Root System Architecture, General Image Analysis
+Comment=Analyze root system architecture
+Type=Application
+Exec=/opt/rsa-gia/rsa-gia
+Icon=/usr/share/pixmaps/comps/java-platform.png
+Terminal=false
+Categories=Application;" > /usr/share/applications/rsagia.desktop
+
 
 # Meshlab
 # Installation option #2: Source

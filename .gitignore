@@ -3,3 +3,7 @@
 *.log
 *.PNG
 *.JPG
+*.jar
+
+*backup*
+*/artifacts/*
