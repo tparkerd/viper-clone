@@ -132,19 +132,7 @@ echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profil
 echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
 
 # Create rsa-gia application shortcut
-
-"#!/usr/bin/env xdg-open
-[Desktop Entry]
-Version=4.0.0
-Name=RSA-GiA
-GenericName=Root System Architecture, General Image Analysis
-Comment=Analyze root system architecture
-Type=Application
-Exec=/opt/rsa-gia/rsa-gia
-Icon=/usr/share/pixmaps/comps/java-platform.png
-Terminal=false
-Categories=Application;" > /usr/share/applications/rsagia.desktop
-
+cp -Rv /vagrant/share/rsa-gia/rsagia.desktop /usr/share/applications/
 
 # Meshlab
 # Installation option #2: Source
