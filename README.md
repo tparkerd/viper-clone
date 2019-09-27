@@ -44,7 +44,7 @@ Ask Noah/Josh to take a snapshot of the system in case something goes horribly w
 Use the following commands to update the system and install dependencies
 ```bash
 # Update system
-yum update
+yum update -y
 
 # Create supplementary users if needed
 groupadd rootarch
@@ -56,7 +56,7 @@ usermod -aG rootarch rsa-data
 # Install git to clone this repo
 # TODO(tparker): Update this for when the repo has been moved to operational scripts
 yum install -y git wget
-git clone https://github.com/tparkerd/viper-clone.git --branch rsagia --single-branch
+# git clone https://github.com/tparkerd/viper-clone.git --branch rsagia --single-branch
 
 # Install Xfce
 yum install -y epel-release
@@ -68,6 +68,10 @@ systemctl isolate graphical.target
 # Install TigerVNC
 yum install -y tigervnc-server
 
+### Placeholder for all users
+echo 'alias startvnc="vncserver :93 -geometry 1900x1200"' >> "/etc/profile.d/vnc.sh"
+echo 'alias killvnc="vncserver -kill :93"' >> "/etc/profile.d/vnc.sh"
+
 # Install Java(TM) SE Runtime Environment (build 1.8.0_202-b08)
 # Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
 rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
@@ -76,13 +80,13 @@ rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
 alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
 
 # Install dependencies for RSA-GiA
-yum install -y numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64 PIL.x86_64 # may not need PIL because last I checked, it wasn't available
+yum install -y PIL numpy ImageMagick
 
 # Install rsa-gia
 mkdir -p /opt/rsa-gia
 # cp -Rv /vagrant/shared/rsa-gia/minimal/* /opt/rsa-gia
 ## Install dependencies
-yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64
+yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64 compat-libtiff3
 wget http://mk42ws.biology.duke.edu:8000/raw-attachment/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation/rsa-pipeline-rpm-2.tar.gz
 tar -zxvf rsa-pipeline-rpm-2.tar.gz
 
@@ -99,6 +103,7 @@ mv -v /usr/local/bin/rsa* /opt/rsa-gia
 mv -v /usr/local/bin/skeleton3D /opt/rsa-gia
 
 # Install file manager tools
+yum install -y gcc-c++
 git clone https://github.com/Topp-Roots-Lab/rsa-tools.git
 mkdir -p /opt/rsa-gia/importer
 cp -Rv rsa-tools/Importer/* /opt/rsa-gia/importer
@@ -106,6 +111,11 @@ g++ /opt/rsa-gia/importer/rsa-mv2orig-launcher.cpp -o /opt/rsa-gia/importer/rsa-
 chown -v rsa-data:rootarch /opt/rsa-gia/importer/rsa-mv2orig-launcher
 chmod -v 4750 /opt/rsa-gia/importer/rsa-mv2orig-launcher
 chmod -v +x /opt/rsa-gia/importer/rsa-mv2orig.py
+
+# Add java to system path in /etc/profile.d
+echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
+echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
+source /etc/profile.d/rsagia.sh
 
 # Setup data folders and set ownership & permissions
 rsa-create-orig
@@ -126,13 +136,8 @@ find $dest_tmplt -mindepth 1 -type f -exec chown rsa-data:rootarch '{}' \;
 find $dest_tmplt -mindepth 1 -type f -exec chmod 640 '{}' \;
 rm -rvf /opt/rsa-gia/rsa-gia-templates /opt/rsa-gia/rsa-install-rsagiatemplates rsa-create-rsadata-rootarchrsa-mv2orig
 
-
-# Add java to system path in /etc/profile.d
-echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
-echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
-
 # Create rsa-gia application shortcut
-cp -Rv /vagrant/share/rsa-gia/rsagia.desktop /usr/share/applications/
+cp -Rv /vagrant/shared/rsa-gia/rsagia.desktop /usr/share/applications/
 
 # Meshlab
 # Installation option #2: Source
@@ -173,8 +178,9 @@ qmake-qt5 meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 mkdir -p /opt/meshlab
 cp -Rv distrib/* /opt/meshlab
 
-echo 'export PATH="$PATH:/opt/meshlab"' >> "/etc/profile.d/meshlab.sh"
-echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> "/etc/profile.d/meshlab.sh"
+echo 'export PATH="$PATH:/opt/meshlab"' >> /etc/profile.d/meshlab.sh
+echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> /etc/profile.d/meshlab.sh
+source /etc/profile.d/meshlab.sh
 
 # Install X virtual framebuffer for to allow meshlab to run in headless environment
 yum install -y xorg-x11-server-Xvfb
