@@ -76,7 +76,7 @@ rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
 alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
 
 # Install dependencies for RSA-GiA
-yum install -y PIL.x86_64 numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64
+yum install -y numpy.x86_64 ImageMagick.x86_64 ImageMagick.x86_64 PIL.x86_64 # may not need PIL because last I checked, it wasn't available
 
 # Install rsa-gia
 mkdir -p /opt/rsa-gia
@@ -113,7 +113,7 @@ echo 'yes' | rsa-setrights-orig
 echo 'yes' | rsa-setrights-proc
 
 # Install templates into data folder
-src_tmplt='/opt/rsa-gia/rsa-gia-templates/*'
+src_tmplt='/opt/local/bin/rsa-gia-templates/*'
 dest_tmplt='/data/rsa/rsa-gia-templates'
 chown rsa-data:rootarch "$dest_tmplt"
 chmod 2750 "$dest_tmplt"
@@ -124,7 +124,7 @@ find $dest_tmplt -mindepth 1 -type d -exec chmod 2750 '{}' \;
 # files
 find $dest_tmplt -mindepth 1 -type f -exec chown rsa-data:rootarch '{}' \;
 find $dest_tmplt -mindepth 1 -type f -exec chmod 640 '{}' \;
-rm -rvf /opt/rsa-gia/rsa-gia-templates /opt/rsa-gia/rsa-install-rsagiatemplates rsa-create-rsadata-rootarch rsa-mv2orig
+rm -rvf /opt/rsa-gia/rsa-gia-templates /opt/rsa-gia/rsa-install-rsagiatemplates rsa-create-rsadata-rootarchrsa-mv2orig
 
 
 # Add java to system path in /etc/profile.d
@@ -140,7 +140,7 @@ cp -Rv /vagrant/share/rsa-gia/rsagia.desktop /usr/share/applications/
 
 ## Get dependencies to do the compilation
 ### Qt5, Glu, Glew, Jhead, Patch
-yum install -y qt5-qtbasfe qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead eigen3-devel patch
+yum install -y qt5-qtbase qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead eigen3-devel patch
 
 QMAKE_FLAGS=('-spec' 'linux-g++' 'CONFIG+=release' 'CONFIG+=qml_release' 'CONFIG+=c++11' 'QMAKE_CXXFLAGS+=-fPIC' 'QMAKE_CXXFLAGS+=-fopenmp' 'QMAKE_CXXFLAGS+=-std=c++11' 'QMAKE_CXXFLAGS+=-fpermissive' 'INCLUDEPATH+=/usr/include/eigen3' "LIBS+=-L`pwd`/lib/linux-g++")
 MAKE_FLAGS=('-j4')
