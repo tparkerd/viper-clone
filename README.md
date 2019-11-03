@@ -52,6 +52,8 @@ usermod -aG rootarch root
 usermod -aG rootarch vagrant
 adduser rsa-data
 usermod -aG rootarch rsa-data
+adduser tparker
+usermod -aG rootarch tparker
 
 # Install git to clone this repo
 # TODO(tparker): Update this for when the repo has been moved to operational scripts
@@ -72,6 +74,8 @@ yum install -y tigervnc-server
 echo 'alias startvnc="vncserver :93 -geometry 1900x1200"' >> "/etc/profile.d/vnc.sh"
 echo 'alias killvnc="vncserver -kill :93"' >> "/etc/profile.d/vnc.sh"
 
+# -- END 1-VNC SNAPSHOT
+
 # Install Java(TM) SE Runtime Environment (build 1.8.0_202-b08)
 # Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
 rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
@@ -80,7 +84,7 @@ rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
 alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
 
 # Install dependencies for RSA-GiA
-yum install -y PIL numpy ImageMagick
+yum install -y numpy ImageMagick
 
 # Install rsa-gia
 mkdir -p /opt/rsa-gia
@@ -113,8 +117,11 @@ chmod -v 4750 /opt/rsa-gia/importer/rsa-mv2orig-launcher
 chmod -v +x /opt/rsa-gia/importer/rsa-mv2orig.py
 
 # Add java to system path in /etc/profile.d
-echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia"' > /etc/profile.d/rsagia.sh
-echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
+echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/local/bin"' > /etc/profile.d/rsagia.sh
+# echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
+echo 'export JAVA_HOME=/usr/java/jdk1.8.0_45' >> /etc/profile.d/rsagia.sh
+
+
 source /etc/profile.d/rsagia.sh
 
 # Setup data folders and set ownership & permissions
