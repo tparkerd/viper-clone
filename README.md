@@ -84,13 +84,18 @@ rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
 alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
 
 # Install dependencies for RSA-GiA
-yum install -y numpy ImageMagick
+yum install -y numpy ImageMagick gcc-c++
 
 # Install rsa-gia
 mkdir -p /opt/rsa-gia
 # cp -Rv /vagrant/shared/rsa-gia/minimal/* /opt/rsa-gia
 ## Install dependencies
 yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64 compat-libtiff3
+
+# No Good!
+# Install qt4.8.7 from source
+wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
+tar -zvxf qt-everywhere-opensource-src-4.8.7.tar.gz
 wget http://mk42ws.biology.duke.edu:8000/raw-attachment/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation/rsa-pipeline-rpm-2.tar.gz
 tar -zxvf rsa-pipeline-rpm-2.tar.gz
 
