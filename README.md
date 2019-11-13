@@ -1,98 +1,250 @@
 # viper-clone
 
-Below is a list of files that have **not** changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
+This repository is a guide on creating a virtual environment that should nearly match that of viper.datasci.danforthcenter.org. The primarly differences between this and the actual server is that this requires additional configuration for users, groups, and data location.
+---
+## Table of Contents
+* 
 
-    f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
-    8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
-    46b0f7ff00f52d906b519780f9e521df  ./gia/authors.txt
-    0c960c799dc2198e0d7f180dd0b1ba68  ./gia/list_licenses.txt
-    fa7568429c94a676bc6417bdf47a4271  ./gia/settings.xml
-    d52c996c9fc43fd326c73637cd51e059  ./gia/copyright.txt
-    9ce5a0a21fe6256073a9e2a1ed0d0db2  ./gia/gia.log
-    84271c6175f6cfbd40e584482e0052bc  ./gia/interpreter
-    c3ba9125d03dca852be495de03433de0  ./gia/giaroots
-    261a52eac7cf229a435bcdfeeabc4508  ./rsa-fix-GLIBCXX_3.4.11-not_found-problem
-    01755093c5305029fd29371d70f8d578  ./rsa-chkrights-proc
-    8b6831c02a6faad854a3310e4acc27ed  ./rsa-chkrights-orig
-    f2409716c87609bf9df61057ef9ea9f7  ./skeleton3D/Skeleton
-    899b4676f7c440996cdd2693682f69f1  ./skeleton3D/rsa-pipeline-license.txt
-    f5da9e913756e1679a97a64558fe432f  ./rsa-create-rsadata-rootarch
-    4613660687de1a78a781fd214175adfc  ./rsa-pipeline-contributors.txt
-    f6b69096d34b1072b6e5fca97d770c95  ./rsa-setrights-orig
-    6de709f749b810b0c9f991f9f6a33a96  ./rsa-reconstruction3D
-    9843428df23f3383f13cf686cff98fc1  ./reconstruction3D-stl/recon-v4-stl
-    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D-stl/rsa-pipeline-license.txt
-    71fdca3474ed993e626276d2c64a63ad  ./rsa-install-rsagiatemplates
-    899b4676f7c440996cdd2693682f69f1  ./rsa-pipeline-license.txt
-    85e2a7eda4dbf8709b86b8bf5b394763  ./rsa-skeleton3D
-    071f8524051589c9ab04eb07d87cc891  ./rsa-isosurface
-    7833abad312dd6afe8b44e41ebfc33bd  ./rsa-setrights-proc
-    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D/rsa-pipeline-license.txt
-    2c4ed390ddfd56a009b6539557b9dd2a  ./reconstruction3D/Reconstruction
-    c469e97018e8665d00a0f6e02050784f  ./rsa-create-orig
+---
 
-# Set-up Guide
+### Operating System
 
-The following steps were taken to upgrade and configure the environment for viper.datasci.danforthcenter.org
+1. Download CentOS 8
 
-## Step 0: Safety measures
+    http://mirror.mobap.edu/centos/8.0.1905/isos/x86_64/CentOS-8-x86_64-1905-boot.iso
 
-Ask Noah/Josh to take a snapshot of the system in case something goes horribly wrong.
+2. Set installation source
 
-## Step 1: Install dependencies and system-wide tools
+    Currently, there's a known bug ([#16456](https://bugs.centos.org/view.php?id=16456)) during a minimal installation of CentOS 8. It requires that
+    you set the Installation Source manually. 
 
-Use the following commands to update the system and install dependencies
+    Currently, the fix is to add the following as a mirrorlist
+
+    ```
+    http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS
+    ```
+
+    ![Installation Source Bug Fix](img/installtion_source_bug_fix.png)
+
+3. Turn on network
+
+4. Set Installation Destination (configures disk partitions)
+
+    * Select **Custom** for Storage Configuration, Click **Done**
+    
+    ![](img/installation_destination_001.png)
+    
+    * Click **Click here to create them automatically** to generate the recommended partitions.
+    
+    ![](img/installation_destination_002.png)
+    
+    * Check generated partitions
+
+      This should create a `/boot` (ext4), `/` (xfs, LVM), and `/swap` (swap, LVM) partitions.
+
+    ![](img/installation_destination_003.png)
+
+    * Click **Done**, and then **Accept Changes**
+
+5. Set Software Selection
+
+    * Check Base Environment to **Server**
+    * Check Add-Ons:
+      * GNOME
+      * Network File System Client
+      * Headless Management
+      * Scientific Support
+      * System Tools
+      * Graphical Administration Tools
+
+6. Click **Begin Installation**
+
+    * Set `root` password
+
+7. Reboot
+
+
+### Initial Configuration
+
+#### Create users and groups
+
 ```bash
-# Update system
-yum update -y
-
 # Create supplementary users if needed
 groupadd rootarch
 usermod -aG rootarch root
-usermod -aG rootarch vagrant
 adduser rsa-data
 usermod -aG rootarch rsa-data
-adduser tparker
-usermod -aG rootarch tparker
+```
 
-# Install git to clone this repo
-# TODO(tparker): Update this for when the repo has been moved to operational scripts
-yum install -y git wget
-# git clone https://github.com/tparkerd/viper-clone.git --branch rsagia --single-branch
+#### Install Guest Additions
 
-# Install Xfce
-yum install -y epel-release
-yum groupinstall -y "Server with GUI"
-yum groupinstall -y "Xfce"
-systemctl set-default graphical.target
-systemctl isolate graphical.target
+Reference: https://www.if-not-true-then-false.com/2010/install-virtualbox-guest-additions-on-fedora-centos-red-hat-rhel/
 
-# Install TigerVNC
-yum install -y tigervnc-server
+```bash
+dnf update kernel*
 
-### Placeholder for all users
-echo 'alias startvnc="vncserver :93 -geometry 1900x1200"' >> "/etc/profile.d/vnc.sh"
-echo 'alias killvnc="vncserver -kill :93"' >> "/etc/profile.d/vnc.sh"
+# If kernel was updated, reboot
 
-# -- END 1-VNC SNAPSHOT
+# Mount VirtualBoxGuestAdditions
+# Device Menu > "Insert Guest Additions CD Image"... (download if necessary)
+mkdir -pv /media/VirtualBoxGuestAdditions
+mount -r /dev/cdrom /media/VirtualBoxGuestAdditions
 
-# Install Java(TM) SE Runtime Environment (build 1.8.0_202-b08)
-# Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)
-rpm -ivh /vagrant/shared/jdk-8u45-linux-x64.rpm
+# Install Guest Additions dependencies
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum install -y gcc kernel-devel kernel-headers dkms make bzip2 perl
 
-# Set new installation of Java as default
-alternatives --set java /usr/java/jdk1.8.0_45/jre/bin/java
+# Add kernel environment variable
+KERN_DIR=/usr/src/kernels/`uname -r`
+export KERN_DIR
+
+# Install Guest Additions
+cd /media/VirtualBoxGuestAdditions
+./VBoxLinuxAdditions.run
+reboot
+```
+
+#### Install system dependencies
+
+1. Update system and install dependencies
+    ```bash
+    dnf update -y
+    dnf install -y epel-release git wget gcc-c++ cmake python2 python36
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python get-pip.py
+    rsync -avuP --stats tparker@stargate.datasci.danforthcenter.org:/shares/ctopp_share/data/repos/jdk/jdk-8u202-linux-x64.rpm .
+    rpm -ivh jdk-8u202-linux-x64.rpm
+    alternatives --set java /usr/java/jdk1.8.0_202-amd64/jre/bin/java
+    git clone https://github.com/Topp-Roots-Lab/operations-scripts.git --branch master --single-branch
+    ```
+
+2. Log in as `root` and install package group, **Server with GUI**
+    ```bash
+    dnf groupinstall -y "Server with GUI"
+    systemctl set-default graphical.target
+    systemctl isolate graphical.target
+    ```
+
+3. Install TigerVNC
+    ```bash
+    dnf install -y tigervnc-server tigervnc-server-module
+    ```
+
+4. Adding VNC endpoints. Create service files for user VNC servers (https://www.linuxtechi.com/install-configure-vnc-server-centos8-rhel8/)
+    
+    Each service file follows this template:
+
+    ```
+    # /etc/systemd/system/vncserver@:<portnumber>.service
+    [Unit]
+    Description=Remote Desktop VNC Service
+    After=syslog.target network.target
+
+    [Service]
+    Type=forking
+    WorkingDirectory=/home/username
+    User=username
+    Group=groupname
+
+    ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+    ExecStart=/usr/bin/vncserver -autokill %i
+    ExecStop=/usr/bin/vncserver -kill %i
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+
+    Make sure to replace the `username`, `group`, and `WorkingDirectory` for the user's info. The `portnumber` in the file's name sets the port offset value for the user. Currently, we are keeping track of who has been assigned which port in a [Google Sheet](https://docs.google.com/spreadsheets/d/1PfnRdNhHx81Jcx219MZ2Xoki_c-hDUeL47ug8NEcJbs/edit?usp=drive_web&ouid=107635210664309276124).
+
+    For ease, I've included a copy of the current user's service files in this repo.
+
+    ```bash
+    cp -Rv operations-scripts/viper/vnc/* /etc/systemd/system/
+    ```
+
+    **NOTE about VNC passwords**: Once a user has access a VNC endpoint at least once, their password is stored in `$HOME/.vnc/passwd` by default. Therefore, for anyone that has started their VNC server in the past, you should not need to set a password. Otherwise, use the following command to set the password for the user.
+  
+    ```bash
+    sudo -u username vncpasswd
+    ```
+
+    **Make sure to open ports for VNC endpoints**
+    
+    Allow port in firewall
+
+    **Make sure to replace the port number with the correct value when allowing it through the firewall.** VNC uses ports starting at 5900, so add the assigned port to 5900 to get the actual port. E.g., If you assign porn `126` to someone, open the port `6026`.
+
+    ```bash
+    systemctl daemon-reload
+    systemctl start vncserver@:portnumber.service
+    systemctl enable vncserver@:portnumber.service
+    firewall-cmd --permanent --add-port=5900+portnumber/tcp
+    firewall-cmd --reload
+    ```
+
+    Example for `root`
+    ```bash
+    systemctl daemon-reload
+    systemctl start vncserver@0.service
+    systemctl enable vncserver@0.service
+    firewall-cmd --permanent --add-port=5900/tcp
+    firewall-cmd --reload
+    ```
+### Software Installation Guides
+
+```bash
+
+# Download RSA-GiA source
+git clone https://github.com/tparkerd/rsa-gia.git --branch master --single-branch
 
 # Install dependencies for RSA-GiA
-yum install -y numpy ImageMagick gcc-c++
+dnf install -y ImageMagick
 
-# Install rsa-gia
-mkdir -p /opt/rsa-gia
-# cp -Rv /vagrant/shared/rsa-gia/minimal/* /opt/rsa-gia
-## Install dependencies
-yum install -y qt-4.8.7-3.el7_6.x86_64 qt-x11-4.8.7-3.el7_6.i686 qt-x11-4.8.7-3.el7_6.x86_64 qtwebkit-2.3.4-3.el7.i686 qtwebkit-2.3.4-6.el7.x86_64 libpng12-1.2.50-10.el7.x86_64 compat-libtiff3-3.9.4-11.el7.x86_64 compat-libtiff3
+# Gia2d Dependency: png12, tiff
+# https://centos.pkgs.org/8/centos-appstream-x86_64/libpng12-1.2.57-5.el8.x86_64.rpm.html
+dnf install -y libpng12
 
-# No Good!
+# Libpng15
+git clone https://github.com/glennrp/libpng.git --branch libpng15 --single-branch && cd libpng
+./configure --exec-prefix=/usr --libdir=/lib64
+make && make check && make install && cd ..
+
+# libtiff3
+# Compile libtiff3 (http://www.libtiff.org/)
+wget http://download.osgeo.org/libtiff/tiff-3.9.7.tar.gz
+tar -zvxf tiff-3.9.7.tar.gz && cd tiff-3.9.7/
+./configure --exec-prefix=/usr --libdir=/lib64
+make && make check && make install && cd ..
+
+# Qt4
+# https://github.com/qt/qt.git
+# Q4 Dependencies
+# https://doc.qt.io/archives/qt-4.8/requirements-x11.html
+# yum install libXrender libXrandr libXcursor libXfixes libXinerama libfontconfig libfreetype libXi libXt libXext libX11 libSM libICE libglib-2.0 libpthread
+# NOTE(tparker): There is not an entry for libglib-2.0 or libpthread
+# As far as I can tell the glibc-devel provides the necessary libraries for libglib-2.0
+# And libpthread appears to already be installed by default for CentOS 8
+# I added (libXtst-devel) because of https://www.programering.com/a/MjM3kjNwATA.html
+dnf install -y libXrender-devel libXrandr-devel libXfixes-devel libXinerama-devel fontconfig-devel freetype-devel libXi-devel libXt-devel libXext-devel libX11-devel libSM-devel libICE-devel glibc-devel libXtst-devel
+
+# https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz.mirrorlist
+# https://www.programering.com/a/MjM3kjNwATA.html
+wget http://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
+tar -zxvf qt-everywhere-opensource-src-4.8.7.tar.gz && cd qt-everywhere-opensource-src-4.8.7/
+echo 'yes' | ./configure  -opensource -shared -no-pch -no-javascript-jit -no-script
+sed -i 's|view()->selectionModel()->select(index, QItemSelectionModel::Columns \& QItemSelectionModel::Deselect);|view()->selectionModel()->select(index, static_cast<QItemSelectionModel::SelectionFlags>(QItemSelectionModel::Columns \& QItemSelectionModel::Deselect));|g' ./src/plugins/accessible/widgets/itemviews.cpp
+gmake -j4
+gmake install
+ln -s /usr/local/Trolltech/Qt-4.8.7/lib/libQtCore.so.4 libQtCore.so.4
+cd ..
+
+# Create installation folder
+mkdir -pv /opt/rsa-gia/bin /etc/opt/rsa-gia /var/log/rsa-gia
+
+# Copies of binaries from CentOS 6 instance of Viper
+cp -Rv rsa-gia/dist/centos6-binaries/* /opt/rsa-gia/bin
+rm -rvf /opt/rsa-gia/bin/importer /opt/rsa-gia/bin/file-handlers /opt/rsa-gia/bin/gia-programs/quality-control/qc
+
 # Install qt4.8.7 from source
 wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
 tar -zvxf qt-everywhere-opensource-src-4.8.7.tar.gz
@@ -286,3 +438,36 @@ yum install -y meshlab
 ## Why install RSA-GiA into `/opt`?
 
   Originally, the application was installed into `/opt/local/bin`. I believe that the [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard) has changed since RSA-GiA original development. It seems like `/opt/local/bin` does not follow the current FHS, so I am choosing to place the files into `/opt/rsa-gia`. As such, must be added to `PATH`, and is done using `/etc/profile.d`
+
+
+### Additional Notes
+Below is a list of files that have **not** changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
+
+    f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
+    8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
+    46b0f7ff00f52d906b519780f9e521df  ./gia/authors.txt
+    0c960c799dc2198e0d7f180dd0b1ba68  ./gia/list_licenses.txt
+    fa7568429c94a676bc6417bdf47a4271  ./gia/settings.xml
+    d52c996c9fc43fd326c73637cd51e059  ./gia/copyright.txt
+    9ce5a0a21fe6256073a9e2a1ed0d0db2  ./gia/gia.log
+    84271c6175f6cfbd40e584482e0052bc  ./gia/interpreter
+    c3ba9125d03dca852be495de03433de0  ./gia/giaroots
+    261a52eac7cf229a435bcdfeeabc4508  ./rsa-fix-GLIBCXX_3.4.11-not_found-problem
+    01755093c5305029fd29371d70f8d578  ./rsa-chkrights-proc
+    8b6831c02a6faad854a3310e4acc27ed  ./rsa-chkrights-orig
+    f2409716c87609bf9df61057ef9ea9f7  ./skeleton3D/Skeleton
+    899b4676f7c440996cdd2693682f69f1  ./skeleton3D/rsa-pipeline-license.txt
+    f5da9e913756e1679a97a64558fe432f  ./rsa-create-rsadata-rootarch
+    4613660687de1a78a781fd214175adfc  ./rsa-pipeline-contributors.txt
+    f6b69096d34b1072b6e5fca97d770c95  ./rsa-setrights-orig
+    6de709f749b810b0c9f991f9f6a33a96  ./rsa-reconstruction3D
+    9843428df23f3383f13cf686cff98fc1  ./reconstruction3D-stl/recon-v4-stl
+    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D-stl/rsa-pipeline-license.txt
+    71fdca3474ed993e626276d2c64a63ad  ./rsa-install-rsagiatemplates
+    899b4676f7c440996cdd2693682f69f1  ./rsa-pipeline-license.txt
+    85e2a7eda4dbf8709b86b8bf5b394763  ./rsa-skeleton3D
+    071f8524051589c9ab04eb07d87cc891  ./rsa-isosurface
+    7833abad312dd6afe8b44e41ebfc33bd  ./rsa-setrights-proc
+    899b4676f7c440996cdd2693682f69f1  ./reconstruction3D/rsa-pipeline-license.txt
+    2c4ed390ddfd56a009b6539557b9dd2a  ./reconstruction3D/Reconstruction
+    c469e97018e8665d00a0f6e02050784f  ./rsa-create-orig
