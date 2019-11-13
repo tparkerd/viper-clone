@@ -166,7 +166,7 @@ reboot
     For ease, I've included a copy of the current user's service files in this repo.
 
     ```bash
-    cp -Rv operations-scripts/viper/vnc/* /etc/systemd/system/
+    cp -Rv operations-scripts/servers/viper/vnc/* /etc/systemd/system/
     ```
 
     **NOTE about VNC passwords**: Once a user has access a VNC endpoint at least once, their password is stored in `$HOME/.vnc/passwd` by default. Therefore, for anyone that has started their VNC server in the past, you should not need to set a password. Otherwise, use the following command to set the password for the user.
