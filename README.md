@@ -9,6 +9,7 @@ This repository is a guide on creating a virtual environment that should nearly 
 * [Operating System](#operating-system)
 * [Initial Configuration](#initial-configuration)
   * [Create users and groups](#create-users-and-groups)
+  * [Install desktop environment](#install-desktop-environment)
   * [Install Guest Additions](#install-guest-additions)
   * [Install system dependencies](#install-system-dependencies)
 * [Software Installation Guides](#software-installation-guides)
@@ -83,6 +84,16 @@ adduser rsa-data
 usermod -aG rootarch rsa-data
 ```
 
+#### Install Desktop Environment
+
+Log in as `root` and install package group, **Server with GUI**
+
+```bash
+dnf groupinstall -y "Server with GUI"
+systemctl set-default graphical.target
+systemctl isolate graphical.target
+```
+
 #### Install Guest Additions
 
 Reference: https://www.if-not-true-then-false.com/2010/install-virtualbox-guest-additions-on-fedora-centos-red-hat-rhel/
@@ -125,19 +136,12 @@ reboot
     git clone https://github.com/Topp-Roots-Lab/operations-scripts.git --branch master --single-branch
     ```
 
-2. Log in as `root` and install package group, **Server with GUI**
-    ```bash
-    dnf groupinstall -y "Server with GUI"
-    systemctl set-default graphical.target
-    systemctl isolate graphical.target
-    ```
-
-3. Install TigerVNC
+2. Install TigerVNC
     ```bash
     dnf install -y tigervnc-server tigervnc-server-module
     ```
 
-4. Adding VNC endpoints. Create service files for user VNC servers (https://www.linuxtechi.com/install-configure-vnc-server-centos8-rhel8/)
+3. Adding VNC endpoints. Create service files for user VNC servers (https://www.linuxtechi.com/install-configure-vnc-server-centos8-rhel8/)
     
     Each service file follows this template:
 
@@ -197,6 +201,7 @@ reboot
     firewall-cmd --permanent --add-port=5900/tcp
     firewall-cmd --reload
     ```
+
 ### Software Installation Guides
 
 #### RSA-GiA
