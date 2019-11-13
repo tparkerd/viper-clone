@@ -1,10 +1,17 @@
 # viper-clone
 
 This repository is a guide on creating a virtual environment that should nearly match that of viper.datasci.danforthcenter.org. The primarly differences between this and the actual server is that this requires additional configuration for users, groups, and data location.
----
-## Table of Contents
-* 
 
+---
+
+## Table of Contents
+
+* [Operating System](#operating-system)
+* [Initial Configuration](#initial-configuration)
+  * [Create users and groups](#create-users-and-groups)
+  * [Install Guest Additions](#install-guest-additions)
+  * [Install system dependencies](#install-system-dependencies)
+* [Software Installation Guides](#software-installation-guides)
 ---
 
 ### Operating System
@@ -192,8 +199,9 @@ reboot
     ```
 ### Software Installation Guides
 
-```bash
+#### RSA-GiA
 
+```bash
 # Download RSA-GiA source
 git clone https://github.com/tparkerd/rsa-gia.git --branch master --single-branch
 
@@ -218,9 +226,9 @@ make && make check && make install && cd ..
 
 # Qt4
 # https://github.com/qt/qt.git
+
 # Q4 Dependencies
 # https://doc.qt.io/archives/qt-4.8/requirements-x11.html
-# yum install libXrender libXrandr libXcursor libXfixes libXinerama libfontconfig libfreetype libXi libXt libXext libX11 libSM libICE libglib-2.0 libpthread
 # NOTE(tparker): There is not an entry for libglib-2.0 or libpthread
 # As far as I can tell the glibc-devel provides the necessary libraries for libglib-2.0
 # And libpthread appears to already be installed by default for CentOS 8
@@ -235,7 +243,7 @@ echo 'yes' | ./configure  -opensource -shared -no-pch -no-javascript-jit -no-scr
 sed -i 's|view()->selectionModel()->select(index, QItemSelectionModel::Columns \& QItemSelectionModel::Deselect);|view()->selectionModel()->select(index, static_cast<QItemSelectionModel::SelectionFlags>(QItemSelectionModel::Columns \& QItemSelectionModel::Deselect));|g' ./src/plugins/accessible/widgets/itemviews.cpp
 gmake -j4
 gmake install
-ln -s /usr/local/Trolltech/Qt-4.8.7/lib/libQtCore.so.4 libQtCore.so.4
+ln -s /usr/local/Trolltech/Qt-4.8.7/lib/libQtCore.so.4 /usr/lib64/libQtCore.so.4
 cd ..
 
 # Create installation folder
@@ -243,112 +251,174 @@ mkdir -pv /opt/rsa-gia/bin /etc/opt/rsa-gia /var/log/rsa-gia
 
 # Copies of binaries from CentOS 6 instance of Viper
 cp -Rv rsa-gia/dist/centos6-binaries/* /opt/rsa-gia/bin
-rm -rvf /opt/rsa-gia/bin/importer /opt/rsa-gia/bin/file-handlers /opt/rsa-gia/bin/gia-programs/quality-control/qc
-
-# Install qt4.8.7 from source
-wget https://download.qt.io/archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz
-tar -zvxf qt-everywhere-opensource-src-4.8.7.tar.gz
-wget http://mk42ws.biology.duke.edu:8000/raw-attachment/wiki/010-BenfeyLab/120-BioBusch/030-RootArch/150-RsaPipeline/090-Installation/rsa-pipeline-rpm-2.tar.gz
-tar -zxvf rsa-pipeline-rpm-2.tar.gz
-
-# The RPM installation must be forced because some of the binaries and libraries are directly placed
-# into the /usr/lib and /usr/bin directories which are owned by another package: filesystem-3.2-25.el7
-# The only file that may be overwritten is matlab in /usr/bin/matlab. It is included in
-# rsa-pipeline-admin-2.0.0-1. If you have a version of matlab installed in this location, make sure to
-# back it up
-rpm -ivh rsa-pipeline-rpm-2/* --force
-mv -v /usr/local/bin/gia* /opt/rsa-gia
-mv -v /usr/local/bin/matlab-programs /opt/rsa-gia
-mv -v /usr/local/bin/reconstruction* /opt/rsa-gia
-mv -v /usr/local/bin/rsa* /opt/rsa-gia
-mv -v /usr/local/bin/skeleton3D /opt/rsa-gia
-
-# Install file manager tools
-yum install -y gcc-c++
-git clone https://github.com/Topp-Roots-Lab/rsa-tools.git
-mkdir -p /opt/rsa-gia/importer
-cp -Rv rsa-tools/Importer/* /opt/rsa-gia/importer
-g++ /opt/rsa-gia/importer/rsa-mv2orig-launcher.cpp -o /opt/rsa-gia/importer/rsa-mv2orig-launcher
-chown -v rsa-data:rootarch /opt/rsa-gia/importer/rsa-mv2orig-launcher
-chmod -v 4750 /opt/rsa-gia/importer/rsa-mv2orig-launcher
-chmod -v +x /opt/rsa-gia/importer/rsa-mv2orig.py
 
 # Add java to system path in /etc/profile.d
 echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/local/bin"' > /etc/profile.d/rsagia.sh
 # echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
 echo 'export JAVA_HOME=/usr/java/jdk1.8.0_45' >> /etc/profile.d/rsagia.sh
 
-
 source /etc/profile.d/rsagia.sh
+
+# Install file manager tools
+git clone https://github.com/Topp-Roots-Lab/rsa-tools.git
+pip2 install -r rsa-tools/requirements.txt
+mkdir -pv /opt/rsa-gia/bin/importer /opt/rsa-gia/bin/file-handlers /opt/rsa-gia/bin/gia-programs/quality-control/qc
+cp -Rv rsa-tools/Importer/* /opt/rsa-gia/bin/importer/
+cp -Rv rsa-tools/FileHandlers/* /opt/rsa-gia/bin/file-handlers/
+cp -Rv rsa-tools/QualityControl/* /opt/rsa-gia/bin/gia-programs/quality-control/qc/
+
+# Compile permission elevation scripts and set setuid
+g++ /opt/rsa-gia/bin/importer/rsa-mv2orig-launcher.cpp -o /opt/rsa-gia/bin/importer/rsa-mv2orig-launcher
+chown -v rsa-data:rootarch /opt/rsa-gia/bin/importer/rsa-mv2orig-launcher
+chmod -v 4750 /opt/rsa-gia/bin/importer/rsa-mv2orig-launcher
+chmod -v +x /opt/rsa-gia/bin/importer/rsa-mv2orig.py
+
+g++ /opt/rsa-gia/bin/file-handlers/rsa-renameorig-launcher.cpp -o /opt/rsa-gia/bin/file-handlers/rsa-renameorig-launcher
+chown -v rsa-data:rootarch /opt/rsa-gia/bin/file-handlers/rsa-renameorig-launcher
+chmod -v 4750 /opt/rsa-gia/bin/file-handlers/rsa-renameorig-launcher
+chmod -v +x /opt/rsa-gia/bin/file-handlers/rsa-renameorig.py
+
+chown -v rsa-data:rootarch /opt/rsa-gia/bin/gia-programs/quality-control/qc/all_qc_folder.py
+chmod -v +x /opt/rsa-gia/bin/gia-programs/quality-control/qc/all_qc_folder.py
 
 # Setup data folders and set ownership & permissions
 rsa-create-orig
 echo 'yes' | rsa-setrights-orig
 echo 'yes' | rsa-setrights-proc
+chown -Rc rsa-data:rootarch /data
+chmod -Rv a-x+X,u-x+rwX,g-swx+rwX,o-wx+rX /data
 
 # Install templates into data folder
-src_tmplt='/opt/local/bin/rsa-gia-templates/*'
+src_tmplt='/opt/rsa-gia/bin/rsa-gia-templates/*'
 dest_tmplt='/data/rsa/rsa-gia-templates'
-chown rsa-data:rootarch "$dest_tmplt"
-chmod 2750 "$dest_tmplt"
+chown -v rsa-data:rootarch "$dest_tmplt"
+chmod -v 2750 "$dest_tmplt"
 cp -Rv $src_tmplt $dest_tmplt
 # directories
-find $dest_tmplt -mindepth 1 -type d -exec chown rsa-data:rootarch '{}' \;
-find $dest_tmplt -mindepth 1 -type d -exec chmod 2750 '{}' \;
+find $dest_tmplt -mindepth 1 -type d -exec chown -v rsa-data:rootarch '{}' \;
+find $dest_tmplt -mindepth 1 -type d -exec chmod -v 2750 '{}' \;
 # files
-find $dest_tmplt -mindepth 1 -type f -exec chown rsa-data:rootarch '{}' \;
-find $dest_tmplt -mindepth 1 -type f -exec chmod 640 '{}' \;
-rm -rvf /opt/rsa-gia/rsa-gia-templates /opt/rsa-gia/rsa-install-rsagiatemplates rsa-create-rsadata-rootarchrsa-mv2orig
+find $dest_tmplt -mindepth 1 -type f -exec chown -v rsa-data:rootarch '{}' \;
+find $dest_tmplt -mindepth 1 -type f -exec chmod -v 640 '{}' \;
+rm -rvf /opt/rsa-gia/bin/rsa-gia-templates /opt/rsa-gia/bin/rsa-install-rsagiatemplates rsa-create-rsadata-rootarchrsa-mv2orig
 
 # Create rsa-gia application shortcut
 cp -Rv /vagrant/shared/rsa-gia/rsagia.desktop /usr/share/applications/
 
-# Meshlab
-# Installation option #2: Source
-# Based on this guide: https://gist.github.com/LogWell/bffd0a79ff13ec392f8fcf6749388c46
+# Move configuration files
+mv -v /opt/rsa-gia/bin/gia-java/default.properties /etc/opt/rsa-gia
 
-## Get dependencies to do the compilation
-### Qt5, Glu, Glew, Jhead, Patch
-yum install -y qt5-qtbase qt5-qtbase-devel qt5-qtbase-static qt5-qtxmlpatterns qt5-qtxmlpatterns-devel qt5-qtscript qt5-qtscript-devel gcc-c++ lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead eigen3-devel patch
+# Manually create data foldres in /data/rsa/to_sort and assign appropriate
+# permissions
+# Placeholder script for testing
+mkdir -pv /data/rsa/to_sort/root
+chown -Rv rsa-data:rootarch /data/rsa/to_sort/
+chmod -Rv a-x,u-x+rwX,g-wx+rX,o-rw+X /data/rsa/to_sort/
 
-QMAKE_FLAGS=('-spec' 'linux-g++' 'CONFIG+=release' 'CONFIG+=qml_release' 'CONFIG+=c++11' 'QMAKE_CXXFLAGS+=-fPIC' 'QMAKE_CXXFLAGS+=-fopenmp' 'QMAKE_CXXFLAGS+=-std=c++11' 'QMAKE_CXXFLAGS+=-fpermissive' 'INCLUDEPATH+=/usr/include/eigen3' "LIBS+=-L`pwd`/lib/linux-g++")
+# NOTE(tparker): Until the reference is changed in the source code (QualityControl.java), this needs to be created as a workaround
+mkdir -pv /usr/local/bin/gia-programs/quality-control/qc/
+ln -sv /usr/local/bin/gia-programs/quality-control/qc/all_qc_folder.py
+
+# Copy application icons to pixmaps folder
+cp -Rv rsa-gia/dist/rsa-gia.png /usr/share/pixmaps/
+```
+
+#### Meshlab
+
+**Must be using a desktop environment--i.e., TigerVNC**
+
+```bash
+# Download and install dependencies
+wget http://download.qt.io/archive/qt/5.9/5.9.8/qt-opensource-linux-x64-5.9.8.run
+chmod +x qt-opensource-linux-x64-5.9.8.run
+# Make sure to enable/select Qt 5.9.8 in component selection
+./qt-opensource-linux-x64-5.9.8.run
+
+git clone https://github.com/cnr-isti-vclab/meshlab.git --branch master --single-branch
+git clone https://github.com/cnr-isti-vclab/vcglib.git --branch devel --single-branch
+
+# Build Meshlab from source
+QMAKE_FLAGS=('-spec' 'linux-g++' 'CONFIG+=release' 'CONFIG+=qml_release' 'CONFIG+=c++11' 'QMAKE_CXXFLAGS+=-fPIC' 'QMAKE_CXXFLAGS+=-std=c++11' 'QMAKE_CXXFLAGS+=-fpermissive' 'INCLUDEPATH+=/usr/include/eigen3' "LIBS+=-L`pwd`/lib/linux-g++")
 MAKE_FLAGS=('-j4')
+dnf install -y qt5-qtbase qt5-qtbase-devel qt5-qtscript qt5-qtscript-devel qt5-qtxmlpatterns qt5-qtxmlpatterns-devel mesa-libGLU mesa-libGLU-devel
+ln -s /opt/Qt5.9.8/5.9.8/gcc_64/bin/qmake /usr/local/bin/qmake
 
-git clone --depth 1 https://github.com/cnr-isti-vclab/meshlab.git
-git clone --depth 1 https://github.com/cnr-isti-vclab/vcglib.git -b devel
-curl https://data.gpo.zugaina.org/gentoo/media-gfx/meshlab/files/2016.12/meshlab-2016.12-remove-header.patch | patch -p1
-
-cd meshlab && git fetch --tags && git checkout 25f3d17
-ln -s src/external external
-cd src/external
-qmake-qt5 external.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+pushd meshlab/src/external
+qmake external.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 cp -v lib/linux/* lib/linux-g++/ 
 
 cd ../common
-qmake-qt5 common.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+qmake common.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 
-# Comment out problematic plugins that use texture.h in vcglib
-# https://github.com/cnr-isti-vclab/meshlab/issues/428#issuecomment-474884632
 cd ..
-sed -i 's/meshlabplugins\/filter_clean/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_create/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_meshing/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_texture/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_trioptimize/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_unsharp/#\0/g' meshlab_full.pro
-sed -i 's/meshlabplugins\/filter_voronoi/#\0/g' meshlab_full.pro
-sed -i 's/sampleplugins\/filter_geodesic/#\0/g' meshlab_full.pro
-qmake-qt5 meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
+qmake meshlab_full.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
 mkdir -p /opt/meshlab
 cp -Rv distrib/* /opt/meshlab
+popd
 
+# Add to PATH
 echo 'export PATH="$PATH:/opt/meshlab"' >> /etc/profile.d/meshlab.sh
 echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> /etc/profile.d/meshlab.sh
 source /etc/profile.d/meshlab.sh
 
-# Install X virtual framebuffer for to allow meshlab to run in headless environment
-yum install -y xorg-x11-server-Xvfb
+# Copy desktop entry and icon
+cp -Rv operations-scripts/meshlab/meshlab.desktop /usr/share/applications/
+cp -Rv operations-scripts/meshlab/meshlab.png /usr/share/pixmaps/
+```
 
+#### Tassel 5
+
+https://www.maizegenetics.net/tassel
+
+This set up requires root access and a GUI interface. Personally, I used the default values and installed the program into `/opt` and creating symlinks in `/usr/local/bin`.
+
+```bash
+wget https://tassel.bitbucket.io/installer/TASSEL_5_unix.sh
+chmod +x TASSEL_5_unix.sh
+./TASSEL_5_unix.sh
+```
+
+#### Minimap2
+
+https://github.com/lh3/minimap2
+
+```bash
+curl -L https://github.com/lh3/minimap2/releases/download/v2.17/minimap2-2.17_x64-linux.tar.bz2 | tar -jxvf -
+mv -v minimap2-2.17_x64-linux/* /opt/minimap2
+echo 'export PATH="$PATH:/opt/minimap2"' >> /etc/profile.d/minimap2.sh
+echo 'export LD_LIBRARY_PATH="/opt/minimap2"' >> /etc/profile.d/minimap2.sh
+source /etc/profile.d/minimap2.sh
+```
+
+#### Guppy 
+
+https://github.com/nanoporetech
+
+Guppy is a priorioty software and requires a log in to download its installation file. As a workaround, a copy of the installation file(s) is stored in the lab's share on the Center cluster.
+
+```bash
+tar -zxvf /shares/ctopp_share/data/repos/guppy/ont-guppy-cpu_3.2.1_linux64.tar.gz -C /opt
+echo 'export PATH="$PATH:/opt/guppy"' >> /etc/profile.d/guppy.sh
+echo 'export LD_LIBRARY_PATH="/opt/guppy"' >> /etc/profile.d/guppy.sh
+source /etc/profile.d/guppy.sh
+```
+
+#### Flye
+
+https://github.com/fenderglass/Flye
+
+```bash
+git clone https://github.com/fenderglass/Flye
+cd Flye
+python setup.py install
+```
+
+#### Miniconda
+
+_TBD_
+
+#### Miniconda
+```bash
 # Install miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh | bash
 # https://docs.conda.io/projects/conda/en/latest/user-guide/configuration/admin-multi-user-install.html
@@ -356,93 +426,38 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh | bas
 # Configure miniconda to include bioconda channel
 # Set up bioconda
 conda config --add channels bioconda
+```
 
-# Install additional tools that have been requested over time
-# minimap2
-# guppy_basecaller
-# guppy_aligner
-# guppy_barcoder
-# guppy_basecaller_1d2
-# guppy_basecall_server
-# Tassel 5
-# flye
-# flye-assemble
-# flye-contigger
-# flye-minimap2
-# flye-polish
-# flye-repeat
-
-# Install Nodejs
+#### NodeJS
+```bash
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
 yum install nodejs
 npm install -g n
 n latest
-
 ```
 
-# Troubleshooting
+## Troubleshooting
 
-## Installing MeshLab
-
-There are three options for installing MeshLab onto a CentOS 7 system: build from source, Snap, and puias-computational.
-
-In the main guide, I built from source and disabled several plugins that were missing a function and would not compile. The plugins removed where the following:
-
-    meshlabplugins/filter_create
-    meshlabplugins/filter_meshing
-    meshlabplugins/filter_texture
-    meshlabplugins/filter_trioptimize
-    meshlabplugins/filter_unsharp
-    meshlabplugins/filter_voronoi
-    sampleplugins/filter_geodesic
-
-However, if you wish to try the versions provided by Snap or puias-computational repo, below is a guide to do so.
-
-### Snap
-Note, despite its simple installation, I chose not to use this because permission errors were consistently produced on start up. Specifically, there is an error for permission to create /run/user/<current_user_ID> directory upon start up. 
-```bash
-# Install Snap
-yum install -y snapd && systemctl enable --now snapd.socket
-# Install MeshLab
-snap install meshlab
-```
-
-### PUIAS-Computational (v1.3.2_64bit Oct 8 2016)
-[Package Reference](https://centos.pkgs.org/7/puias-computational-x86_64/meshlab-1.3.2-10.sdl7.x86_64.rpm.html)
-
-```bash
-yum install -y lib3ds lib3ds-devel libGLEW mesa-libGLU mesa-libGLU-devel libqtxdg-qt4 libqtxdg-qt4-devel blas blas-devel lapack lapack-devel lapack-static muParser muParser-devel qhull qhull-devel qtsoap qtsoap-devel jhead
-
-wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/levmar-2.5-6.sdl7.x86_64.rpm
-rpm -Uvh levmar-2.5-6.sdl7.x86_64.rpm
-yum install -y levmar
-
-wget http://springdale.math.ias.edu/data/puias/computational/7/x86_64/meshlab-1.3.2-10.sdl7.x86_64.rpm
-
-rpm -Uvh meshlab-1.3.2-10.sdl7.x86_64.rpm
-yum install -y meshlab
-```
-
-
+Please create an issue to report any issues or errors you encounter while following this guide.
 
 # FAQ
 
-## Why Java 1.8u45?
+## Why Java 1.8u202?
 
   JavaFX library was removed in later versions, and it is a required dependency. It appears that JavaFX is **not** free for newer versions.
-
-## Why xfce?
-
-  This is just a personal preference  because it is lightweight. It can be changed for another desktop environment.
 
 ## Why install RSA-GiA into `/opt`?
 
   Originally, the application was installed into `/opt/local/bin`. I believe that the [Filesystem Hierarchy Standard](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard) has changed since RSA-GiA original development. It seems like `/opt/local/bin` does not follow the current FHS, so I am choosing to place the files into `/opt/rsa-gia`. As such, must be added to `PATH`, and is done using `/etc/profile.d`
 
+  That being said, you could consider adding symlinks into the `/usr/local/bin` folder instead of adding `/opt/rsa-gia` to `PATH`.
+
 
 ### Additional Notes
-Below is a list of files that have **not** changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on `viper.datasci.danforthcenter.org`
+Below is a list of files that have **not** changed from rsa-pipeline-2 installation and those found in `/opt/local/bin/` on the CentOS 6.6 instance of `viper.datasci.danforthcenter.org`
 
+    checksum                          filepath
+    ---                               ---
     f1f1c86ab03226b10cc2ef48bc1e27a8  ./gia/rio2.zip
     8bf7ce3c305533055691684edeb92b41  ./gia/readme.txt
     46b0f7ff00f52d906b519780f9e521df  ./gia/authors.txt
