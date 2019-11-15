@@ -258,10 +258,8 @@ mkdir -pv /opt/rsa-gia/bin /etc/opt/rsa-gia /var/log/rsa-gia
 cp -Rv rsa-gia/dist/centos6-binaries/* /opt/rsa-gia/bin
 
 # Add java to system path in /etc/profile.d
-echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/local/bin"' > /etc/profile.d/rsagia.sh
-# echo 'export JAVA_HOME=/opt/java/java_default' >> /etc/profile.d/rsagia.sh
+echo 'export PATH="$PATH:/opt/java/java_default/bin:/opt/rsa-gia/bin"' > /etc/profile.d/rsagia.sh
 echo 'export JAVA_HOME=/usr/java/jdk1.8.0_45' >> /etc/profile.d/rsagia.sh
-
 source /etc/profile.d/rsagia.sh
 
 # Install file manager tools
@@ -308,7 +306,7 @@ find $dest_tmplt -mindepth 1 -type f -exec chmod -v 640 '{}' \;
 rm -rvf /opt/rsa-gia/bin/rsa-gia-templates /opt/rsa-gia/bin/rsa-install-rsagiatemplates rsa-create-rsadata-rootarchrsa-mv2orig
 
 # Create rsa-gia application shortcut
-cp -Rv /vagrant/shared/rsa-gia/rsagia.desktop /usr/share/applications/
+cp -Rv rsa-gia/dist/rsa-gia.desktop /usr/share/applications/
 
 # Move configuration files
 mv -v /opt/rsa-gia/bin/gia-java/default.properties /etc/opt/rsa-gia
@@ -322,7 +320,7 @@ chmod -Rv a-x,u-x+rwX,g-wx+rX,o-rw+X /data/rsa/to_sort/
 
 # NOTE(tparker): Until the reference is changed in the source code (QualityControl.java), this needs to be created as a workaround
 mkdir -pv /usr/local/bin/gia-programs/quality-control/qc/
-ln -sv /usr/local/bin/gia-programs/quality-control/qc/all_qc_folder.py
+ln -sv /opt/rsa-gia/bin/gia-programs/quality-control/qc/all_qc_folder.py /usr/local/bin/gia-programs/quality-control/qc/all_qc_folder.py
 
 # Copy application icons to pixmaps folder
 cp -Rv rsa-gia/dist/rsa-gia.png /usr/share/pixmaps/
