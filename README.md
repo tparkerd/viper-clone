@@ -318,9 +318,8 @@ mkdir -pv /data/rsa/to_sort/root
 chown -Rv rsa-data:rootarch /data/rsa/to_sort/
 chmod -Rv a-x,u-x+rwX,g-wx+rX,o-rw+X /data/rsa/to_sort/
 
-# NOTE(tparker): Until the reference is changed in the source code (QualityControl.java), this needs to be created as a workaround
-mkdir -pv /usr/local/bin/gia-programs/quality-control/qc/
-ln -sv /opt/rsa-gia/bin/gia-programs/quality-control/qc/all_qc_folder.py /usr/local/bin/gia-programs/quality-control/qc/all_qc_folder.py
+# Copy over extra templates
+cp -Rvf rsa-gia/dist/rsa-gia-templates data/rsa/
 
 # Copy application icons to pixmaps folder
 cp -Rv rsa-gia/dist/rsa-gia.png /usr/share/pixmaps/
@@ -360,13 +359,15 @@ cp -Rv distrib/* /opt/meshlab
 popd
 
 # Add to PATH
-echo 'export PATH="$PATH:/opt/meshlab"' >> /etc/profile.d/meshlab.sh
-echo 'export LD_LIBRARY_PATH="/opt/meshlab"' >> /etc/profile.d/meshlab.sh
-source /etc/profile.d/meshlab.sh
+ln -sv /opt/meshlab/meshlab /usr/local/bin/meshlab
+ln -sv /opt/meshlab/meshlabserver /usr/local/bin/meshlabserver
+ln -sv /opt/meshlab/libcommon.so /usr/lib64/libcommon.so
+ln -sv /opt/meshlab/libcommon.so.1 /usr/lib64/libcommon.so.1
 
 # Copy desktop entry and icon
-cp -Rv operations-scripts/meshlab/meshlab.desktop /usr/share/applications/
-cp -Rv operations-scripts/meshlab/meshlab.png /usr/share/pixmaps/
+cp -Rv operations-scripts/servers/viper/meshlab/meshlab.desktop /usr/share/applications/
+cp -Rv operations-scripts/servers/viper/meshlab/meshlab.png /usr/share/pixmaps/
+echo 'model/vrml=meshlab.desktop' >> /usr/share/applications/mimeapps.list
 ```
 
 #### Tassel 5
