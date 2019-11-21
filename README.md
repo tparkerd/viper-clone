@@ -319,7 +319,7 @@ chown -Rv rsa-data:rootarch /data/rsa/to_sort/
 chmod -Rv a-x,u-x+rwX,g-wx+rX,o-rw+X /data/rsa/to_sort/
 
 # Copy over extra templates
-cp -Rvf rsa-gia/dist/rsa-gia-templates data/rsa/
+yes | cp -Rvf rsa-gia/dist/rsa-gia-templates /data/rsa/
 
 # Copy application icons to pixmaps folder
 cp -Rv rsa-gia/dist/rsa-gia.png /usr/share/pixmaps/
