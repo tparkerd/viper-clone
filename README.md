@@ -61,9 +61,9 @@ This repository is a guide on creating a virtual environment that should nearly 
       * GNOME
       * Network File System Client
       * Headless Management
+      * Graphical Administration Tools
       * Scientific Support
       * System Tools
-      * Graphical Administration Tools
 
 6. Click **Begin Installation**
 
@@ -129,7 +129,7 @@ reboot
     dnf update -y
     dnf install -y epel-release git wget gcc-c++ cmake python2 python36
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python get-pip.py
+    python3 get-pip.py
     rsync -avuP --stats tparker@stargate.datasci.danforthcenter.org:/shares/ctopp_share/data/repos/jdk/jdk-8u202-linux-x64.rpm .
     rpm -ivh jdk-8u202-linux-x64.rpm
     alternatives --set java /usr/java/jdk1.8.0_202-amd64/jre/bin/java
