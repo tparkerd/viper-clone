@@ -60,8 +60,8 @@ This repository is a guide on creating a virtual environment that should nearly 
     * Check Add-Ons:
       * GNOME
       * Network File System Client
-      * Headless Management
       * Graphical Administration Tools
+      * Headless Management
       * Scientific Support
       * System Tools
 
@@ -141,42 +141,30 @@ reboot
     dnf install -y tigervnc-server tigervnc-server-module
     ```
 
-3. Adding VNC endpoints. Create service files for user VNC servers (https://www.linuxtechi.com/install-configure-vnc-server-centos8-rhel8/)
+4. Add VNC endpoints
     
-    Each service file follows this template:
-
-    ```
-    # /etc/systemd/system/vncserver@:<portnumber>.service
-    [Unit]
-    Description=Remote Desktop VNC Service
-    After=syslog.target network.target
-
-    [Service]
-    Type=forking
-    WorkingDirectory=/home/username
-    User=username
-    Group=groupname
-
-    ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
-    ExecStart=/usr/bin/vncserver -autokill %i
-    ExecStop=/usr/bin/vncserver -kill %i
-
-    [Install]
-    WantedBy=multi-user.target
-    ```
-
-    Make sure to replace the `username`, `group`, and `WorkingDirectory` for the user's info. The `portnumber` in the file's name sets the port offset value for the user. Currently, we are keeping track of who has been assigned which port in a [Google Sheet](https://docs.google.com/spreadsheets/d/1PfnRdNhHx81Jcx219MZ2Xoki_c-hDUeL47ug8NEcJbs/edit?usp=drive_web&ouid=107635210664309276124).
-
-    For ease, I've included a copy of the current user's service files in this repo.
+    A VNC server can be started with the `vncserver` command, but for easier
+    use, we've opted to use aliases in `~/.bashrc` for handle this. Add the
+    following commands to each user's `.bashrc`; make sure to replace the
+    `PORT_NUMBER` with an unused port number and then update any documentation
+    to reflect its assignment. Currently, we are keeping track of who has been
+    assigned which port in a [Google Sheet](https://docs.google.com/spreadsheets/d/1PfnRdNhHx81Jcx219MZ2Xoki_c-hDUeL47ug8NEcJbs/edit?usp=drive_web&ouid=107635210664309276124).
 
     ```bash
-    cp -Rv operations-scripts/servers/viper/vnc/* /etc/systemd/system/
+    # ~/.bashrc
+    # ...
+    # VNC Server
+    alias startvnc="vncserver :<PORT_NUMBER>"
+    alias killvnc="vncserver -kill :<PORT_NUMBER>"
     ```
+    If additional configuration is needed, e.g., changing the default screen
+    resolution, make these changes in the user's `~/.vnc/config` file.
+
 
     **NOTE about VNC passwords**: Once a user has access a VNC endpoint at least once, their password is stored in `$HOME/.vnc/passwd` by default. Therefore, for anyone that has started their VNC server in the past, you should not need to set a password. Otherwise, use the following command to set the password for the user.
   
     ```bash
-    sudo -u username vncpasswd
+    sudo -u <username> vncpasswd
     ```
 
     **Make sure to open ports for VNC endpoints**
@@ -187,19 +175,61 @@ reboot
 
     ```bash
     systemctl daemon-reload
-    systemctl start vncserver@:portnumber.service
-    systemctl enable vncserver@:portnumber.service
-    firewall-cmd --permanent --add-port=5900+portnumber/tcp
+    systemctl start vncserver@:<PORT_NUMBER>.service
+    systemctl enable vncserver@:<PORT_NUMBER>.service
+    firewall-cmd --permanent --add-port=5900+<PORT_NUMBER>/tcp
     firewall-cmd --reload
     ```
 
-    Example for `root`
+5. Disable screen locking and session timeout
+
+    As root, add the following lines to `/etc/dconf/db/local.d/00-screensaver`.
+    Create the file if it does not exist. [[1]]
+
+    ```
+    # /etc/dconf/db/local.d/00-screensaver
+    [org/gnome/desktop/session]
+    idle-delay=uint32 0
+
+    [org/gnome/desktop/screensaver]
+    lock-enabled=false
+    ```
+
+    Make sure to update `dconf` after making your changes.
     ```bash
-    systemctl daemon-reload
-    systemctl start vncserver@0.service
-    systemctl enable vncserver@0.service
-    firewall-cmd --permanent --add-port=5900/tcp
-    firewall-cmd --reload
+    dconf update
+    ```
+
+6. (Optional) Fix Authentication Required Pop-ups
+
+    You may encounter the following alert:
+
+    ```
+    Authentication Required
+    Authentication is required to create a color managed device
+    ```
+
+    As a workaround, we can grant the permission to all users.
+    This issue seems to have come about during the transition to Ubuntu 18.04 and
+    is also affecting CentOS 8. Add the following rules to
+    `/etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla`; create the 
+    file if it does not already exist. [[2]]
+
+    ```conf
+    # /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
+    [Allow Colord all Users]
+    Identity=unix-user:*
+    Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+    ResultAny=no
+    ResultInactive=no
+    ResultActive=yes
+
+    [Allow Package Management all Users]
+    Identity=unix-user:*
+    Action=org.debian.apt.*;io.snapcraft.*;org.freedesktop.packagekit.*;com.ubuntu.update-notifier.*
+    ResultAny=no
+    ResultInactive=no
+    ResultActive=yes
     ```
 
 ### Software Installation Guides
@@ -329,6 +359,10 @@ cp -Rv rsa-gia/dist/rsa-gia.png /usr/share/pixmaps/
 
 **Must be using a desktop environment--i.e., TigerVNC**
 
+Qt5.9 Module Selection
+
+![](img/qt59_module_selection.png)
+
 ```bash
 # Download and install dependencies
 wget http://download.qt.io/archive/qt/5.9/5.9.8/qt-opensource-linux-x64-5.9.8.run
@@ -347,7 +381,6 @@ ln -s /opt/Qt5.9.8/5.9.8/gcc_64/bin/qmake /usr/local/bin/qmake
 
 pushd meshlab/src/external
 qmake external.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
-cp -v lib/linux/* lib/linux-g++/ 
 
 cd ../common
 qmake common.pro ${QMAKE_FLAGS[@]} && make ${MAKE_FLAGS[@]}
