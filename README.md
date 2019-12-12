@@ -174,9 +174,6 @@ reboot
     **Make sure to replace the port number with the correct value when allowing it through the firewall.** VNC uses ports starting at 5900, so add the assigned port to 5900 to get the actual port. E.g., If you assign porn `126` to someone, open the port `6026`.
 
     ```bash
-    systemctl daemon-reload
-    systemctl start vncserver@:<PORT_NUMBER>.service
-    systemctl enable vncserver@:<PORT_NUMBER>.service
     firewall-cmd --permanent --add-port=5900+<PORT_NUMBER>/tcp
     firewall-cmd --reload
     ```
