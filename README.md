@@ -470,6 +470,13 @@ npm install -g n
 n latest
 ```
 
+## Vagrant
+
+```bash
+vagrant plugin install vagrant-vbguest
+vagrant plugin install vagrant-disksize
+```
+
 ## Troubleshooting
 
 Please create an issue to report any issues or errors you encounter while following this guide.
