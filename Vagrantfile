@@ -5,6 +5,7 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+disk = './vm-storage-data.vdi'
 Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -14,9 +15,6 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "centos/8"
   config.vm.box_version = "1905.1"
-
-  # Adjust disk size
-  config.disksize.size = '100GB'
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -42,7 +40,7 @@ Vagrant.configure("2") do |config|
   # Bridged networks make the machine appear as another physical device on
   # your network.
   # config.vm.network "public_network"
-  config.vm.network "public_network", bridge: "wlp59s0"
+  config.vm.network "public_network", bridge: "eth5"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -59,8 +57,15 @@ Vagrant.configure("2") do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-     vb.memory = "4096"
-     vb.cpus = 4
+    # vb.memory = "8096"
+    # vb.cpus = 20
+    # vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata" ]
+    # unless File.exist?(disk)
+    #   vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 20 * 1024]
+    # end
+    # vb.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+  
+
    end
   #
   # View the documentation for the provider you are using for more
@@ -73,6 +78,6 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-  #config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision.sh"
   #config.vm.synced_folder "/home/tparker/Projects/danforth/topp/viper-clone/shared", "/home/vagrant/shared"
 end

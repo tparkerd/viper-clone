@@ -474,7 +474,7 @@ n latest
 
 ```bash
 vagrant plugin install vagrant-vbguest
-vagrant plugin install vagrant-disksize
+vagrant up
 ```
 
 ## Troubleshooting
